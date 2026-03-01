@@ -1,8 +1,8 @@
-import {Routes} from '@angular/router';
-import {Welcome} from './components/welcome/welcome';
-import {Gallery} from './components/gallery/gallery';
+import { Routes } from '@angular/router';
+import { Welcome } from './welcome/welcome';
+import { Gallery } from './gallery/gallery';
 
 export const routes: Routes = [
-  {path: '', component: Welcome},
-  {path: 'gallery', component: Gallery},
+  { path: '', component: Welcome },
+  { path: 'gallery', component: Gallery },
 ];
