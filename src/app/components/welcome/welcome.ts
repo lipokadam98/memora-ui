@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './welcome.css',
 })
 export class Welcome {
-
+  asdasdasd = '';
 }
