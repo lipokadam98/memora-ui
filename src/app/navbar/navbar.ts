@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeService } from '../theme-service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, NgClass],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  private themeService = inject(ThemeService);
+  protected themeService = inject(ThemeService);
 
   protected toggleDarkMode() {
     this.themeService.toggle();
