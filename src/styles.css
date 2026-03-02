@@ -12,7 +12,7 @@
   --text-color: #e0e0e0;
 }
 
-body nav {
+body, nav {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
