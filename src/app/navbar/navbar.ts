@@ -9,7 +9,7 @@ import { ThemeService } from '../theme-service';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  protected themeService = inject(ThemeService);
+  private themeService = inject(ThemeService);
 
   protected toggleDarkMode() {
     this.themeService.toggle();

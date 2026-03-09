@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Navbar } from './navbar';
+import { Authentication } from './authentication';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('Navbar', () => {
-  let component: Navbar;
-  let fixture: ComponentFixture<Navbar>;
+describe('Authentication', () => {
+  let component: Authentication;
+  let fixture: ComponentFixture<Authentication>;
 
   const activatedRouteMock = {
     params: of({}),
@@ -19,16 +19,11 @@ describe('Navbar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
+      imports: [Authentication],
+      providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Navbar);
+    fixture = TestBed.createComponent(Authentication);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

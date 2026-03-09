@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ThemeService } from './theme-service';
+import { MultimediaService } from './multimedia-service';
 
-describe('Theme', () => {
-  let service: ThemeService;
+describe('MultimediaService', () => {
+  let service: MultimediaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ThemeService);
+    service = TestBed.inject(MultimediaService);
   });
 
   it('should be created', () => {

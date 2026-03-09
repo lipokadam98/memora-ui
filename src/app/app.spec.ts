@@ -1,10 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
+import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 describe('App', () => {
+  const activatedRouteMock = {
+    params: of({}),
+    queryParams: of({}),
+    snapshot: {
+      paramMap: {},
+      queryParamMap: {},
+    },
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -18,6 +35,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, memora-ui');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Memora UI');
   });
 });

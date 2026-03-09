@@ -9,7 +9,7 @@ export interface Image {
 @Injectable({
   providedIn: 'root',
 })
-export class ImageService {
+export class MultimediaService {
   async loadImages(): Promise<Image[]> {
     return images;
   }

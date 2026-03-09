@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Image } from '../../image-service';
+import { Image } from '../../multimedia-service';
 
 @Component({
   selector: 'app-image-tile',

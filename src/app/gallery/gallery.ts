@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Image, ImageService } from '../image-service';
+import { Image, MultimediaService } from '../multimedia-service';
 import { ImageTile } from './image-tile/image-tile';
 
 @Component({
@@ -9,15 +9,15 @@ import { ImageTile } from './image-tile/image-tile';
   styleUrl: './gallery.css',
 })
 export class Gallery implements OnInit {
-  loadedImages = signal<Image[]>([]);
-  imageService = inject(ImageService);
+  protected images = signal<Image[]>([]);
+  private multimediaService = inject(MultimediaService);
 
   ngOnInit() {
     this.loadImages().then(() => console.log('loaded the images'));
   }
 
   private async loadImages() {
-    const images = await this.imageService.loadImages();
-    this.loadedImages.set(images);
+    const images = await this.multimediaService.loadImages();
+    this.images.set(images);
   }
 }
