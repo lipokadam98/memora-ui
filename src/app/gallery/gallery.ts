@@ -13,7 +13,7 @@ export class Gallery implements OnInit {
   private multimediaService = inject(MultimediaService);
 
   ngOnInit() {
-    this.loadImages().then(() => console.log('loaded the images'));
+    this.loadImages().then(() => console.log('loaded the gallery images'));
   }
 
   private async loadImages() {
