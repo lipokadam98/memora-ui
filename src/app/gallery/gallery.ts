@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { MultimediaService } from '../multimedia-service';
 import { MultimediaTile } from './multimedia-tile/multimedia-tile';
 import { Multimedia } from '../api';
+import { Upload } from './upload/upload';
 
 @Component({
   selector: 'app-gallery',
-  imports: [MultimediaTile],
+  imports: [MultimediaTile, Upload],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })

@@ -8,7 +8,7 @@ import { User, UserControllerService } from '../api';
 })
 export class AuthService {
   isAuthenticated = signal(false);
-  userData = signal<User>({});
+  userData = signal<User | null>(null);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private userControllerService = inject(UserControllerService);

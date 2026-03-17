@@ -1,0 +1,3 @@
+<input (change)="onFileSelected($event)" type="file" />
+
+<button (click)="upload()" [disabled]="!selectedFile">Upload Image</button>
