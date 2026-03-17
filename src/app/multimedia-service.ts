@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import images from './dummy-data/images.json';
-
-export interface Image {
-  id: string;
-  src: string;
-}
+import { Multimedia } from './api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MultimediaService {
-  async loadImages(): Promise<Image[]> {
-    return images;
+  async loadMultimediaData(): Promise<Multimedia[]> {
+    return [];
   }
 }

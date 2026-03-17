@@ -20,5 +20,6 @@ export interface Multimedia {
     createdAt?: string;
     updatedAt?: string;
     user?: User;
+    fileData?: string;
 }
 

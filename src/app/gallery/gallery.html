@@ -1,5 +1,5 @@
 <main class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-4">
-  @for (image of images(); track image.id) {
-    <app-image-tile [image]="image" />
+  @for (multimedia of multimediaData(); track multimedia.id) {
+    <app-image-tile [multimedia]="multimedia" />
   }
 </main>

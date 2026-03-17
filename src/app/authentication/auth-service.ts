@@ -1,17 +1,21 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
+import { User, UserControllerService } from '../api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   isAuthenticated = signal(false);
+  userData = signal<User>({});
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  private userControllerService = inject(UserControllerService);
 
   constructor() {
     this.checkLocalStorage();
+    this.getUserData();
   }
 
   login() {
@@ -24,6 +28,17 @@ export class AuthService {
     localStorage.removeItem('isAuthenticated');
     this.isAuthenticated.set(false);
     this.router.navigate(['/']);
+  }
+
+  getUserData() {
+    this.userControllerService
+      .findByEmail('test@test.com')
+      .pipe(take(1))
+      .subscribe((userData) => {
+        console.log('User data received:');
+        console.log(userData);
+        this.userData.set(userData);
+      });
   }
 
   private navigateAfterSuccessfulLogin() {
