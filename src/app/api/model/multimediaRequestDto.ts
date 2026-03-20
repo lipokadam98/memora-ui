@@ -10,15 +10,7 @@
 import { User } from './user';
 
 
-export interface Multimedia { 
-    id?: number;
-    originalFileName?: string;
-    contentType?: string;
-    size?: number;
-    bucketName?: string;
-    objectKey?: string;
-    createdAt?: string;
-    updatedAt?: string;
+export interface MultimediaRequestDto { 
     user?: User;
 }
 

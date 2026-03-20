@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MultimediaService } from '../multimedia-service';
 import { MultimediaTile } from './multimedia-tile/multimedia-tile';
-import { Multimedia } from '../api';
+import { Multimedia, MultimediaResponseDto } from '../api';
 import { Upload } from './upload/upload';
 
 @Component({
@@ -11,7 +11,7 @@ import { Upload } from './upload/upload';
   styleUrl: './gallery.css',
 })
 export class Gallery implements OnInit {
-  protected multimediaData = signal<Multimedia[]>([]);
+  protected multimediaData = signal<MultimediaResponseDto[]>([]);
   private multimediaService = inject(MultimediaService);
 
   ngOnInit() {

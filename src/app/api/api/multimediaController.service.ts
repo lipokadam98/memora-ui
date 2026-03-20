@@ -18,6 +18,10 @@ import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
 import { Multimedia } from '../model/multimedia';
+// @ts-ignore
+import { MultimediaRequestDto } from '../model/multimediaRequestDto';
+// @ts-ignore
+import { MultimediaResponseDto } from '../model/multimediaResponseDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -91,17 +95,21 @@ export class MultimediaControllerService extends BaseService {
 
     /**
      * @endpoint post /multimedia
-     * @param multimedia 
+     * @param file 
+     * @param media 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create1(multimedia: Multimedia, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Multimedia>;
-    public create1(multimedia: Multimedia, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Multimedia>>;
-    public create1(multimedia: Multimedia, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Multimedia>>;
-    public create1(multimedia: Multimedia, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (multimedia === null || multimedia === undefined) {
-            throw new Error('Required parameter multimedia was null or undefined when calling create1.');
+    public create1(file: Blob, media: MultimediaRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Multimedia>;
+    public create1(file: Blob, media: MultimediaRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Multimedia>>;
+    public create1(file: Blob, media: MultimediaRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Multimedia>>;
+    public create1(file: Blob, media: MultimediaRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (file === null || file === undefined) {
+            throw new Error('Required parameter file was null or undefined when calling create1.');
+        }
+        if (media === null || media === undefined) {
+            throw new Error('Required parameter media was null or undefined when calling create1.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -117,14 +125,30 @@ export class MultimediaControllerService extends BaseService {
 
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (file !== undefined) {
+            localVarFormParams = localVarFormParams.append('file', <any>file) as any || localVarFormParams;
+        }
+        if (media !== undefined) {
+            localVarFormParams = localVarFormParams.append('media', localVarUseForm ? new Blob([JSON.stringify(media)], {type: 'application/json'}) : <any>media) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -143,7 +167,7 @@ export class MultimediaControllerService extends BaseService {
         return this.httpClient.request<Multimedia>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: multimedia,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -160,9 +184,9 @@ export class MultimediaControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public getAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<Multimedia>>;
-    public getAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<Multimedia>>>;
-    public getAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<Multimedia>>>;
+    public getAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<MultimediaResponseDto>>;
+    public getAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<MultimediaResponseDto>>>;
+    public getAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<MultimediaResponseDto>>>;
     public getAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -192,7 +216,7 @@ export class MultimediaControllerService extends BaseService {
 
         let localVarPath = `/multimedia`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<Multimedia>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<MultimediaResponseDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -251,6 +275,50 @@ export class MultimediaControllerService extends BaseService {
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                ...(localVarTransferCache !== undefined ? { transferCache: localVarTransferCache } : {}),
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @endpoint get /multimedia/{id}/thumbnail
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     * @param options additional options
+     */
+    public getThumbnail(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Blob>;
+    public getThumbnail(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Blob>>;
+    public getThumbnail(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Blob>>;
+    public getThumbnail(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getThumbnail.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let localVarPath = `/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/thumbnail`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: "blob",
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,

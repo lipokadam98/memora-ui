@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Multimedia } from '../../api';
+import { Multimedia, MultimediaResponseDto } from '../../api';
 
 @Component({
   selector: 'app-image-tile',
@@ -8,5 +8,5 @@ import { Multimedia } from '../../api';
   styleUrl: './multimedia-tile.css',
 })
 export class MultimediaTile {
-  multimedia = input.required<Multimedia>();
+  multimedia = input.required<MultimediaResponseDto>();
 }

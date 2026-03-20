@@ -4,7 +4,6 @@ api.base.service.ts
 api.module.ts
 api/api.ts
 api/multimediaController.service.ts
-api/storageController.service.ts
 api/userController.service.ts
 configuration.ts
 encoder.ts
@@ -12,7 +11,8 @@ git_push.sh
 index.ts
 model/models.ts
 model/multimedia.ts
-model/uploadFileRequest.ts
+model/multimediaRequestDto.ts
+model/multimediaResponseDto.ts
 model/user.ts
 param.ts
 provide-api.ts

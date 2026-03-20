@@ -1,3 +1,4 @@
 export * from './multimedia';
-export * from './uploadFileRequest';
+export * from './multimediaRequestDto';
+export * from './multimediaResponseDto';
 export * from './user';

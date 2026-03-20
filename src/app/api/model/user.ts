@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Multimedia } from './multimedia';
 
 
 export interface User { 
@@ -18,7 +17,6 @@ export interface User {
     enabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    multimedia?: Array<Multimedia>;
 }
 export namespace User {
     export const RoleEnum = {
