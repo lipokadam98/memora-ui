@@ -10,9 +10,9 @@ encoder.ts
 git_push.sh
 index.ts
 model/models.ts
-model/multimedia.ts
 model/multimediaRequestDto.ts
 model/multimediaResponseDto.ts
+model/update1Request.ts
 model/user.ts
 param.ts
 provide-api.ts

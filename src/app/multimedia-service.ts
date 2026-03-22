@@ -1,10 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  Multimedia,
-  MultimediaControllerService,
-  MultimediaRequestDto,
-  MultimediaResponseDto,
-} from './api';
+import { MultimediaControllerService, MultimediaRequestDto, MultimediaResponseDto } from './api';
 import { AuthService } from './authentication/auth-service';
 import { firstValueFrom } from 'rxjs';
 
@@ -19,7 +14,7 @@ export class MultimediaService {
     return await firstValueFrom(this.multimediaControllerService.getAll());
   }
 
-  async uploadMultimedia(file: File): Promise<Multimedia> {
+  async uploadMultimedia(file: File): Promise<MultimediaResponseDto> {
     const multimedia: MultimediaRequestDto = {
       user: this.authService.userData()!,
     };

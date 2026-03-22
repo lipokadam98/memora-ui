@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MultimediaService } from '../multimedia-service';
 import { MultimediaTile } from './multimedia-tile/multimedia-tile';
-import { Multimedia, MultimediaResponseDto } from '../api';
+import { MultimediaResponseDto } from '../api';
 import { Upload } from './upload/upload';
 
 @Component({

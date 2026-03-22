@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Multimedia, MultimediaResponseDto } from '../../api';
+import { MultimediaResponseDto } from '../../api';
 
 @Component({
   selector: 'app-image-tile',
