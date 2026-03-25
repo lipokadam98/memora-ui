@@ -2,11 +2,11 @@ import { Component, input } from '@angular/core';
 import { MultimediaResponseDto } from '../../api';
 
 @Component({
-  selector: 'app-multimedia-tile',
+  selector: 'app-multimedia-content',
   imports: [],
-  templateUrl: './multimedia-tile.html',
-  styleUrl: './multimedia-tile.css',
+  templateUrl: './multimedia-content.html',
+  styleUrl: './multimedia-content.css',
 })
-export class MultimediaTile {
+export class MultimediaContent {
   multimedia = input.required<MultimediaResponseDto>();
 }

@@ -15,5 +15,19 @@
 body, nav {
   background-color: var(--bg-color);
   color: var(--text-color);
+  font-family: 'Roboto', serif;
 }
 
+.button {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  @apply p-1 rounded-lg cursor-pointer;
+}
+
+.button:hover {
+  @apply bg-gray-400;
+}
+
+.button:disabled {
+  @apply bg-gray-500 opacity-50 cursor-not-allowed;
+}

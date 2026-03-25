@@ -9,7 +9,6 @@ import { MultimediaService } from '../../multimedia-service';
 })
 export class Upload {
   selectedFile = signal<File | null>(null);
-
   private multimediaService = inject(MultimediaService);
 
   onFileSelected(event: any) {
@@ -23,5 +22,9 @@ export class Upload {
     this.multimediaService
       .uploadMultimedia(this.selectedFile()!)
       .then(() => console.log('File uploaded successfully'));
+  }
+
+  protected onRemoveFile() {
+    this.selectedFile.set(null);
   }
 }

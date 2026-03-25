@@ -1,6 +1,11 @@
-<app-upload />
-<main class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-4">
-  @for (multimedia of multimediaData(); track multimedia.id) {
-    <app-image-tile [multimedia]="multimedia" />
-  }
+<main class="flex flex-col gap-4">
+  <section class="flex justify-center">
+    <app-upload />
+  </section>
+  <hr />
+  <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
+    @for (multimedia of multimediaData(); track multimedia.id) {
+      <app-multimedia-tile [multimedia]="multimedia" />
+    }
+  </section>
 </main>

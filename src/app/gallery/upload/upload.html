@@ -1,3 +1,11 @@
-<input (change)="onFileSelected($event)" type="file" />
-
-<button (click)="upload()" [disabled]="!selectedFile()">Upload Image</button>
+<main class="flex flex-col items-center gap-4 justify-center">
+  <section class="flex flex-row">
+    <input (change)="onFileSelected($event)" type="file" />
+    @if (selectedFile()) {
+      <button (click)="onRemoveFile()" class="cursor-pointer">
+        <span class="material-icons"> delete </span>
+      </button>
+    }
+  </section>
+  <button (click)="upload()" [disabled]="!selectedFile()" class="button">Upload</button>
+</main>
