@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { MultimediaResponseDto } from '../../api';
 
 @Component({
@@ -7,6 +8,8 @@ import { MultimediaResponseDto } from '../../api';
   templateUrl: './multimedia-content.html',
   styleUrl: './multimedia-content.css',
 })
-export class MultimediaContent {
-  multimedia = input.required<MultimediaResponseDto>();
+export class MultimediaContent implements OnInit {
+  protected dialogData = inject(DIALOG_DATA) as MultimediaResponseDto;
+
+  ngOnInit(): void {}
 }

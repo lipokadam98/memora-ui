@@ -3,11 +3,10 @@ import { MultimediaService } from '../multimedia-service';
 import { MultimediaTile } from './multimedia-tile/multimedia-tile';
 import { MultimediaResponseDto } from '../api';
 import { Upload } from './upload/upload';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-gallery',
-  imports: [MultimediaTile, Upload, RouterOutlet],
+  imports: [MultimediaTile, Upload],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
