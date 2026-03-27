@@ -13,5 +13,7 @@ export interface MultimediaResponseDto {
     id?: number;
     contentUrl?: string;
     thumbnailUrl?: string;
+    contentType?: string;
+    objectKey?: string;
 }
 
