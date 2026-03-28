@@ -7,5 +7,14 @@
       </button>
     }
   </section>
-  <button (click)="upload()" [disabled]="!selectedFile()" class="button">Upload</button>
+  <button
+    (click)="upload()"
+    [disabled]="!selectedFile() || multimediaStore.isLoading()"
+    class="button"
+  >
+    Upload
+  </button>
+  @if (multimediaStore.isUploading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
 </main>

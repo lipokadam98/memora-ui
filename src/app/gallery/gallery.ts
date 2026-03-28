@@ -1,25 +1,19 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { MultimediaService } from '../multimedia-service';
+import { Component, inject, OnInit } from '@angular/core';
 import { MultimediaTile } from './multimedia-tile/multimedia-tile';
-import { MultimediaResponseDto } from '../api';
 import { Upload } from './upload/upload';
+import { MultimediaStore } from './multimedia-store';
 
 @Component({
   selector: 'app-gallery',
   imports: [MultimediaTile, Upload],
+  providers: [MultimediaStore],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
 export class Gallery implements OnInit {
-  protected multimediaData = signal<MultimediaResponseDto[]>([]);
-  private multimediaService = inject(MultimediaService);
+  protected multimediaStore = inject(MultimediaStore);
 
   ngOnInit() {
-    this.loadImages().then(() => console.log('loaded the gallery images'));
-  }
-
-  private async loadImages() {
-    const data = await this.multimediaService.loadMultimediaData();
-    this.multimediaData.set(data);
+    this.multimediaStore.loadAll();
   }
 }

@@ -1,6 +1,11 @@
-<img
-  (click)="openMultimedia()"
-  [src]="multimedia().thumbnailUrl"
-  alt="Thumbnail image"
-  class="w-full aspect-square object-cover rounded cursor-pointer hover:transform hover:scale-105 transition-transform duration-300"
-/>
+<main class="relative">
+  <img
+    (click)="openMultimedia()"
+    [src]="multimedia().thumbnailUrl"
+    alt="Thumbnail image"
+    class="w-full aspect-square object-cover rounded cursor-pointer hover:transform hover:scale-105 transition-transform duration-300"
+  />
+  <button (click)="deleteMultimedia()" class="absolute top-0 right-0 cursor-pointer">
+    <span class="material-icons"> delete </span>
+  </button>
+</main>

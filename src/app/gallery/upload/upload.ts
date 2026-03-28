@@ -1,15 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
-import { MultimediaService } from '../../multimedia-service';
+import { MultimediaStore } from '../multimedia-store';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-upload',
-  imports: [],
+  imports: [MatProgressBar],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
 })
 export class Upload {
   selectedFile = signal<File | null>(null);
-  private multimediaService = inject(MultimediaService);
+  protected multimediaStore = inject(MultimediaStore);
 
   onFileSelected(event: any) {
     this.selectedFile.set(event.target.files[0]);
@@ -19,9 +20,7 @@ export class Upload {
   upload() {
     if (!this.selectedFile()) return;
     console.log('Uploading file:', this.selectedFile());
-    this.multimediaService
-      .uploadMultimedia(this.selectedFile()!)
-      .then(() => console.log('File uploaded successfully'));
+    this.multimediaStore.uploadMultimedia(this.selectedFile()!);
   }
 
   protected onRemoveFile() {
