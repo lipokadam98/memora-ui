@@ -8,4 +8,8 @@
   <button (click)="deleteMultimedia()" class="absolute top-0 right-0 cursor-pointer">
     <span class="material-icons"> delete </span>
   </button>
+
+  @if (multimedia().contentType?.includes('video')) {
+    <span class="material-icons absolute bottom-0 left-0"> video_file </span>
+  }
 </main>
