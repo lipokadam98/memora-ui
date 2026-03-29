@@ -3,8 +3,8 @@
   <section>
     <p>This is a simple authentication page.</p>
     <div class="flex flex-col gap-2">
-      <button (click)="onLogin()">Login</button>
-      <button (click)="onLogout()">Logout</button>
+      <button (click)="onLogin()">{{ 'common.login' | translate }}</button>
+      <button (click)="onLogout()">{{ 'common.logout' | translate }}</button>
     </div>
   </section>
 </main>

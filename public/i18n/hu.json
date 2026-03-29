@@ -1,0 +1,14 @@
+{
+  "app_name": "Memora UI",
+  "navbar": {
+    "home": "Kezdőlap",
+    "gallery": "Galéria",
+    "notes": "Jegyzetek"
+  },
+  "common": {
+    "save": "Mentés",
+    "upload": "Feltöltés",
+    "login": "Bejelentkezés",
+    "logout": "Kijelentkezés"
+  }
+}

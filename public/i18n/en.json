@@ -1,0 +1,14 @@
+{
+  "app_name": "Memora UI",
+  "navbar": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "notes": "Notes"
+  },
+  "common": {
+    "save": "Save",
+    "upload": "Upload",
+    "login": "Login",
+    "logout": "Logout"
+  }
+}

@@ -12,7 +12,7 @@
     [disabled]="!selectedFile() || multimediaStore.isLoading()"
     class="button"
   >
-    Upload
+    {{ 'common.upload' | translate }}
   </button>
   @if (multimediaStore.isUploading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>

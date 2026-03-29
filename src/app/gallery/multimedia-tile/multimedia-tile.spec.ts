@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MultimediaTile } from './multimedia-tile';
 import { signal } from '@angular/core';
-import { Multimedia } from '../../api';
+import { MultimediaResponseDto } from '../../api';
 
 describe('MultimediaTile', () => {
   let component: MultimediaTile;
@@ -13,7 +13,7 @@ describe('MultimediaTile', () => {
       imports: [MultimediaTile],
     }).compileComponents();
 
-    const multimedia = signal<Multimedia>({} as Multimedia);
+    const multimedia = signal<MultimediaResponseDto>({} as MultimediaResponseDto);
     fixture = TestBed.createComponent(MultimediaTile);
     fixture.componentRef.setInput('multimedia', multimedia);
     component = fixture.componentInstance;

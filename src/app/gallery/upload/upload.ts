@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { MultimediaStore } from '../multimedia-store';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-upload',
-  imports: [MatProgressBar],
+  imports: [MatProgressBar, TranslatePipe],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
 })
