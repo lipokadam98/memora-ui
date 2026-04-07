@@ -10,7 +10,9 @@
 import { UserDto } from './userDto';
 
 
-export interface MultimediaRequestDto { 
+export interface LoginResponse { 
+    token?: string;
     user?: UserDto;
+    expiresIn?: number;
 }
 

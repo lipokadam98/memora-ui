@@ -7,16 +7,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GrantedAuthority } from './grantedAuthority';
 
 
 export interface User { 
     id?: number;
     email?: string;
-    passwordHash?: string;
+    fullName?: string;
+    password?: string;
     role?: User.RoleEnum;
     enabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    authorities?: Array<GrantedAuthority>;
+    username?: string;
+    accountNonLocked?: boolean;
+    accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
 }
 export namespace User {
     export const RoleEnum = {

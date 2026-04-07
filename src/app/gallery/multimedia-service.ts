@@ -16,10 +16,10 @@ export class MultimediaService {
 
   async uploadMultimedia(file: File) {
     const multimedia: MultimediaRequestDto = {
-      user: this.authService.userData()!,
+      user: this.authService.loginData()?.user,
     };
     console.log('Uploading multimedia:', multimedia);
-    return await firstValueFrom(this.multimediaControllerService.create1(file, multimedia));
+    return await firstValueFrom(this.multimediaControllerService.create(file, multimedia));
   }
 
   async deleteMultimedia(id: number) {

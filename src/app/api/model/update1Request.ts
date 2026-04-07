@@ -7,10 +7,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserDto } from './userDto';
 
 
-export interface MultimediaRequestDto { 
-    user?: UserDto;
+export interface Update1Request { 
+    file: Blob;
 }
 
