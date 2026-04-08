@@ -12,5 +12,6 @@ import { UserDto } from './userDto';
 
 export interface MultimediaRequestDto { 
     user?: UserDto;
+    uploadDate?: string;
 }
 
