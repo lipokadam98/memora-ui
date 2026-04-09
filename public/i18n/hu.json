@@ -8,7 +8,16 @@
   "common": {
     "save": "Mentés",
     "upload": "Feltöltés",
+    "yes": "Igen",
+    "no": "Nem",
+    "delete": "Törlés"
+  },
+  "authentication": {
     "login": "Bejelentkezés",
-    "logout": "Kijelentkezés"
+    "logout": "Kijelentkezés",
+    "logout_confirm": "Biztosan ki akar jelentkezni?"
+  },
+  "multimedia": {
+    "delete_confirm": "Biztosan ki akarja törölni ez a multimédiát?"
   }
 }

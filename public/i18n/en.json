@@ -8,7 +8,19 @@
   "common": {
     "save": "Save",
     "upload": "Upload",
+    "yes": "Yes",
+    "no": "No",
+    "delete": "Delete"
+  },
+  "authentication": {
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "logout_confirm": "Are you sure you want to log out?"
+  },
+  "multimedia": {
+    "delete_confirm": "Are you sure you want to delete this multimedia?"
+  },
+  "gallery": {
+    "title": "Gallery"
   }
 }

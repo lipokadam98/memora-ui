@@ -5,7 +5,6 @@ import { inject } from '@angular/core';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
-  selectedMultimedia: MultimediaResponseDto | null;
   searchTerm: string;
   isLoading: boolean;
   isUploading: boolean;
@@ -15,7 +14,6 @@ type MultimediaState = {
 
 const initialState: MultimediaState = {
   multimedia: [],
-  selectedMultimedia: null,
   searchTerm: '',
   isLoading: false,
   isUploading: false,

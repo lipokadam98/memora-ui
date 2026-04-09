@@ -1,4 +1,4 @@
-<main class="flex flex-col items-center gap-4 justify-center">
+<main class="flex flex-col items-center gap-4 justify-center p-8">
   <section class="flex flex-row">
     <input (change)="onFileSelected($event)" type="file" />
     @if (selectedFile()) {
@@ -7,13 +7,16 @@
       </button>
     }
   </section>
+
   <button
     (click)="upload()"
     [disabled]="!selectedFile() || multimediaStore.isLoading()"
-    class="button"
+    aria-label="Upload button"
+    matButton="filled"
   >
     {{ 'common.upload' | translate }}
   </button>
+
   @if (multimediaStore.isUploading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }

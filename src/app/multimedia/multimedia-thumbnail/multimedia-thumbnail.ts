@@ -5,9 +5,11 @@ import { MultimediaContent } from '../multimedia-content/multimedia-content';
 import { MultimediaStore } from '../multimedia-store';
 import { AsyncPipe } from '@angular/common';
 import { AuthenticatedMediaPipe } from '../authenticated-media.pipe';
+import { NotificationService } from '../../util/notification-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-multimedia-tile',
+  selector: 'app-multimedia-thumbnail',
   imports: [AsyncPipe, AuthenticatedMediaPipe],
   templateUrl: './multimedia-thumbnail.html',
   styleUrl: './multimedia-thumbnail.css',
@@ -15,6 +17,8 @@ import { AuthenticatedMediaPipe } from '../authenticated-media.pipe';
 export class MultimediaThumbnail {
   multimedia = input.required<MultimediaResponseDto>();
   private multimediaStore = inject(MultimediaStore);
+  private notificationService = inject(NotificationService);
+  private translateService = inject(TranslateService);
 
   private dialog = inject(MatDialog);
 
@@ -25,10 +29,12 @@ export class MultimediaThumbnail {
   }
 
   protected deleteMultimedia() {
-    if (!confirm('Are you sure you want to delete this multimedia?')) return;
     const id = this.multimedia().id;
-    if (id) {
-      this.multimediaStore.deleteMultimedia(id);
-    }
+    if (!id) return;
+    const title = this.translateService.instant('common.delete');
+    const text = this.translateService.instant('multimedia.delete_confirm');
+    const confirmButtonText = this.translateService.instant('common.yes');
+    const callDelete = () => this.multimediaStore.deleteMultimedia(id);
+    this.notificationService.showMessage(title, text, confirmButtonText, callDelete);
   }
 }

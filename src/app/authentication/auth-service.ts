@@ -27,7 +27,6 @@ export class AuthService {
       .pipe(take(1))
       .subscribe((loginResponse) => {
         this.loginData.set(loginResponse);
-        localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('loginData', JSON.stringify(loginResponse));
         this.isAuthenticated.set(true);
         this.navigateAfterSuccessfulLogin();
@@ -35,7 +34,6 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('loginData');
     this.isAuthenticated.set(false);
     this.loginData.set(undefined);
@@ -55,11 +53,21 @@ export class AuthService {
   }
 
   private checkLocalStorage() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    this.isAuthenticated.set(isAuthenticated === 'true');
     const loginData = localStorage.getItem('loginData');
     if (loginData) {
-      this.loginData.set(JSON.parse(loginData));
+      const parsedData = JSON.parse(loginData) as LoginResponse;
+      if (parsedData && parsedData.token && parsedData.expiresAt) {
+        const expirationDate = new Date(parsedData.expiresAt);
+        const now = new Date();
+        if (expirationDate > now) {
+          this.loginData.set(parsedData);
+          this.isAuthenticated.set(true);
+          return;
+        }
+      }
     }
+    this.logout();
   }
+
+  private setLogoutTimer() {}
 }

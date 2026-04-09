@@ -1,11 +1,13 @@
 <main class="flex flex-col gap-4">
-  <section class="flex justify-center">
-    <app-upload />
+  <section class="flex flex-row justify-between items-center">
+    <h1 class="text-4xl">{{ 'gallery.title' | translate }}</h1>
+    <button (click)="openUploadDialog()" aria-label="Upload button" matButton="filled">
+      <mat-icon>upload</mat-icon>
+    </button>
   </section>
-  <hr />
   <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
     @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
-      <app-multimedia-tile [multimedia]="multimedia" />
+      <app-multimedia-thumbnail [multimedia]="multimedia" />
     }
   </section>
 </main>

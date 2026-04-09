@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ThemeService } from '../theme-service';
+import { ThemeService } from '../util/theme-service';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
