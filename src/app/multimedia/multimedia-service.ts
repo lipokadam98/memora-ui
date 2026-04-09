@@ -14,13 +14,13 @@ export class MultimediaService {
     return await firstValueFrom(this.multimediaControllerService.getAll());
   }
 
-  async uploadMultimedia(file: File) {
+  async uploadMultimedia(files: File[]) {
     const multimedia: MultimediaRequestDto = {
       user: this.authService.loginData()?.user,
       uploadDate: new Date().toISOString(),
     };
     console.log('Uploading multimedia:', multimedia);
-    return await firstValueFrom(this.multimediaControllerService.create(file, multimedia));
+    return await firstValueFrom(this.multimediaControllerService.create(files, multimedia));
   }
 
   async deleteMultimedia(id: number) {

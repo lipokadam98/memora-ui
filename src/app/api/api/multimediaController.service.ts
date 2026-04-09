@@ -95,18 +95,18 @@ export class MultimediaControllerService extends BaseService {
 
     /**
      * @endpoint post /multimedia
-     * @param file 
+     * @param files 
      * @param media 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public create(file: Blob, media: MultimediaRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MultimediaResponseDto>;
-    public create(file: Blob, media: MultimediaRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MultimediaResponseDto>>;
-    public create(file: Blob, media: MultimediaRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MultimediaResponseDto>>;
-    public create(file: Blob, media: MultimediaRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (file === null || file === undefined) {
-            throw new Error('Required parameter file was null or undefined when calling create.');
+    public create(files: Array<Blob>, media: MultimediaRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<MultimediaResponseDto>>;
+    public create(files: Array<Blob>, media: MultimediaRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<MultimediaResponseDto>>>;
+    public create(files: Array<Blob>, media: MultimediaRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<MultimediaResponseDto>>>;
+    public create(files: Array<Blob>, media: MultimediaRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (files === null || files === undefined) {
+            throw new Error('Required parameter files was null or undefined when calling create.');
         }
         if (media === null || media === undefined) {
             throw new Error('Required parameter media was null or undefined when calling create.');
@@ -144,8 +144,14 @@ export class MultimediaControllerService extends BaseService {
             localVarFormParams = new HttpParams({encoder: this.encoder});
         }
 
-        if (file !== undefined) {
-            localVarFormParams = localVarFormParams.append('file', <any>file) as any || localVarFormParams;
+        if (files) {
+            if (localVarUseForm) {
+                files.forEach((element) => {
+                    localVarFormParams = localVarFormParams.append('files', <any>element) as any || localVarFormParams;
+            })
+            } else {
+                localVarFormParams = localVarFormParams.append('files', [...files].join(COLLECTION_FORMATS['csv'])) as any || localVarFormParams;
+            }
         }
         if (media !== undefined) {
             localVarFormParams = localVarFormParams.append('media', localVarUseForm ? new Blob([JSON.stringify(media)], {type: 'application/json'}) : <any>media) as any || localVarFormParams;
@@ -164,7 +170,7 @@ export class MultimediaControllerService extends BaseService {
 
         let localVarPath = `/multimedia`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<MultimediaResponseDto>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<MultimediaResponseDto>>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,

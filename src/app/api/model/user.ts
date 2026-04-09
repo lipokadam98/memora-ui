@@ -19,11 +19,11 @@ export interface User {
     enabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
-    authorities?: Array<GrantedAuthority>;
     username?: string;
-    credentialsNonExpired?: boolean;
+    authorities?: Array<GrantedAuthority>;
     accountNonExpired?: boolean;
     accountNonLocked?: boolean;
+    credentialsNonExpired?: boolean;
 }
 export namespace User {
     export const RoleEnum = {

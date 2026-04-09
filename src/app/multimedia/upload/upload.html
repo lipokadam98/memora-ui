@@ -1,7 +1,7 @@
 <main class="flex flex-col items-center gap-4 justify-center p-8">
   <section class="flex flex-row">
-    <input (change)="onFileSelected($event)" type="file" />
-    @if (selectedFile()) {
+    <input (change)="onFileSelected($event)" accept="image/*,video/*" multiple type="file" />
+    @if (selectedFiles().length > 0) {
       <button (click)="onRemoveFile()" class="cursor-pointer">
         <span class="material-icons"> delete </span>
       </button>
@@ -10,7 +10,7 @@
 
   <button
     (click)="upload()"
-    [disabled]="!selectedFile() || multimediaStore.isLoading()"
+    [disabled]="selectedFiles().length === 0 || multimediaStore.isLoading()"
     aria-label="Upload button"
     matButton="filled"
   >

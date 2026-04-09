@@ -11,21 +11,24 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './upload.css',
 })
 export class Upload {
-  selectedFile = signal<File | null>(null);
+  selectedFiles = signal<File[]>([]);
   protected multimediaStore = inject(MultimediaStore);
 
   onFileSelected(event: any) {
-    this.selectedFile.set(event.target.files[0]);
-    console.log('Selected file:', this.selectedFile()?.arrayBuffer());
+    const input = event.target as HTMLInputElement;
+
+    if (input.files?.length) {
+      this.selectedFiles.set(Array.from(input.files));
+    }
   }
 
   upload() {
-    if (!this.selectedFile()) return;
-    console.log('Uploading file:', this.selectedFile());
-    this.multimediaStore.uploadMultimedia(this.selectedFile()!);
+    if (this.selectedFiles().length === 0) return;
+    console.log('Uploading files:', this.selectedFiles());
+    this.multimediaStore.uploadMultimedia(this.selectedFiles());
   }
 
   protected onRemoveFile() {
-    this.selectedFile.set(null);
+    this.selectedFiles.set([]);
   }
 }
