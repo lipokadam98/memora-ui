@@ -9,10 +9,10 @@ import { AuthenticatedMediaPipe } from '../authenticated-media.pipe';
 @Component({
   selector: 'app-multimedia-tile',
   imports: [AsyncPipe, AuthenticatedMediaPipe],
-  templateUrl: './multimedia-tile.html',
-  styleUrl: './multimedia-tile.css',
+  templateUrl: './multimedia-thumbnail.html',
+  styleUrl: './multimedia-thumbnail.css',
 })
-export class MultimediaTile {
+export class MultimediaThumbnail {
   multimedia = input.required<MultimediaResponseDto>();
   private multimediaStore = inject(MultimediaStore);
 

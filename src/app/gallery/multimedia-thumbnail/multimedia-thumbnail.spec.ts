@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MultimediaTile } from './multimedia-tile';
+import { MultimediaThumbnail } from './multimedia-thumbnail';
 import { MultimediaResponseDto } from '../../api';
 import { provideHttpClient } from '@angular/common/http';
 
-describe('MultimediaTile', () => {
-  let component: MultimediaTile;
-  let fixture: ComponentFixture<MultimediaTile>;
+describe('MultimediaThumbnail', () => {
+  let component: MultimediaThumbnail;
+  let fixture: ComponentFixture<MultimediaThumbnail>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MultimediaTile],
+      imports: [MultimediaThumbnail],
       providers: [provideHttpClient()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MultimediaTile);
+    fixture = TestBed.createComponent(MultimediaThumbnail);
     fixture.componentRef.setInput('multimedia', {} as MultimediaResponseDto);
     component = fixture.componentInstance;
     await fixture.whenStable();

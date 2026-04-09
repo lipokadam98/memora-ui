@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MultimediaTile } from './multimedia-tile/multimedia-tile';
+import { MultimediaThumbnail } from './multimedia-thumbnail/multimedia-thumbnail';
 import { Upload } from './upload/upload';
 import { MultimediaStore } from './multimedia-store';
 
 @Component({
   selector: 'app-gallery',
-  imports: [MultimediaTile, Upload],
+  imports: [MultimediaThumbnail, Upload],
   providers: [MultimediaStore],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
