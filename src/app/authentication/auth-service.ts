@@ -17,11 +17,7 @@ export class AuthService {
     this.checkLocalStorage();
   }
 
-  login() {
-    const loginUserDto: LoginUserDto = {
-      email: 'test@test.com',
-      password: '123456',
-    };
+  login(loginUserDto: LoginUserDto) {
     this.authenticationControllerService
       .authenticate(loginUserDto)
       .pipe(take(1))

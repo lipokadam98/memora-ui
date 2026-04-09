@@ -1,10 +1,22 @@
 <main>
-  <h1>Authentication</h1>
-  <section>
-    <p>This is a simple authentication page.</p>
-    <div class="flex flex-col gap-2">
-      <button (click)="onLogin()">{{ 'authentication.login' | translate }}</button>
-      <button (click)="onLogout()">{{ 'authentication.logout' | translate }}</button>
+  <form [formGroup]="authenticationForm" class="flex flex-col items-center">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="example@example.com" type="email" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input formControlName="password" matInput placeholder="123456" type="password" />
+    </mat-form-field>
+
+    <div class="flex flex-row gap-2">
+      <button (click)="onLogin()" matButton="elevated">
+        {{ 'authentication.login' | translate }}
+      </button>
+      <button (click)="onLogout()" matButton="elevated">
+        {{ 'authentication.logout' | translate }}
+      </button>
     </div>
-  </section>
+  </form>
 </main>
