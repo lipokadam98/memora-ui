@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MultimediaTile } from './multimedia-tile';
-import { signal } from '@angular/core';
 import { MultimediaResponseDto } from '../../api';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('MultimediaTile', () => {
   let component: MultimediaTile;
@@ -11,11 +11,11 @@ describe('MultimediaTile', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MultimediaTile],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
-    const multimedia = signal<MultimediaResponseDto>({} as MultimediaResponseDto);
     fixture = TestBed.createComponent(MultimediaTile);
-    fixture.componentRef.setInput('multimedia', multimedia);
+    fixture.componentRef.setInput('multimedia', {} as MultimediaResponseDto);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,7 +1,5 @@
 @if (dialogData.contentType?.includes('image')) {
-  <img [src]="dialogData.contentUrl" alt="Image content" class="w-full h-full object-contain" />
+  <img [src]="dialogData.contentUrl | authenticatedMedia | async" alt="Image content" />
 } @else {
-  <video autoplay class="w-full h-full object-contain" controls>
-    <source [src]="dialogData.contentUrl" />
-  </video>
+  <video [src]="dialogData.contentUrl | authenticatedMedia | async" autoplay controls></video>
 }
