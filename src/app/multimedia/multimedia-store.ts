@@ -29,9 +29,9 @@ export const MultimediaStore = signalStore(
       const multimedia = await multimediaService.loadMultimediaData();
       patchState(store, { multimedia, isLoading: false });
     },
-    async uploadMultimedia(files: File[]) {
+    async uploadMultimedia(files: File[], date: Date) {
       patchState(store, { isUploading: true });
-      const uploadedMultimedia = await multimediaService.uploadMultimedia(files);
+      const uploadedMultimedia = await multimediaService.uploadMultimedia(files, date);
       const multimedia = store.multimedia();
       patchState(store, { multimedia: [...multimedia, ...uploadedMultimedia], isUploading: false });
     },

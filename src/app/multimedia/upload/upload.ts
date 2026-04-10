@@ -8,7 +8,7 @@ import {
   MatDialogContent,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormField, MatHint, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -17,6 +17,7 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-upload',
@@ -31,17 +32,18 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatLabel,
     MatDatepickerInput,
     MatInput,
-    MatHint,
     MatDatepickerToggle,
     MatDatepicker,
     MatIcon,
     TranslatePipe,
+    ReactiveFormsModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
 })
 export class Upload {
+  datePicker = new FormControl(new Date());
   selectedFiles = signal<File[]>([]);
   protected multimediaStore = inject(MultimediaStore);
 
@@ -54,9 +56,9 @@ export class Upload {
   }
 
   upload() {
-    if (this.selectedFiles().length === 0) return;
+    if (this.selectedFiles().length === 0 || !this.datePicker.value) return;
     console.log('Uploading files:', this.selectedFiles());
-    this.multimediaStore.uploadMultimedia(this.selectedFiles());
+    this.multimediaStore.uploadMultimedia(this.selectedFiles(), this.datePicker.value);
   }
 
   protected onRemoveFile() {
