@@ -15,5 +15,6 @@ export interface MultimediaResponseDto {
     thumbnailUrl?: string;
     contentType?: string;
     objectKey?: string;
+    uploadDate?: string;
 }
 

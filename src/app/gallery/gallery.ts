@@ -25,6 +25,7 @@ export class Gallery implements OnInit {
 
   protected openUploadDialog() {
     this.dialog.open(Upload, {
+      disableClose: true,
       viewContainerRef: this.viewContainerRef,
     });
   }

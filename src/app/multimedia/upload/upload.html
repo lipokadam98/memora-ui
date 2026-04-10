@@ -1,23 +1,40 @@
-<main class="flex flex-col items-center gap-4 justify-center p-8">
-  <section class="flex flex-row">
-    <input (change)="onFileSelected($event)" accept="image/*,video/*" multiple type="file" />
-    @if (selectedFiles().length > 0) {
-      <button (click)="onRemoveFile()" class="cursor-pointer">
-        <span class="material-icons"> delete </span>
-      </button>
-    }
+<h2 mat-dialog-title>Upload Multimedia</h2>
+<mat-dialog-content class="mat-typography">
+  <section class="flex flex-col gap-2">
+    <section class="flex flex-row">
+      <input (change)="onFileSelected($event)" accept="image/*,video/*" multiple type="file" />
+      @if (selectedFiles().length > 0) {
+        <button (click)="onRemoveFile()" class="cursor-pointer">
+          <span class="material-icons"> delete </span>
+        </button>
+      }
+    </section>
+    <section class="flex flex-row gap-1 items-center justify-center">
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input [matDatepicker]="picker" matInput />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle [for]="picker" matIconSuffix>
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button (click)="picker.open()" matButton="elevated">{{ 'common.open' | translate }}</button>
+    </section>
   </section>
-
-  <button
-    (click)="upload()"
-    [disabled]="selectedFiles().length === 0 || multimediaStore.isLoading()"
-    aria-label="Upload button"
-    matButton="filled"
-  >
-    {{ 'common.upload' | translate }}
-  </button>
 
   @if (multimediaStore.isUploading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
-</main>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    (click)="upload()"
+    [disabled]="selectedFiles().length === 0 || multimediaStore.isLoading()"
+    aria-label="Upload button"
+    matButton
+  >
+    {{ 'common.upload' | translate }}
+  </button>
+  <button mat-dialog-close matButton>{{ 'common.cancel' | translate }}</button>
+</mat-dialog-actions>

@@ -10,11 +10,14 @@
     "upload": "Upload",
     "yes": "Yes",
     "no": "No",
-    "delete": "Delete"
+    "delete": "Delete",
+    "open": "Open",
+    "cancel": "Cancel"
   },
   "authentication": {
     "login": "Login",
     "logout": "Logout",
+    "login_error": "Please enter a valid email and password.",
     "logout_confirm": "Are you sure you want to log out?"
   },
   "multimedia": {

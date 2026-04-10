@@ -1,5 +1,20 @@
-@if (dialogData.contentType?.includes('image')) {
-  <img [src]="dialogData.contentUrl | authenticatedMedia | async" alt="Image content" />
-} @else {
-  <video [src]="dialogData.contentUrl | authenticatedMedia | async" autoplay controls></video>
-}
+<main class="text-mauve-600">
+  <section class="flex flex-col items-center justify-between">
+    <div
+      class="justify-between items-center flex flex-row w-full pl-4 pr-4 pt-1 absolute bg-fuchsia-100 opacity-80"
+    >
+      <div>
+        <button mat-dialog-close matIconButton>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <p class="font-bold">{{ dialogData.uploadDate | date }}</p>
+    </div>
+
+    @if (dialogData.contentType?.includes('image')) {
+      <img [src]="dialogData.contentUrl | authenticatedMedia | async" alt="Image content" />
+    } @else {
+      <video [src]="dialogData.contentUrl | authenticatedMedia | async" autoplay controls></video>
+    }
+  </section>
+</main>

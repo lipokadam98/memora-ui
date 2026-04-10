@@ -1,20 +1,20 @@
 <nav
   class="flex flex-row gap-4 justify-between items-center h-12 p-2 sticky top-0 w-full border-b-2 z-10"
 >
-  <h1>
-    <a [routerLink]="['/']">{{ 'app_name' | translate }}</a>
-  </h1>
+  <button [routerLink]="['/']" matButton>{{ 'app_name' | translate }}</button>
 
   <div class="flex flex-row gap-4">
-    <a [routerLink]="['/']">{{ 'navbar.home' | translate }}</a>
-    <a [routerLink]="['/gallery']">{{ 'navbar.gallery' | translate }}</a>
-    <a [routerLink]="['/notes']">{{ 'navbar.notes' | translate }}</a>
+    <button [routerLink]="['/']" matButton>{{ 'navbar.home' | translate }}</button>
+    <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
+    <button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>
   </div>
 
   <section class="flex flex-row gap-4 items-center">
-    <a [routerLink]="['/authentication']">{{ 'authentication.login' | translate }}</a>
-    <button (click)="toggleDarkMode()" class="cursor-pointer">
-      <span class="material-icons"> dark_mode </span>
+    <button [routerLink]="['/authentication']" matButton>
+      {{ 'authentication.login' | translate }}
+    </button>
+    <button (click)="toggleDarkMode()" matIconButton>
+      <mat-icon>dark_mode</mat-icon>
     </button>
   </section>
 </nav>

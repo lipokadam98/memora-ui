@@ -24,6 +24,7 @@ export class MultimediaThumbnail {
 
   protected openMultimedia() {
     this.dialog.open(MultimediaContent, {
+      disableClose: true,
       data: this.multimedia(),
     });
   }
