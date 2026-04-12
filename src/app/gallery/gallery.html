@@ -6,8 +6,12 @@
     </button>
   </section>
   <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
-    @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
-      <app-multimedia-thumbnail [multimedia]="multimedia" />
+    @if (multimediaStore.isUploading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else {
+      @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
+        <app-multimedia-thumbnail [multimedia]="multimedia" />
+      }
     }
   </section>
 </main>

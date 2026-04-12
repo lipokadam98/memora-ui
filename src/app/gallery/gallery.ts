@@ -6,10 +6,11 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Upload } from '../multimedia/upload/upload';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-gallery',
-  imports: [MultimediaThumbnail, TranslatePipe, MatIcon, MatButton],
+  imports: [MultimediaThumbnail, TranslatePipe, MatIcon, MatButton, MatProgressBar],
   providers: [MultimediaStore],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
