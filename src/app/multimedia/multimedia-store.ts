@@ -48,21 +48,47 @@ export const MultimediaStore = signalStore(
       patchState(store, { selectedMultimedia: multimedia });
     },
     async loadAll() {
-      patchState(store, { isLoading: true });
-      const multimedia = await multimediaService.loadMultimediaData();
-      patchState(store, { multimedia, isLoading: false });
+      patchState(store, { isLoading: true, error: null });
+
+      try {
+        const multimedia = await multimediaService.loadMultimediaData();
+        patchState(store, { multimedia });
+      } catch (error: unknown) {
+        patchState(store, { error: getErrorMessage(error) });
+      } finally {
+        patchState(store, { isLoading: false });
+      }
     },
     async uploadMultimedia(files: File[], date: Date) {
-      patchState(store, { isUploading: true });
-      const uploadedMultimedia = await multimediaService.uploadMultimedia(files, date);
-      const multimedia = store.multimedia();
-      patchState(store, { multimedia: [...multimedia, ...uploadedMultimedia], isUploading: false });
+      patchState(store, { isUploading: true, error: null });
+      try {
+        const uploadedMultimedia = await multimediaService.uploadMultimedia(files, date);
+        const multimedia = store.multimedia();
+        patchState(store, {
+          multimedia: [...multimedia, ...uploadedMultimedia],
+        });
+      } catch (error: unknown) {
+        patchState(store, { uploadError: getErrorMessage(error) });
+      } finally {
+        patchState(store, { isUploading: false });
+      }
     },
     async deleteMultimedia(id: number) {
-      patchState(store, { isLoading: true });
-      await multimediaService.deleteMultimedia(id);
-      const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
-      patchState(store, { multimedia: filteredMultimedia, isLoading: false });
+      patchState(store, { isLoading: true, error: null });
+      try {
+        await multimediaService.deleteMultimedia(id);
+        const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
+        patchState(store, { multimedia: filteredMultimedia, isLoading: false });
+      } catch (error: unknown) {
+        patchState(store, { error: getErrorMessage(error) });
+      } finally {
+        patchState(store, { isLoading: false });
+      }
     },
   })),
 );
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return 'Unexpected error';
+}
