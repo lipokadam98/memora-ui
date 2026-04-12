@@ -60,7 +60,7 @@ export const MultimediaStore = signalStore(
       }
     },
     async uploadMultimedia(files: File[], date: Date) {
-      patchState(store, { isUploading: true, error: null });
+      patchState(store, { isUploading: true, uploadError: null });
       try {
         const uploadedMultimedia = await multimediaService.uploadMultimedia(files, date);
         const multimedia = store.multimedia();
