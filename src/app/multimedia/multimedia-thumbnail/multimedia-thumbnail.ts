@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, ViewContainerRef } from '@angular/core';
 import { MultimediaResponseDto } from '../../api';
 import { MatDialog } from '@angular/material/dialog';
 import { MultimediaContent } from '../multimedia-content/multimedia-content';
@@ -19,13 +19,15 @@ export class MultimediaThumbnail {
   private multimediaStore = inject(MultimediaStore);
   private notificationService = inject(NotificationService);
   private translateService = inject(TranslateService);
+  private viewContainerRef = inject(ViewContainerRef);
 
   private dialog = inject(MatDialog);
 
   protected openMultimedia() {
+    this.multimediaStore.selectMultimedia(this.multimedia());
     this.dialog.open(MultimediaContent, {
       disableClose: true,
-      data: this.multimedia(),
+      viewContainerRef: this.viewContainerRef,
     });
   }
 

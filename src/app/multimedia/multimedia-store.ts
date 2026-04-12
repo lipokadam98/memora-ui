@@ -8,6 +8,7 @@ type MultimediaState = {
   searchTerm: string;
   isLoading: boolean;
   isUploading: boolean;
+  selectedMultimedia: MultimediaResponseDto | null;
   error: string | null;
   uploadError: string | null;
 };
@@ -17,6 +18,7 @@ const initialState: MultimediaState = {
   searchTerm: '',
   isLoading: false,
   isUploading: false,
+  selectedMultimedia: null,
   error: null,
   uploadError: null,
 };
@@ -24,6 +26,27 @@ const initialState: MultimediaState = {
 export const MultimediaStore = signalStore(
   withState(initialState),
   withMethods((store, multimediaService = inject(MultimediaService)) => ({
+    selectNextMultimedia() {
+      const selectedMultimedia = store.selectedMultimedia();
+      if (selectedMultimedia) {
+        const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
+        if (selectedIndex === store.multimedia().length - 1) return;
+        const nextMultimedia = store.multimedia()[selectedIndex + 1];
+        patchState(store, { selectedMultimedia: nextMultimedia });
+      }
+    },
+    selectPreviousMultimedia() {
+      const selectedMultimedia = store.selectedMultimedia();
+      if (selectedMultimedia) {
+        const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
+        if (selectedIndex === 0) return;
+        const previousMultimedia = store.multimedia()[selectedIndex - 1];
+        patchState(store, { selectedMultimedia: previousMultimedia });
+      }
+    },
+    selectMultimedia(multimedia: MultimediaResponseDto) {
+      patchState(store, { selectedMultimedia: multimedia });
+    },
     async loadAll() {
       patchState(store, { isLoading: true });
       const multimedia = await multimediaService.loadMultimediaData();

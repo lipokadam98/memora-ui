@@ -1,11 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { MultimediaResponseDto } from '../../api';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { AuthenticatedMediaPipe } from '../authenticated-media.pipe';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialogClose } from '@angular/material/dialog';
+import { MultimediaStore } from '../multimedia-store';
 
 @Component({
   selector: 'app-multimedia-content',
@@ -14,5 +13,5 @@ import { MatDialogClose } from '@angular/material/dialog';
   styleUrl: './multimedia-content.css',
 })
 export class MultimediaContent {
-  protected dialogData = inject(DIALOG_DATA) as MultimediaResponseDto;
+  protected multimediaStore = inject(MultimediaStore);
 }

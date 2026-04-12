@@ -1,20 +1,48 @@
-<main class="text-mauve-600">
+@let selectedMultimedia = multimediaStore.selectedMultimedia();
+
+<main
+  (keydown.arrowLeft)="multimediaStore.selectPreviousMultimedia()"
+  (keydown.arrowRight)="multimediaStore.selectNextMultimedia()"
+  class="text-mauve-600 relative"
+>
   <section class="flex flex-col items-center justify-between">
     <div
       class="justify-between items-center flex flex-row w-full pl-4 pr-4 pt-1 absolute bg-fuchsia-100 opacity-80"
     >
       <div>
         <button mat-dialog-close matIconButton>
-          <mat-icon>arrow_back</mat-icon>
+          <mat-icon>close</mat-icon>
         </button>
       </div>
-      <p class="font-bold">{{ dialogData.uploadDate | date }}</p>
+      <p class="font-bold">{{ selectedMultimedia?.uploadDate | date }}</p>
     </div>
 
-    @if (dialogData.contentType?.includes('image')) {
-      <img [src]="dialogData.contentUrl | authenticatedMedia | async" alt="Image content" />
+    @if (selectedMultimedia?.contentType?.includes('image')) {
+      <img
+        [src]="selectedMultimedia?.contentUrl | authenticatedMedia | async"
+        alt="Image content"
+      />
     } @else {
-      <video [src]="dialogData.contentUrl | authenticatedMedia | async" autoplay controls></video>
+      <video
+        [src]="selectedMultimedia?.contentUrl | authenticatedMedia | async"
+        autoplay
+        controls
+      ></video>
     }
   </section>
+  <button
+    (click)="multimediaStore.selectPreviousMultimedia()"
+    class="absolute! top-1/2 left-1"
+    matIconButton
+  >
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <button
+    (click)="multimediaStore.selectNextMultimedia()"
+    class="absolute! top-1/2 right-1"
+    matIconButton
+  >
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
 </main>
