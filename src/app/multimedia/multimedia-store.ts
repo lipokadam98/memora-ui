@@ -74,7 +74,7 @@ export const MultimediaStore = signalStore(
       }
     },
     async deleteMultimedia(id: number) {
-      patchState(store, { isLoading: true, error: null });
+      patchState(store, { error: null });
       try {
         await multimediaService.deleteMultimedia(id);
         const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
