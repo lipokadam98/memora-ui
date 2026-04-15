@@ -9,6 +9,8 @@ type MultimediaState = {
   isLoading: boolean;
   isUploading: boolean;
   selectedMultimedia: MultimediaResponseDto | null;
+  hidePreviousButton: boolean;
+  hideNextButton: boolean;
   error: string | null;
   uploadError: string | null;
 };
@@ -19,6 +21,8 @@ const initialState: MultimediaState = {
   isLoading: false,
   isUploading: false,
   selectedMultimedia: null,
+  hidePreviousButton: false,
+  hideNextButton: false,
   error: null,
   uploadError: null,
 };
@@ -32,7 +36,7 @@ export const MultimediaStore = signalStore(
         const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
         if (selectedIndex === store.multimedia().length - 1) return;
         const nextMultimedia = store.multimedia()[selectedIndex + 1];
-        patchState(store, { selectedMultimedia: nextMultimedia });
+        this.selectMultimedia(nextMultimedia);
       }
     },
     selectPreviousMultimedia() {
@@ -41,11 +45,16 @@ export const MultimediaStore = signalStore(
         const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
         if (selectedIndex === 0) return;
         const previousMultimedia = store.multimedia()[selectedIndex - 1];
-        patchState(store, { selectedMultimedia: previousMultimedia });
+        this.selectMultimedia(previousMultimedia);
       }
     },
     selectMultimedia(multimedia: MultimediaResponseDto) {
-      patchState(store, { selectedMultimedia: multimedia });
+      const selectedIndex = store.multimedia().indexOf(multimedia);
+      patchState(store, {
+        selectedMultimedia: multimedia,
+        hidePreviousButton: selectedIndex === 0,
+        hideNextButton: selectedIndex === store.multimedia().length - 1,
+      });
     },
     async loadAll() {
       patchState(store, { isLoading: true, error: null });

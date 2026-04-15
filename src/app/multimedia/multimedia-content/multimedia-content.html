@@ -30,19 +30,23 @@
       ></video>
     }
   </section>
-  <button
-    (click)="multimediaStore.selectPreviousMultimedia()"
-    class="absolute! top-1/2 left-1"
-    matIconButton
-  >
-    <mat-icon>arrow_back</mat-icon>
-  </button>
+  @if (!multimediaStore.hidePreviousButton()) {
+    <button
+      (click)="multimediaStore.selectPreviousMultimedia()"
+      class="absolute! top-1/2 left-1"
+      matIconButton
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  }
 
-  <button
-    (click)="multimediaStore.selectNextMultimedia()"
-    class="absolute! top-1/2 right-1"
-    matIconButton
-  >
-    <mat-icon>arrow_forward</mat-icon>
-  </button>
+  @if (!multimediaStore.hideNextButton()) {
+    <button
+      (click)="multimediaStore.selectNextMultimedia()"
+      class="absolute! top-1/2 right-1"
+      matIconButton
+    >
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  }
 </main>
