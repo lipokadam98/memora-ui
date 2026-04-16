@@ -21,7 +21,7 @@ import { MultimediaRequestDto } from '../model/multimediaRequestDto';
 // @ts-ignore
 import { MultimediaResponseDto } from '../model/multimediaResponseDto';
 // @ts-ignore
-import { Update1Request } from '../model/update1Request';
+import { UpdateRequest } from '../model/updateRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -381,17 +381,17 @@ export class MultimediaControllerService extends BaseService {
     /**
      * @endpoint put /multimedia/{id}
      * @param id 
-     * @param update1Request 
+     * @param updateRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public update1(id: number, update1Request?: Update1Request, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MultimediaResponseDto>;
-    public update1(id: number, update1Request?: Update1Request, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MultimediaResponseDto>>;
-    public update1(id: number, update1Request?: Update1Request, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MultimediaResponseDto>>;
-    public update1(id: number, update1Request?: Update1Request, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public update(id: number, updateRequest?: UpdateRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<MultimediaResponseDto>;
+    public update(id: number, updateRequest?: UpdateRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<MultimediaResponseDto>>;
+    public update(id: number, updateRequest?: UpdateRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<MultimediaResponseDto>>;
+    public update(id: number, updateRequest?: UpdateRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling update1.');
+            throw new Error('Required parameter id was null or undefined when calling update.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -433,7 +433,7 @@ export class MultimediaControllerService extends BaseService {
         return this.httpClient.request<MultimediaResponseDto>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: update1Request,
+                body: updateRequest,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

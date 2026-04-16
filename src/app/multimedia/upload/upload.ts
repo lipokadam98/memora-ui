@@ -18,6 +18,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AuthStore } from '../../authentication/auth-store';
 
 @Component({
   selector: 'app-upload',
@@ -46,6 +47,7 @@ export class Upload {
   datePicker = new FormControl(new Date());
   selectedFiles = signal<File[]>([]);
   protected multimediaStore = inject(MultimediaStore);
+  private authStore = inject(AuthStore);
 
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
@@ -56,9 +58,18 @@ export class Upload {
   }
 
   upload() {
-    if (this.selectedFiles().length === 0 || !this.datePicker.value) return;
+    if (
+      this.selectedFiles().length === 0 ||
+      !this.datePicker.value ||
+      !this.authStore.loginData()?.user
+    )
+      return;
     console.log('Uploading files:', this.selectedFiles());
-    this.multimediaStore.uploadMultimedia(this.selectedFiles(), this.datePicker.value);
+    this.multimediaStore.uploadMultimedia(
+      this.selectedFiles(),
+      this.datePicker.value,
+      this.authStore.loginData()?.user,
+    );
   }
 
   protected onRemoveFile() {

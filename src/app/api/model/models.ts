@@ -4,6 +4,6 @@ export * from './loginUserDto';
 export * from './multimediaRequestDto';
 export * from './multimediaResponseDto';
 export * from './registerUserDto';
-export * from './update1Request';
+export * from './updateRequest';
 export * from './user';
 export * from './userDto';

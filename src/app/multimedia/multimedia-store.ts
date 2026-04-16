@@ -69,7 +69,7 @@ export const MultimediaStore = signalStore(
         patchState(store, { isLoading: false });
       }
     },
-    async uploadMultimedia(files: File[], date: Date, user: UserDto) {
+    async uploadMultimedia(files: File[], date: Date, user?: UserDto) {
       patchState(store, { isUploading: true, uploadError: null });
       try {
         const uploadedMultimedia = await firstValueFrom(
