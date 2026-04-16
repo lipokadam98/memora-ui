@@ -20,6 +20,7 @@ export class NotificationService {
       showCancelButton,
       confirmButtonText,
       allowOutsideClick: false,
+      allowEscapeKey: false,
     }).then((result) => {
       if (result.isConfirmed && callback) callback();
     });
