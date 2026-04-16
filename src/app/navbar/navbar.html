@@ -6,13 +6,19 @@
   <div class="flex flex-row gap-4">
     <button [routerLink]="['/']" matButton>{{ 'navbar.home' | translate }}</button>
     <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
-    <button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>
+    <!--<button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>-->
   </div>
 
   <section class="flex flex-row gap-4 items-center">
-    <button [routerLink]="['/authentication']" matButton>
-      {{ 'authentication.login' | translate }}
-    </button>
+    @if (authStore.loginData()) {
+      <button (click)="logout()" matButton>
+        {{ 'authentication.logout' | translate }}
+      </button>
+    } @else {
+      <button [routerLink]="['/authentication']" matButton>
+        {{ 'authentication.login' | translate }}
+      </button>
+    }
     <button (click)="toggleDarkMode()" matIconButton>
       <mat-icon>dark_mode</mat-icon>
     </button>

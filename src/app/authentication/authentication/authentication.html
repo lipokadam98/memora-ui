@@ -11,11 +11,8 @@
     </mat-form-field>
 
     <div class="flex flex-row gap-2">
-      <button (click)="onLogin()" matButton="elevated">
+      <button (click)="onLogin()" [disabled]="authenticationForm.invalid" matButton="elevated">
         {{ 'authentication.login' | translate }}
-      </button>
-      <button (click)="onLogout()" matButton="elevated">
-        {{ 'authentication.logout' | translate }}
       </button>
     </div>
   </form>

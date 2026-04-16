@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +9,17 @@ export class NotificationService {
     title: string,
     text: string,
     confirmButtonText: string,
+    icon: SweetAlertIcon,
+    showCancelButton: boolean,
     callback?: () => void,
   ) {
     Swal.fire({
       title,
       text,
-      showCancelButton: true,
+      icon,
+      showCancelButton,
       confirmButtonText,
+      allowOutsideClick: false,
     }).then((result) => {
       if (result.isConfirmed && callback) callback();
     });

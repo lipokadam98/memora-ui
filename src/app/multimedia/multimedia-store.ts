@@ -2,6 +2,7 @@ import { MultimediaResponseDto } from '../api';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { MultimediaService } from './multimedia-service';
 import { inject } from '@angular/core';
+import { getErrorMessage } from '../util/util';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -96,8 +97,3 @@ export const MultimediaStore = signalStore(
     },
   })),
 );
-
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return 'Unexpected error';
-}

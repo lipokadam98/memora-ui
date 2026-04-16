@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './navbar/navbar';
+import { AuthStore } from './authentication/auth-store';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { Navbar } from './navbar/navbar';
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('memora-ui');
+  private authStore = inject(AuthStore);
+
+  constructor() {
+    this.authStore.checkLocalStorage();
+  }
 }

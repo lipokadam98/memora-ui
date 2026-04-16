@@ -38,6 +38,13 @@ export class MultimediaThumbnail {
     const text = this.translateService.instant('multimedia.delete_confirm');
     const confirmButtonText = this.translateService.instant('common.yes');
     const callDelete = () => this.multimediaStore.deleteMultimedia(id);
-    this.notificationService.showMessage(title, text, confirmButtonText, callDelete);
+    this.notificationService.showMessage(
+      title,
+      text,
+      confirmButtonText,
+      'question',
+      true,
+      callDelete,
+    );
   }
 }

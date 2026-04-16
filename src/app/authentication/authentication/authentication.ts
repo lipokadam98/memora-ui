@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { AuthService } from '../auth-service';
+import { Component, effect, inject } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NotificationService } from '../../util/notification-service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { AuthStore } from '../auth-store';
+import { NotificationService } from '../../util/notification-service';
 
 @Component({
   selector: 'app-authentication',
@@ -14,27 +14,32 @@ import { MatButton } from '@angular/material/button';
 })
 export class Authentication {
   authenticationForm = new FormGroup({
-    email: new FormControl('test@test.com'),
-    password: new FormControl('123456'),
+    email: new FormControl('test@test.com', [Validators.required, Validators.email]),
+    password: new FormControl('123456', [Validators.required, Validators.minLength(6)]),
   });
-  private authService = inject(AuthService);
+  private authStore = inject(AuthStore);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
+
+  constructor() {
+    effect(() => {
+      if (this.authStore.error()) {
+        const title = this.translateService.instant('authentication.login');
+        const text = this.translateService.instant('authentication.login_error');
+        const confirmButtonText = this.translateService.instant('common.ok');
+        this.notificationService.showMessage(title, text, confirmButtonText, 'error', false, () =>
+          this.authStore.clearError(),
+        );
+      }
+    });
+  }
 
   onLogin() {
     const email = this.authenticationForm.get('email')?.value;
     const password = this.authenticationForm.get('password')?.value;
-    if (!email || !password)
-      return alert(this.translateService.instant('authentication.login_error'));
-    this.authService.login({ email, password });
-  }
-
-  onLogout() {
-    const title = this.translateService.instant('authentication.logout');
-    const text = this.translateService.instant('authentication.logout_confirm');
-    const confirmButtonText = this.translateService.instant('common.yes');
-    this.notificationService.showMessage(title, text, confirmButtonText, () =>
-      this.authService.logout(),
-    );
+    if (!email || !password) {
+      return;
+    }
+    this.authStore.login({ email, password });
   }
 }

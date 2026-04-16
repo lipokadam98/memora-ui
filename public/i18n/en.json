@@ -12,7 +12,8 @@
     "no": "No",
     "delete": "Delete",
     "open": "Open",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "ok": "Ok"
   },
   "authentication": {
     "login": "Login",
