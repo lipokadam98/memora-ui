@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from './navbar/navbar';
-import { AuthStore } from './authentication/auth-store';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +8,4 @@ import { AuthStore } from './authentication/auth-store';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  private authStore = inject(AuthStore);
-
-  constructor() {
-    this.authStore.checkLocalStorage();
-  }
-}
+export class App {}

@@ -65,7 +65,7 @@ export class Upload {
     )
       return;
     console.log('Uploading files:', this.selectedFiles());
-    this.multimediaStore.uploadMultimedia(
+    this.multimediaStore.upload(
       this.selectedFiles(),
       this.datePicker.value,
       this.authStore.loginData()?.user,

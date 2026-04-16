@@ -1,4 +1,4 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { LoginResponse, LoginUserDto, RegisterUserDto } from '../api';
 import { AuthService } from './auth-service';
 import { inject } from '@angular/core';
@@ -27,12 +27,11 @@ export const AuthStore = signalStore(
       authService = inject(AuthService),
       activatedRoute = inject(ActivatedRoute),
       router = inject(Router),
-    ) => ({
-      async login(loginUserDto: LoginUserDto) {
+    ) => {
+      async function login(loginUserDto: LoginUserDto) {
         patchState(store, { isLoading: true, error: null });
         try {
           const loginResponse = await authService.login(loginUserDto);
-          console.log(loginResponse);
           patchState(store, { loginData: loginResponse });
           localStorage.setItem('loginData', JSON.stringify(loginResponse));
           const paramMap = await firstValueFrom(activatedRoute.queryParamMap);
@@ -47,13 +46,15 @@ export const AuthStore = signalStore(
         } finally {
           patchState(store, { isLoading: false });
         }
-      },
-      async logout() {
+      }
+
+      async function logout() {
         localStorage.removeItem('loginData');
         patchState(store, { loginData: undefined });
         await router.navigate(['/']);
-      },
-      async register(registerUserDto: RegisterUserDto) {
+      }
+
+      async function register(registerUserDto: RegisterUserDto) {
         patchState(store, { isLoading: true, error: null });
         try {
           //TODO implement registration
@@ -63,8 +64,9 @@ export const AuthStore = signalStore(
         } finally {
           patchState(store, { isLoading: false });
         }
-      },
-      async checkLocalStorage() {
+      }
+
+      async function checkLocalStorage() {
         const loginData = localStorage.getItem('loginData');
         if (loginData) {
           const parsedData = JSON.parse(loginData) as LoginResponse;
@@ -77,11 +79,19 @@ export const AuthStore = signalStore(
             }
           }
         }
-        await this.logout();
-      },
-      clearError() {
+        await logout();
+      }
+
+      function clearError() {
         patchState(store, { error: null });
-      },
-    }),
+      }
+
+      return { login, logout, register, checkLocalStorage, clearError };
+    },
   ),
+  withHooks((store) => ({
+    onInit() {
+      store.checkLocalStorage();
+    },
+  })),
 );

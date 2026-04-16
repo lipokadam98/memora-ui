@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, inject, ViewContainerRef } from '@angular/core';
 import { MultimediaStore } from '../multimedia/multimedia-store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
@@ -15,14 +15,10 @@ import { MultimediaThumbnail } from '../multimedia/multimedia-thumbnail/multimed
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
-export class Gallery implements OnInit {
+export class Gallery {
   protected multimediaStore = inject(MultimediaStore);
   private dialog = inject(MatDialog);
   private viewContainerRef = inject(ViewContainerRef);
-
-  ngOnInit() {
-    this.multimediaStore.loadAll();
-  }
 
   protected openUploadDialog() {
     this.dialog.open(Upload, {

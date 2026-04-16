@@ -1,5 +1,5 @@
 import { MultimediaControllerService, MultimediaResponseDto, UserDto } from '../api';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
@@ -30,36 +30,41 @@ const initialState: MultimediaState = {
 
 export const MultimediaStore = signalStore(
   withState(initialState),
-  withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => ({
-    selectNextMultimedia() {
+  withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => {
+    function selectNext() {
       const selectedMultimedia = store.selectedMultimedia();
       if (selectedMultimedia) {
-        const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
-        if (selectedIndex === store.multimedia().length - 1) return;
-        const nextMultimedia = store.multimedia()[selectedIndex + 1];
-        this.selectMultimedia(nextMultimedia);
+        const multimediaList = store.multimedia();
+        const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
+        if (selectedIndex === -1 || selectedIndex === multimediaList.length - 1) return;
+        const nextMultimedia = multimediaList[selectedIndex + 1];
+        select(nextMultimedia);
       }
-    },
-    selectPreviousMultimedia() {
+    }
+
+    function selectPrevious() {
       const selectedMultimedia = store.selectedMultimedia();
       if (selectedMultimedia) {
-        const selectedIndex = store.multimedia().indexOf(selectedMultimedia);
-        if (selectedIndex === 0) return;
-        const previousMultimedia = store.multimedia()[selectedIndex - 1];
-        this.selectMultimedia(previousMultimedia);
+        const multimediaList = store.multimedia();
+        const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
+        if (selectedIndex <= 0) return;
+        const previousMultimedia = multimediaList[selectedIndex - 1];
+        select(previousMultimedia);
       }
-    },
-    selectMultimedia(multimedia: MultimediaResponseDto) {
-      const selectedIndex = store.multimedia().indexOf(multimedia);
+    }
+
+    function select(multimedia: MultimediaResponseDto) {
+      const multimediaList = store.multimedia();
+      const selectedIndex = multimediaList.findIndex((m) => m.id === multimedia.id);
       patchState(store, {
         selectedMultimedia: multimedia,
         hidePreviousButton: selectedIndex === 0,
-        hideNextButton: selectedIndex === store.multimedia().length - 1,
+        hideNextButton: selectedIndex === multimediaList.length - 1,
       });
-    },
-    async loadAll() {
-      patchState(store, { isLoading: true, error: null });
+    }
 
+    async function loadAll() {
+      patchState(store, { isLoading: true, error: null });
       try {
         const multimedia = await firstValueFrom(multimediaControllerService.getAll());
         patchState(store, { multimedia });
@@ -68,8 +73,9 @@ export const MultimediaStore = signalStore(
       } finally {
         patchState(store, { isLoading: false });
       }
-    },
-    async uploadMultimedia(files: File[], date: Date, user?: UserDto) {
+    }
+
+    async function upload(files: File[], date: Date, user?: UserDto) {
       patchState(store, { isUploading: true, uploadError: null });
       try {
         const uploadedMultimedia = await firstValueFrom(
@@ -87,18 +93,38 @@ export const MultimediaStore = signalStore(
       } finally {
         patchState(store, { isUploading: false });
       }
-    },
-    async deleteMultimedia(id: number) {
+    }
+
+    async function remove(id: number) {
       patchState(store, { error: null });
       try {
         await firstValueFrom(multimediaControllerService._delete(id));
         const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
-        patchState(store, { multimedia: filteredMultimedia, isLoading: false });
+        patchState(store, {
+          multimedia: filteredMultimedia,
+        });
       } catch (error: unknown) {
         patchState(store, { error: getErrorMessage(error) });
-      } finally {
-        patchState(store, { isLoading: false });
       }
+    }
+
+    function clearError() {
+      patchState(store, { error: null });
+    }
+
+    return {
+      selectNext,
+      selectPrevious,
+      select,
+      loadAll,
+      upload,
+      remove,
+      clearError,
+    };
+  }),
+  withHooks((store) => ({
+    onInit() {
+      store.loadAll();
     },
   })),
 );

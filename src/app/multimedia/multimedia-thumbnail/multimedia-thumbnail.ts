@@ -24,7 +24,7 @@ export class MultimediaThumbnail {
   private dialog = inject(MatDialog);
 
   protected openMultimedia() {
-    this.multimediaStore.selectMultimedia(this.multimedia());
+    this.multimediaStore.select(this.multimedia());
     this.dialog.open(MultimediaContent, {
       disableClose: true,
       viewContainerRef: this.viewContainerRef,
@@ -37,14 +37,14 @@ export class MultimediaThumbnail {
     const title = this.translateService.instant('common.delete');
     const text = this.translateService.instant('multimedia.delete_confirm');
     const confirmButtonText = this.translateService.instant('common.yes');
-    const callDelete = () => this.multimediaStore.deleteMultimedia(id);
+    const removeFn = () => this.multimediaStore.remove(id);
     this.notificationService.showMessage(
       title,
       text,
       confirmButtonText,
       'question',
       true,
-      callDelete,
+      removeFn,
     );
   }
 }

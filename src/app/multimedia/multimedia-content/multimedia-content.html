@@ -1,8 +1,8 @@
 @let selectedMultimedia = multimediaStore.selectedMultimedia();
 
 <main
-  (keydown.arrowLeft)="multimediaStore.selectPreviousMultimedia()"
-  (keydown.arrowRight)="multimediaStore.selectNextMultimedia()"
+  (keydown.arrowLeft)="multimediaStore.selectPrevious()"
+  (keydown.arrowRight)="multimediaStore.selectNext()"
   class="text-mauve-600 relative"
 >
   <section class="flex flex-col items-center justify-between">
@@ -32,7 +32,7 @@
   </section>
   @if (!multimediaStore.hidePreviousButton()) {
     <button
-      (click)="multimediaStore.selectPreviousMultimedia()"
+      (click)="multimediaStore.selectPrevious()"
       class="absolute! top-1/2 left-1"
       matIconButton
     >
@@ -41,11 +41,7 @@
   }
 
   @if (!multimediaStore.hideNextButton()) {
-    <button
-      (click)="multimediaStore.selectNextMultimedia()"
-      class="absolute! top-1/2 right-1"
-      matIconButton
-    >
+    <button (click)="multimediaStore.selectNext()" class="absolute! top-1/2 right-1" matIconButton>
       <mat-icon>arrow_forward</mat-icon>
     </button>
   }
