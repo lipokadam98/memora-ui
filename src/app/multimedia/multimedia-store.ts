@@ -1,8 +1,8 @@
-import { MultimediaResponseDto } from '../api';
+import { MultimediaControllerService, MultimediaResponseDto, UserDto } from '../api';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { MultimediaService } from './multimedia-service';
 import { inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
+import { firstValueFrom } from 'rxjs';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -30,7 +30,7 @@ const initialState: MultimediaState = {
 
 export const MultimediaStore = signalStore(
   withState(initialState),
-  withMethods((store, multimediaService = inject(MultimediaService)) => ({
+  withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => ({
     selectNextMultimedia() {
       const selectedMultimedia = store.selectedMultimedia();
       if (selectedMultimedia) {
@@ -61,7 +61,7 @@ export const MultimediaStore = signalStore(
       patchState(store, { isLoading: true, error: null });
 
       try {
-        const multimedia = await multimediaService.loadMultimediaData();
+        const multimedia = await firstValueFrom(multimediaControllerService.getAll());
         patchState(store, { multimedia });
       } catch (error: unknown) {
         patchState(store, { error: getErrorMessage(error) });
@@ -69,10 +69,15 @@ export const MultimediaStore = signalStore(
         patchState(store, { isLoading: false });
       }
     },
-    async uploadMultimedia(files: File[], date: Date) {
+    async uploadMultimedia(files: File[], date: Date, user: UserDto) {
       patchState(store, { isUploading: true, uploadError: null });
       try {
-        const uploadedMultimedia = await multimediaService.uploadMultimedia(files, date);
+        const uploadedMultimedia = await firstValueFrom(
+          multimediaControllerService.create(files, {
+            user,
+            uploadDate: date.toISOString(),
+          }),
+        );
         const multimedia = store.multimedia();
         patchState(store, {
           multimedia: [...multimedia, ...uploadedMultimedia],
@@ -86,7 +91,7 @@ export const MultimediaStore = signalStore(
     async deleteMultimedia(id: number) {
       patchState(store, { error: null });
       try {
-        await multimediaService.deleteMultimedia(id);
+        await firstValueFrom(multimediaControllerService._delete(id));
         const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
         patchState(store, { multimedia: filteredMultimedia, isLoading: false });
       } catch (error: unknown) {
