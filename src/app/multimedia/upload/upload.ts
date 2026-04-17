@@ -1,11 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
-import { MultimediaStore } from '../multimedia-store';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
+  MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
@@ -16,9 +16,10 @@ import {
 } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AuthStore } from '../../authentication/auth-store';
+import { UploadStore } from './upload-store';
+import { NotificationService } from '../../util/notification-service';
 
 @Component({
   selector: 'app-upload',
@@ -39,40 +40,70 @@ import { AuthStore } from '../../authentication/auth-store';
     TranslatePipe,
     ReactiveFormsModule,
   ],
-  providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter(), UploadStore],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
 })
 export class Upload {
   datePicker = new FormControl(new Date());
+  isDragging = signal(false);
   selectedFiles = signal<File[]>([]);
-  protected multimediaStore = inject(MultimediaStore);
-  private authStore = inject(AuthStore);
+  fileSizeGb = computed(() => {
+    const totalBytes = this.selectedFiles().reduce((acc, file) => acc + file.size, 0);
+    return (totalBytes / 1024 ** 2).toFixed(2);
+  });
+
+  protected uploadStore = inject(UploadStore);
+  private notificationService = inject(NotificationService);
+  private matDialogRef = inject(MatDialogRef);
+  private translateService = inject(TranslateService);
+
+  constructor() {
+    effect(() => {
+      const isSuccess = this.uploadStore.success();
+      const title = this.translateService.instant('upload.success_title');
+      const text = this.translateService.instant('upload.success_text');
+      const confirmButtonText = this.translateService.instant('common.ok');
+      if (isSuccess) {
+        this.matDialogRef.close();
+        this.notificationService.showMessage(title, text, confirmButtonText, 'success', false);
+      }
+    });
+  }
 
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
-
-    if (input.files?.length) {
-      this.selectedFiles.set(Array.from(input.files));
-    }
+    if (!input.files) return;
+    this.selectedFiles.set(Array.from(input.files));
+    input.value = '';
   }
 
   upload() {
-    if (
-      this.selectedFiles().length === 0 ||
-      !this.datePicker.value ||
-      !this.authStore.loginData()?.user
-    )
-      return;
+    if (this.selectedFiles().length === 0 || !this.datePicker.value) return;
     console.log('Uploading files:', this.selectedFiles());
-    this.multimediaStore.upload(
-      this.selectedFiles(),
-      this.datePicker.value,
-      this.authStore.loginData()?.user,
-    );
+    this.uploadStore.upload(this.selectedFiles(), this.datePicker.value);
   }
 
   protected onRemoveFile() {
     this.selectedFiles.set([]);
+  }
+
+  protected onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging.set(false);
+  }
+
+  protected onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging.set(true);
+  }
+
+  protected onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragging.set(false);
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.selectedFiles.set(Array.from(files));
+    }
   }
 }

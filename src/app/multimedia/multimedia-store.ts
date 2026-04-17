@@ -1,4 +1,4 @@
-import { MultimediaControllerService, MultimediaResponseDto, UserDto } from '../api';
+import { MultimediaControllerService, MultimediaResponseDto } from '../api';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
@@ -8,24 +8,20 @@ type MultimediaState = {
   multimedia: MultimediaResponseDto[];
   searchTerm: string;
   isLoading: boolean;
-  isUploading: boolean;
   selectedMultimedia: MultimediaResponseDto | null;
   hidePreviousButton: boolean;
   hideNextButton: boolean;
   error: string | null;
-  uploadError: string | null;
 };
 
 const initialState: MultimediaState = {
   multimedia: [],
   searchTerm: '',
   isLoading: false,
-  isUploading: false,
   selectedMultimedia: null,
   hidePreviousButton: false,
   hideNextButton: false,
   error: null,
-  uploadError: null,
 };
 
 export const MultimediaStore = signalStore(
@@ -75,24 +71,10 @@ export const MultimediaStore = signalStore(
       }
     }
 
-    async function upload(files: File[], date: Date, user?: UserDto) {
-      patchState(store, { isUploading: true, uploadError: null });
-      try {
-        const uploadedMultimedia = await firstValueFrom(
-          multimediaControllerService.create(files, {
-            user,
-            uploadDate: date.toISOString(),
-          }),
-        );
-        const multimedia = store.multimedia();
-        patchState(store, {
-          multimedia: [...multimedia, ...uploadedMultimedia],
-        });
-      } catch (error: unknown) {
-        patchState(store, { uploadError: getErrorMessage(error) });
-      } finally {
-        patchState(store, { isUploading: false });
-      }
+    function addMultimedia(multimedia: MultimediaResponseDto[]) {
+      patchState(store, {
+        multimedia: [...store.multimedia(), ...multimedia],
+      });
     }
 
     async function remove(id: number) {
@@ -117,7 +99,7 @@ export const MultimediaStore = signalStore(
       selectPrevious,
       select,
       loadAll,
-      upload,
+      addMultimedia,
       remove,
       clearError,
     };

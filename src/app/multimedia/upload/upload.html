@@ -1,15 +1,38 @@
-<h2 mat-dialog-title>Upload Multimedia</h2>
+<h2 mat-dialog-title>{{ 'upload.title' | translate }}</h2>
 <mat-dialog-content class="mat-typography">
   <section class="flex flex-col gap-2">
-    <section class="flex flex-row">
-      <input (change)="onFileSelected($event)" accept="image/*,video/*" multiple type="file" />
-      @if (selectedFiles().length > 0) {
+    <div
+      (click)="fileInput.click()"
+      (dragleave)="onDragLeave($event)"
+      (dragover)="onDragOver($event)"
+      (drop)="onDrop($event)"
+      [class.dragging]="isDragging()"
+      class="upload-area"
+    >
+      <p>Drag & drop files here</p>
+      <span>or click to browse</span>
+
+      <input
+        #fileInput
+        (change)="onFileSelected($event)"
+        accept="image/*,video/*"
+        hidden
+        multiple
+        type="file"
+      />
+    </div>
+
+    @if (selectedFiles().length > 0) {
+      <div class="flex flex-row items-center justify-between">
+        <span>{{ selectedFiles().length }} file(s) are selected</span>
+        <span>Size: {{ fileSizeGb() }} mb</span>
         <button (click)="onRemoveFile()" class="cursor-pointer">
           <span class="material-icons"> delete </span>
         </button>
-      }
-    </section>
-    <section class="flex flex-row gap-1 items-center justify-center">
+      </div>
+    }
+
+    <div class="flex flex-row gap-1 items-center justify-center">
       <mat-form-field>
         <mat-label>Choose a date</mat-label>
         <input [formControl]="datePicker" [matDatepicker]="picker" matInput readonly />
@@ -19,23 +42,23 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <button (click)="picker.open()" matButton="elevated">{{ 'common.open' | translate }}</button>
-    </section>
+    </div>
   </section>
 
-  @if (multimediaStore.isUploading()) {
+  @if (uploadStore.isUploading()) {
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button
     (click)="upload()"
-    [disabled]="selectedFiles().length === 0 || multimediaStore.isUploading()"
+    [disabled]="selectedFiles().length === 0 || uploadStore.isUploading()"
     aria-label="Upload button"
     matButton
   >
     {{ 'common.upload' | translate }}
   </button>
-  <button [disabled]="multimediaStore.isUploading()" mat-dialog-close matButton>
+  <button [disabled]="uploadStore.isUploading()" mat-dialog-close matButton>
     {{ 'common.cancel' | translate }}
   </button>
 </mat-dialog-actions>
