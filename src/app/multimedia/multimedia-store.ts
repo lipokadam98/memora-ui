@@ -1,6 +1,13 @@
 import { MultimediaControllerService, MultimediaResponseDto } from '../api';
-import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
-import { inject } from '@angular/core';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
 
@@ -29,8 +36,10 @@ const initialState: MultimediaState = {
 };
 
 export const MultimediaStore = signalStore(
-  { providedIn: 'root' },
   withState(initialState),
+  withComputed(({ multimedia }) => ({
+    multimediaCount: computed(() => multimedia().length),
+  })),
   withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => {
     function selectNext() {
       const selectedMultimedia = store.selectedMultimedia();

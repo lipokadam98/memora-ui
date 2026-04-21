@@ -11,6 +11,7 @@ import { MultimediaThumbnail } from '../multimedia/multimedia-thumbnail/multimed
 @Component({
   selector: 'app-gallery',
   imports: [TranslatePipe, MatIcon, MatButton, MatProgressSpinner, MultimediaThumbnail],
+  providers: [MultimediaStore],
   templateUrl: './gallery.html',
   styleUrl: './gallery.css',
 })
