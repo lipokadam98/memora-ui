@@ -10,11 +10,14 @@
       <mat-spinner></mat-spinner>
     </div>
   } @else {
-    <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
-      @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
-        <app-multimedia-thumbnail [multimedia]="multimedia" />
-      }
-    </section>
+    @for (group of multimediaStore.groupedByMonth(); track group.key) {
+      <h3 class="text-2xl">{{ group.key }}</h3>
+      <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
+        @for (multimedia of group.items; track multimedia.id) {
+          <app-multimedia-thumbnail [multimedia]="multimedia" />
+        }
+      </section>
+    }
   }
   @if (multimediaStore.hasNext()) {
     <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">

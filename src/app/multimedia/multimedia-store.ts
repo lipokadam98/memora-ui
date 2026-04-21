@@ -39,6 +39,34 @@ export const MultimediaStore = signalStore(
   withState(initialState),
   withComputed(({ multimedia }) => ({
     multimediaCount: computed(() => multimedia().length),
+    groupedByMonth: computed(() => {
+      const groups = new Map<string, MultimediaResponseDto[]>();
+
+      for (const item of multimedia()) {
+        if (!item.uploadDate) {
+          return;
+        }
+
+        const date = new Date(item.uploadDate);
+
+        //TODO get the value from somewhere dynamic
+        const key = date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'long',
+        });
+
+        if (!groups.has(key)) {
+          groups.set(key, []);
+        }
+
+        groups.get(key)!.push(item);
+      }
+
+      return Array.from(groups.entries()).map(([key, items]) => ({
+        key,
+        items,
+      }));
+    }),
   })),
   withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => {
     function selectNext() {
