@@ -11,6 +11,8 @@ type MultimediaState = {
   selectedMultimedia: MultimediaResponseDto | null;
   hidePreviousButton: boolean;
   hideNextButton: boolean;
+  hasNext: boolean;
+  nextCursor: string | null;
   error: string | null;
 };
 
@@ -21,10 +23,13 @@ const initialState: MultimediaState = {
   selectedMultimedia: null,
   hidePreviousButton: false,
   hideNextButton: false,
+  hasNext: false,
+  nextCursor: null,
   error: null,
 };
 
 export const MultimediaStore = signalStore(
+  { providedIn: 'root' },
   withState(initialState),
   withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => {
     function selectNext() {
@@ -59,11 +64,40 @@ export const MultimediaStore = signalStore(
       });
     }
 
-    async function loadAll() {
+    async function loadStartingData() {
       patchState(store, { isLoading: true, error: null });
       try {
-        const multimedia = await firstValueFrom(multimediaControllerService.getAll());
-        patchState(store, { multimedia });
+        const { items, nextCursor, hasNext } = await firstValueFrom(
+          multimediaControllerService.getAll(),
+        );
+        patchState(store, {
+          multimedia: items,
+          nextCursor,
+          hasNext,
+        });
+      } catch (error: unknown) {
+        patchState(store, { error: getErrorMessage(error) });
+      } finally {
+        patchState(store, { isLoading: false });
+      }
+    }
+
+    async function loadNextData() {
+      patchState(store, { error: null });
+      try {
+        const hasNext = store.hasNext();
+        const cursor = store.nextCursor();
+        if (hasNext && cursor) {
+          const { items, nextCursor, hasNext } = await firstValueFrom(
+            multimediaControllerService.getAll(cursor),
+          );
+          if (items)
+            patchState(store, {
+              multimedia: [...store.multimedia(), ...items],
+              nextCursor,
+              hasNext,
+            });
+        }
       } catch (error: unknown) {
         patchState(store, { error: getErrorMessage(error) });
       } finally {
@@ -98,7 +132,8 @@ export const MultimediaStore = signalStore(
       selectNext,
       selectPrevious,
       select,
-      loadAll,
+      loadStartingData,
+      loadNextData,
       addMultimedia,
       remove,
       clearError,
@@ -106,7 +141,7 @@ export const MultimediaStore = signalStore(
   }),
   withHooks((store) => ({
     onInit() {
-      store.loadAll();
+      store.loadStartingData();
     },
   })),
 );

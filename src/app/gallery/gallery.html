@@ -16,4 +16,9 @@
       }
     </section>
   }
+  @if (multimediaStore.hasNext()) {
+    <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">
+      Load More
+    </button>
+  }
 </main>

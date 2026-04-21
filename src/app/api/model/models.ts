@@ -1,3 +1,4 @@
+export * from './cursorPageMultimediaResponseDto';
 export * from './grantedAuthority';
 export * from './loginResponse';
 export * from './loginUserDto';
