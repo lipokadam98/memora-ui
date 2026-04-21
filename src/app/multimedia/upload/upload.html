@@ -25,7 +25,7 @@
     @if (selectedFiles().length > 0) {
       <div class="flex flex-row items-center justify-between">
         <span>{{ selectedFiles().length }} file(s) are selected</span>
-        <span>Size: {{ fileSizeGb() }} mb</span>
+        <span>Size: {{ fileSize() }} mb</span>
         <button (click)="onRemoveFile()" class="cursor-pointer">
           <span class="material-icons"> delete </span>
         </button>

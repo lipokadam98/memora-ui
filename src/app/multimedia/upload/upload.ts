@@ -48,7 +48,7 @@ export class Upload {
   datePicker = new FormControl(new Date());
   isDragging = signal(false);
   selectedFiles = signal<File[]>([]);
-  fileSizeGb = computed(() => {
+  fileSize = computed(() => {
     const totalBytes = this.selectedFiles().reduce((acc, file) => acc + file.size, 0);
     return (totalBytes / 1024 ** 2).toFixed(2);
   });
