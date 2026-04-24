@@ -17,7 +17,7 @@ model/models.ts
 model/multimediaRequestDto.ts
 model/multimediaResponseDto.ts
 model/registerUserDto.ts
-model/updateRequest.ts
+model/thumbnailCreationRequestDto.ts
 model/user.ts
 model/userDto.ts
 param.ts

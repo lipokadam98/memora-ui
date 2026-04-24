@@ -14,8 +14,8 @@ import { NotificationService } from '../../util/notification-service';
 })
 export class Authentication {
   authenticationForm = new FormGroup({
-    email: new FormControl('test@test.com', [Validators.required, Validators.email]),
-    password: new FormControl('123456', [Validators.required, Validators.minLength(6)]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   private authStore = inject(AuthStore);
   private translateService = inject(TranslateService);

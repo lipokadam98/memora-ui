@@ -5,6 +5,6 @@ export * from './loginUserDto';
 export * from './multimediaRequestDto';
 export * from './multimediaResponseDto';
 export * from './registerUserDto';
-export * from './updateRequest';
+export * from './thumbnailCreationRequestDto';
 export * from './user';
 export * from './userDto';

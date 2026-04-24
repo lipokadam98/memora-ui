@@ -5,6 +5,10 @@ import { AuthStore } from './auth-store';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authStore = inject(AuthStore);
 
+  if (req.url.includes('storage.googleapis.com')) {
+    return next(req);
+  }
+
   const token = authStore.loginData()?.token;
 
   if (token) {

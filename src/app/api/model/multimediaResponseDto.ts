@@ -16,5 +16,7 @@ export interface MultimediaResponseDto {
     contentType?: string;
     objectKey?: string;
     uploadDate?: string;
+    signedUrl?: string;
+    originalFileName?: string;
 }
 

@@ -13,5 +13,8 @@ import { UserDto } from './userDto';
 export interface MultimediaRequestDto { 
     user?: UserDto;
     uploadDate?: string;
+    size?: number;
+    contentType?: string;
+    originalFileName?: string;
 }
 
