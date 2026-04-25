@@ -18,16 +18,9 @@
     </div>
 
     @if (selectedMultimedia?.contentType?.includes('image')) {
-      <img
-        [src]="selectedMultimedia?.contentUrl | authenticatedMedia | async"
-        alt="Image content"
-      />
+      <img [src]="selectedMultimedia?.contentUrl" alt="Image content" />
     } @else {
-      <video
-        [src]="selectedMultimedia?.contentUrl | authenticatedMedia | async"
-        autoplay
-        controls
-      ></video>
+      <video [src]="selectedMultimedia?.contentUrl" autoplay controls></video>
     }
   </section>
   @if (!multimediaStore.hidePreviousButton()) {

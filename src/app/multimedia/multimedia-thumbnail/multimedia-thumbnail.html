@@ -1,5 +1,5 @@
 <main class="relative">
-  @let imgSrc = multimedia().thumbnailUrl | authenticatedMedia | async;
+  @let imgSrc = multimedia().thumbnailUrl;
   @if (imgSrc) {
     <img
       (click)="openMultimedia()"

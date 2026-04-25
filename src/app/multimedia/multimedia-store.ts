@@ -10,6 +10,7 @@ import {
 import { computed, inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
+import { AuthStore } from '../authentication/auth-store';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -68,114 +69,130 @@ export const MultimediaStore = signalStore(
       }));
     }),
   })),
-  withMethods((store, multimediaControllerService = inject(MultimediaControllerService)) => {
-    function selectNext() {
-      const selectedMultimedia = store.selectedMultimedia();
-      if (selectedMultimedia) {
-        const multimediaList = store.multimedia();
-        const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
-        if (selectedIndex === -1 || selectedIndex === multimediaList.length - 1) return;
-        const nextMultimedia = multimediaList[selectedIndex + 1];
-        select(nextMultimedia);
-      }
-    }
-
-    function selectPrevious() {
-      const selectedMultimedia = store.selectedMultimedia();
-      if (selectedMultimedia) {
-        const multimediaList = store.multimedia();
-        const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
-        if (selectedIndex <= 0) return;
-        const previousMultimedia = multimediaList[selectedIndex - 1];
-        select(previousMultimedia);
-      }
-    }
-
-    function select(multimedia: MultimediaResponseDto) {
-      const multimediaList = store.multimedia();
-      const selectedIndex = multimediaList.findIndex((m) => m.id === multimedia.id);
-      patchState(store, {
-        selectedMultimedia: multimedia,
-        hidePreviousButton: selectedIndex === 0,
-        hideNextButton: selectedIndex === multimediaList.length - 1,
-      });
-    }
-
-    async function loadStartingData() {
-      patchState(store, { isLoading: true, error: null });
-      try {
-        const { items, nextCursor, hasNext } = await firstValueFrom(
-          multimediaControllerService.getAll(),
-        );
-        patchState(store, {
-          multimedia: items,
-          nextCursor,
-          hasNext,
-        });
-      } catch (error: unknown) {
-        patchState(store, { error: getErrorMessage(error) });
-      } finally {
-        patchState(store, { isLoading: false });
-      }
-    }
-
-    async function loadNextData() {
-      patchState(store, { error: null });
-      try {
-        const hasNext = store.hasNext();
-        const cursor = store.nextCursor();
-        if (hasNext && cursor) {
-          const { items, nextCursor, hasNext } = await firstValueFrom(
-            multimediaControllerService.getAll(cursor),
-          );
-          if (items)
-            patchState(store, {
-              multimedia: [...store.multimedia(), ...items],
-              nextCursor,
-              hasNext,
-            });
+  withMethods(
+    (
+      store,
+      multimediaControllerService = inject(MultimediaControllerService),
+      authStore = inject(AuthStore),
+    ) => {
+      function selectNext() {
+        const selectedMultimedia = store.selectedMultimedia();
+        if (selectedMultimedia) {
+          const multimediaList = store.multimedia();
+          const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
+          if (selectedIndex === -1 || selectedIndex === multimediaList.length - 1) return;
+          const nextMultimedia = multimediaList[selectedIndex + 1];
+          select(nextMultimedia);
         }
-      } catch (error: unknown) {
-        patchState(store, { error: getErrorMessage(error) });
-      } finally {
-        patchState(store, { isLoading: false });
       }
-    }
 
-    function addMultimedia(multimedia: MultimediaResponseDto[]) {
-      patchState(store, {
-        multimedia: [...store.multimedia(), ...multimedia],
-      });
-    }
+      function selectPrevious() {
+        const selectedMultimedia = store.selectedMultimedia();
+        if (selectedMultimedia) {
+          const multimediaList = store.multimedia();
+          const selectedIndex = multimediaList.findIndex((m) => m.id === selectedMultimedia.id);
+          if (selectedIndex <= 0) return;
+          const previousMultimedia = multimediaList[selectedIndex - 1];
+          select(previousMultimedia);
+        }
+      }
 
-    async function remove(id: number) {
-      patchState(store, { error: null });
-      try {
-        await firstValueFrom(multimediaControllerService._delete(id));
-        const filteredMultimedia = store.multimedia().filter((multimedia) => multimedia.id !== id);
+      function select(multimedia: MultimediaResponseDto) {
+        const multimediaList = store.multimedia();
+        const selectedIndex = multimediaList.findIndex((m) => m.id === multimedia.id);
         patchState(store, {
-          multimedia: filteredMultimedia,
+          selectedMultimedia: multimedia,
+          hidePreviousButton: selectedIndex === 0,
+          hideNextButton: selectedIndex === multimediaList.length - 1,
         });
-      } catch (error: unknown) {
-        patchState(store, { error: getErrorMessage(error) });
       }
-    }
 
-    function clearError() {
-      patchState(store, { error: null });
-    }
+      async function loadStartingData() {
+        patchState(store, { isLoading: true, error: null });
+        try {
+          const user = authStore.loginData()?.user;
+          if (!user?.id) {
+            return;
+          }
+          const { items, nextCursor, hasNext } = await firstValueFrom(
+            multimediaControllerService.getAll(user.id),
+          );
+          patchState(store, {
+            multimedia: items,
+            nextCursor,
+            hasNext,
+          });
+        } catch (error: unknown) {
+          patchState(store, { error: getErrorMessage(error) });
+        } finally {
+          patchState(store, { isLoading: false });
+        }
+      }
 
-    return {
-      selectNext,
-      selectPrevious,
-      select,
-      loadStartingData,
-      loadNextData,
-      addMultimedia,
-      remove,
-      clearError,
-    };
-  }),
+      async function loadNextData() {
+        patchState(store, { error: null });
+        try {
+          const user = authStore.loginData()?.user;
+          if (!user?.id) {
+            return;
+          }
+          const hasNext = store.hasNext();
+          const cursor = store.nextCursor();
+          if (hasNext && cursor) {
+            const { items, nextCursor, hasNext } = await firstValueFrom(
+              multimediaControllerService.getAll(user.id, cursor),
+            );
+            if (items)
+              patchState(store, {
+                multimedia: [...store.multimedia(), ...items],
+                nextCursor,
+                hasNext,
+              });
+          }
+        } catch (error: unknown) {
+          patchState(store, { error: getErrorMessage(error) });
+        } finally {
+          patchState(store, { isLoading: false });
+        }
+      }
+
+      function addMultimedia(multimedia: MultimediaResponseDto[]) {
+        patchState(store, {
+          multimedia: [...store.multimedia(), ...multimedia],
+        });
+      }
+
+      async function remove(id: number) {
+        patchState(store, { error: null });
+        try {
+          await firstValueFrom(multimediaControllerService._delete(id));
+          const filteredMultimedia = store
+            .multimedia()
+            .filter((multimedia) => multimedia.id !== id);
+          patchState(store, {
+            multimedia: filteredMultimedia,
+          });
+        } catch (error: unknown) {
+          patchState(store, { error: getErrorMessage(error) });
+        }
+      }
+
+      function clearError() {
+        patchState(store, { error: null });
+      }
+
+      return {
+        selectNext,
+        selectPrevious,
+        select,
+        loadStartingData,
+        loadNextData,
+        addMultimedia,
+        remove,
+        clearError,
+      };
+    },
+  ),
   withHooks((store) => ({
     onInit() {
       store.loadStartingData();

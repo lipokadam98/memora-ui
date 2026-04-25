@@ -22,8 +22,8 @@ export interface User {
     username?: string;
     authorities?: Array<GrantedAuthority>;
     accountNonExpired?: boolean;
-    credentialsNonExpired?: boolean;
     accountNonLocked?: boolean;
+    credentialsNonExpired?: boolean;
 }
 export namespace User {
     export const RoleEnum = {

@@ -3,14 +3,11 @@ import { MultimediaResponseDto } from '../../api';
 import { MatDialog } from '@angular/material/dialog';
 import { MultimediaContent } from '../multimedia-content/multimedia-content';
 import { MultimediaStore } from '../multimedia-store';
-import { AsyncPipe } from '@angular/common';
-import { AuthenticatedMediaPipe } from '../authenticated-media.pipe';
 import { NotificationService } from '../../util/notification-service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-multimedia-thumbnail',
-  imports: [AsyncPipe, AuthenticatedMediaPipe],
   templateUrl: './multimedia-thumbnail.html',
   styleUrl: './multimedia-thumbnail.css',
 })
