@@ -72,7 +72,7 @@ export const UploadStore = signalStore(
           );
 
           console.log('Thumbnail creation result:', thumbnailCreation);
-          await multimediaStore.loadStartingData();
+          multimediaStore.addMultimedia(thumbnailCreation);
           patchState(store, { success: true });
         } catch (error: unknown) {
           patchState(store, { error: getErrorMessage(error), success: false });

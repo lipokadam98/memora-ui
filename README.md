@@ -57,3 +57,30 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+More important note:
+
+### When using the Google Cloud Storage bucket and the signed URLs, be sure to set up the CORS policy to allow the bucket to be accessed from the origin of your website.
+
+https://cloud.google.com/storage/docs/configuring-cors
+
+[
+{
+"origin": ["Your website URL"],
+"method": ["GET", "PUT", "OPTIONS", "HEAD"],
+"responseHeader": ["Content-Type", "Origin", "Accept", "Authorization"],
+"maxAgeSeconds": 3600
+}
+]
+
+### And run this command:
+
+gsutil cors set cors.json gs://bucket-name
+
+gsutil cors get gs://bucket-name
+
+### To publish the website:
+
+ng build --prod
+
+firebase deploy --only hosting   
