@@ -1,5 +1,6 @@
-<main>
-  <form [formGroup]="authenticationForm" class="flex flex-col items-center">
+<main class="flex flex-row items-center justify-center">
+  <form [formGroup]="authenticationForm" class="flex flex-col gap-2 items-center w-fit">
+    <h1 class="text-2xl">{{ 'authentication.login' | translate }}</h1>
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input formControlName="email" matInput placeholder="example@example.com" type="email" />
@@ -7,11 +8,25 @@
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input formControlName="password" matInput placeholder="123456" type="password" />
+      <input
+        autocomplete
+        formControlName="password"
+        matInput
+        placeholder="123456"
+        type="password"
+      />
     </mat-form-field>
 
+    @if (authStore.isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
     <div class="flex flex-row gap-2">
-      <button (click)="onLogin()" [disabled]="authenticationForm.invalid" matButton="elevated">
+      <button
+        (click)="onLogin()"
+        [disabled]="authenticationForm.invalid || authStore.isLoading()"
+        matButton="elevated"
+      >
         {{ 'authentication.login' | translate }}
       </button>
     </div>

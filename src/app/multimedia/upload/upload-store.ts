@@ -72,10 +72,10 @@ export const UploadStore = signalStore(
           );
 
           console.log('Thumbnail creation result:', thumbnailCreation);
-          multimediaStore.loadStartingData();
+          await multimediaStore.loadStartingData();
           patchState(store, { success: true });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), success: false });
         } finally {
           patchState(store, { isUploading: false });
         }

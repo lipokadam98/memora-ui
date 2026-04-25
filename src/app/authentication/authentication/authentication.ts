@@ -5,10 +5,19 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { AuthStore } from '../auth-store';
 import { NotificationService } from '../../util/notification-service';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-authentication',
-  imports: [TranslatePipe, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatButton],
+  imports: [
+    TranslatePipe,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatButton,
+    MatProgressBar,
+  ],
   templateUrl: './authentication.html',
   styleUrl: './authentication.css',
 })
@@ -17,7 +26,7 @@ export class Authentication {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
-  private authStore = inject(AuthStore);
+  protected authStore = inject(AuthStore);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
 

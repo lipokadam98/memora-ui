@@ -29,7 +29,8 @@
   },
   "upload": {
     "title": "Upload Multimedia",
-    "error": "Failed to upload files.",
+    "error_title": "Upload Error",
+    "error_text": "Failed to upload files.",
     "success_title": "Upload Successful",
     "success_text": "Your files have been uploaded successfully."
   }

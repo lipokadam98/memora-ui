@@ -60,13 +60,14 @@ export class Upload {
 
   constructor() {
     effect(() => {
-      const isSuccess = this.uploadStore.success();
-      const title = this.translateService.instant('upload.success_title');
-      const text = this.translateService.instant('upload.success_text');
-      const confirmButtonText = this.translateService.instant('common.ok');
-      if (isSuccess) {
+      const hasError = !this.uploadStore.success() && !!this.uploadStore.error();
+      if (hasError || this.uploadStore.success()) {
+        const prefix = hasError ? 'error' : 'success';
+        const title = this.translateService.instant(`upload.${prefix}_title`);
+        const text = this.translateService.instant(`upload.${prefix}_text`);
+        const confirmButtonText = this.translateService.instant('common.ok');
         this.matDialogRef.close();
-        this.notificationService.showMessage(title, text, confirmButtonText, 'success', false);
+        this.notificationService.showMessage(title, text, confirmButtonText, prefix, false);
       }
     });
   }
