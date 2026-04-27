@@ -11,6 +11,7 @@ import { computed, inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
 import { AuthStore } from '../authentication/auth-store';
+import { TranslateHelperService } from '../util/translate-helper-service';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -20,6 +21,7 @@ type MultimediaState = {
   hidePreviousButton: boolean;
   hideNextButton: boolean;
   hasNext: boolean;
+  isNextDataLoading: boolean;
   nextCursor: string | null;
   error: string | null;
 };
@@ -32,26 +34,29 @@ const initialState: MultimediaState = {
   hidePreviousButton: false,
   hideNextButton: false,
   hasNext: false,
+  isNextDataLoading: false,
   nextCursor: null,
   error: null,
 };
 
 export const MultimediaStore = signalStore(
+  { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ multimedia }) => ({
+  withComputed(({ multimedia }, translateHelper = inject(TranslateHelperService)) => ({
     multimediaCount: computed(() => multimedia().length),
     groupedByMonth: computed(() => {
       const groups = new Map<string, MultimediaResponseDto[]>();
+      const lang = translateHelper.currentLang();
 
       for (const item of multimedia()) {
         if (!item.uploadDate) {
-          return;
+          continue;
         }
 
         const date = new Date(item.uploadDate);
 
-        //TODO get the value from somewhere dynamic
-        const key = date.toLocaleString('en-US', {
+        // Now uses the dynamic language signal
+        const key = date.toLocaleString(lang, {
           year: 'numeric',
           month: 'long',
         });
@@ -130,7 +135,7 @@ export const MultimediaStore = signalStore(
       }
 
       async function loadNextData() {
-        patchState(store, { error: null });
+        patchState(store, { isNextDataLoading: true, error: null });
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
@@ -152,7 +157,7 @@ export const MultimediaStore = signalStore(
         } catch (error: unknown) {
           patchState(store, { error: getErrorMessage(error) });
         } finally {
-          patchState(store, { isLoading: false });
+          patchState(store, { isNextDataLoading: false });
         }
       }
 
@@ -178,7 +183,7 @@ export const MultimediaStore = signalStore(
       }
 
       function clearError() {
-        patchState(store, { error: null });
+        patchState(store, { error: null, isLoading: false, isNextDataLoading: false });
       }
 
       return {

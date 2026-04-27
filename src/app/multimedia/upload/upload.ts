@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import {
   MatDialogActions,
   MatDialogClose,
@@ -17,7 +17,7 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UploadStore } from './upload-store';
 import { NotificationService } from '../../util/notification-service';
 
@@ -39,13 +39,14 @@ import { NotificationService } from '../../util/notification-service';
     MatIcon,
     TranslatePipe,
     ReactiveFormsModule,
+    MatIconButton,
   ],
   providers: [provideNativeDateAdapter(), UploadStore],
   templateUrl: './upload.html',
   styleUrl: './upload.css',
 })
 export class Upload {
-  datePicker = new FormControl(new Date());
+  datePicker = new FormControl(null, Validators.required);
   isDragging = signal(false);
 
   protected uploadStore = inject(UploadStore);

@@ -6,16 +6,28 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { AuthStore } from '../authentication/auth-store';
 import { NotificationService } from '../util/notification-service';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { TranslateHelperService } from '../util/translate-helper-service';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, TranslatePipe, MatIcon, MatIconButton, MatButton],
+  imports: [
+    RouterLink,
+    TranslatePipe,
+    MatIcon,
+    MatIconButton,
+    MatButton,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
+  ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
   protected authStore = inject(AuthStore);
-  private themeService = inject(ThemeService);
+  protected themeService = inject(ThemeService);
+  protected translateHelperService = inject(TranslateHelperService);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
 

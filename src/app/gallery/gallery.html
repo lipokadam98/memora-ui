@@ -1,9 +1,14 @@
 <main class="flex flex-col gap-4">
   <section class="flex flex-row justify-between items-center">
     <h1 class="text-4xl">{{ 'gallery.title' | translate }}</h1>
-    <button (click)="openUploadDialog()" aria-label="Upload button" matButton="filled">
-      <mat-icon>upload</mat-icon>
-    </button>
+    <div class="flex flex-row gap-2">
+      <button (click)="toggleEditMode()" matIconButton>
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button (click)="openUploadDialog()" aria-label="Upload button" matButton="filled">
+        {{ 'gallery.upload' | translate }}
+      </button>
+    </div>
   </section>
   @if (multimediaStore.isLoading()) {
     <div class="flex flex-row items-center justify-center">
@@ -14,15 +19,20 @@
       <h3 class="text-2xl">{{ group.key }}</h3>
       <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
         @for (multimedia of group.items; track multimedia.id) {
-          <app-multimedia-thumbnail [multimedia]="multimedia" />
+          <app-multimedia-thumbnail [isEditMode]="isEditMode()" [multimedia]="multimedia" />
         }
       </section>
     }
   }
-  @if (multimediaStore.hasNext()) {
-    <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">
-      Load More
-    </button>
+  @if (multimediaStore.isNextDataLoading()) {
+    <div class="flex flex-row items-center justify-center">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else {
+    @if (multimediaStore.hasNext()) {
+      <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">
+        {{ 'gallery.load_more' | translate }}
+      </button>
+    }
   }
-  <p>Currently loaded Multimedia: {{ multimediaStore.multimediaCount() }}</p>
 </main>

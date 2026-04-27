@@ -9,6 +9,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Configuration } from './api';
 import { environment } from '../environments/environment';
+import { getInitialLanguage } from './util/util';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +23,7 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json',
       }),
       fallbackLang: 'en',
-      lang: 'en',
+      lang: getInitialLanguage(),
     }),
     {
       provide: Configuration,

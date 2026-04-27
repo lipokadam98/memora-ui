@@ -16,6 +16,8 @@
     "ok": "Ok"
   },
   "authentication": {
+    "email": "Email",
+    "password": "Password",
     "login": "Login",
     "logout": "Logout",
     "login_error": "Please enter a valid email and password.",
@@ -25,13 +27,21 @@
     "delete_confirm": "Are you sure you want to delete this multimedia?"
   },
   "gallery": {
-    "title": "Gallery"
+    "title": "Gallery",
+    "load_error": "Failed to load multimedia. Please try again later.",
+    "upload": "Upload",
+    "load_more": "Load More"
   },
   "upload": {
     "title": "Upload Multimedia",
     "error_title": "Upload Error",
     "error_text": "Failed to upload files.",
     "success_title": "Upload Successful",
-    "success_text": "Your files have been uploaded successfully."
+    "success_text": "Your files have been uploaded successfully.",
+    "date_selector": "Choose upload date",
+    "number_of_files": "{{ fileCount }} file(s) are selected",
+    "file_size": "Size: {{ fileSize }} mb",
+    "drag_drop_files_top": "Drag & drop files here",
+    "drag_drop_files_bottom": "or click to browse"
   }
 }

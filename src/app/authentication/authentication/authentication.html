@@ -2,19 +2,13 @@
   <form [formGroup]="authenticationForm" class="flex flex-col gap-2 items-center w-fit">
     <h1 class="text-2xl">{{ 'authentication.login' | translate }}</h1>
     <mat-form-field>
-      <mat-label>Email</mat-label>
+      <mat-label>{{ 'authentication.email' | translate }}</mat-label>
       <input formControlName="email" matInput placeholder="example@example.com" type="email" />
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input
-        autocomplete
-        formControlName="password"
-        matInput
-        placeholder="123456"
-        type="password"
-      />
+      <mat-label>{{ 'authentication.password' | translate }}</mat-label>
+      <input autocomplete formControlName="password" matInput type="password" />
     </mat-form-field>
 
     @if (authStore.isLoading()) {

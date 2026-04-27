@@ -3,6 +3,8 @@
 <main
   (keydown.arrowLeft)="multimediaStore.selectPrevious()"
   (keydown.arrowRight)="multimediaStore.selectNext()"
+  (swipeleft)="multimediaStore.selectNext()"
+  (swiperight)="multimediaStore.selectPrevious()"
   class="text-mauve-600 relative"
 >
   <section class="flex flex-col items-center justify-between">

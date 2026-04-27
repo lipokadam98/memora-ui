@@ -10,8 +10,8 @@
       [class.dragging]="isDragging()"
       class="upload-area"
     >
-      <p>Drag & drop files here</p>
-      <span>or click to browse</span>
+      <p>{{ 'upload.drag_drop_files_top' | translate }}</p>
+      <span>{{ 'upload.drag_drop_files_bottom' | translate }}</span>
 
       <input
         #fileInput
@@ -26,8 +26,8 @@
     @if (selectedFiles.length > 0) {
       @let fileSize = uploadStore.fileSize();
       <div class="flex flex-row items-center justify-between">
-        <span>{{ selectedFiles.length }} file(s) are selected</span>
-        <span>Size: {{ fileSize }} mb</span>
+        <span>{{ 'upload.number_of_files' | translate: { fileCount: selectedFiles.length } }}</span>
+        <span>{{ 'upload.file_size' | translate: { fileSize } }}</span>
         <button (click)="onRemoveFile()" class="cursor-pointer">
           <span class="material-icons"> delete </span>
         </button>
@@ -36,14 +36,16 @@
 
     <div class="flex flex-row gap-1 items-center justify-center">
       <mat-form-field>
-        <mat-label>Choose a date</mat-label>
+        <mat-label>{{ 'upload.date_selector' | translate }}</mat-label>
         <input [formControl]="datePicker" [matDatepicker]="picker" matInput readonly />
         <mat-datepicker-toggle [for]="picker" matIconSuffix>
           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <button (click)="picker.open()" matButton="elevated">{{ 'common.open' | translate }}</button>
+      <button (click)="picker.open()" matIconButton>
+        <mat-icon>edit_calendar</mat-icon>
+      </button>
     </div>
   </section>
 
@@ -54,7 +56,7 @@
 <mat-dialog-actions align="end">
   <button
     (click)="upload()"
-    [disabled]="selectedFiles.length === 0 || uploadStore.isUploading()"
+    [disabled]="selectedFiles.length === 0 || uploadStore.isUploading() || !datePicker.valid"
     aria-label="Upload button"
     matButton
   >

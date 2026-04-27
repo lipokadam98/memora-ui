@@ -1,26 +1,40 @@
 <nav
   class="flex flex-row gap-4 justify-between items-center h-12 p-2 sticky top-0 w-full border-b-2 z-10"
 >
+  @let isLoggedIn = !!authStore.loginData();
   <button [routerLink]="['/']" matButton>{{ 'app_name' | translate }}</button>
 
   <div class="flex flex-row gap-4">
-    <button [routerLink]="['/']" matButton>{{ 'navbar.home' | translate }}</button>
-    <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
-    <!--<button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>-->
+    @if (isLoggedIn) {
+      <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
+      <!--<button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>-->
+    }
   </div>
 
-  <section class="flex flex-row gap-4 items-center">
-    @if (authStore.loginData()) {
-      <button (click)="logout()" matButton>
-        {{ 'authentication.logout' | translate }}
+  <section class="flex flex-row items-center">
+    @if (isLoggedIn) {
+      <button (click)="logout()" matIconButton>
+        <mat-icon>logout</mat-icon>
       </button>
     } @else {
-      <button [routerLink]="['/authentication']" matButton>
-        {{ 'authentication.login' | translate }}
+      <button [routerLink]="['/authentication']" matIconButton>
+        <mat-icon>login</mat-icon>
       </button>
     }
+    <button [matMenuTriggerFor]="menu" aria-label="Button for the language selection" matIconButton>
+      <mat-icon>language</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button (click)="translateHelperService.changeLanguage('en')" mat-menu-item>
+        <span>English</span>
+      </button>
+      <button (click)="translateHelperService.changeLanguage('hu')" mat-menu-item>
+        <span>Magyar</span>
+      </button>
+    </mat-menu>
+    @let isDarkMode = themeService.darkMode();
     <button (click)="toggleDarkMode()" matIconButton>
-      <mat-icon>dark_mode</mat-icon>
+      <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
     </button>
   </section>
 </nav>

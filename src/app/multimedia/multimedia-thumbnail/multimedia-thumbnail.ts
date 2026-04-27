@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './multimedia-thumbnail.css',
 })
 export class MultimediaThumbnail {
+  isEditMode = input(false);
   multimedia = input.required<MultimediaResponseDto>();
   private multimediaStore = inject(MultimediaStore);
   private notificationService = inject(NotificationService);

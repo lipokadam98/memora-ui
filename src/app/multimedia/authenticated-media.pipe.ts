@@ -3,6 +3,11 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Configuration } from '../api';
 
+/**
+ * @deprecated
+ * This pipe is deprecated and will be removed in a future version.
+ * The backend now generates the signed URL, so this pipe is no longer needed.
+ */
 @Pipe({
   name: 'authenticatedMedia',
   standalone: true,

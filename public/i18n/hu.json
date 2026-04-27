@@ -1,5 +1,5 @@
 {
-  "app_name": "Memora UI",
+  "app_name": "Memora",
   "navbar": {
     "home": "Kezdőlap",
     "gallery": "Galéria",
@@ -10,14 +10,38 @@
     "upload": "Feltöltés",
     "yes": "Igen",
     "no": "Nem",
-    "delete": "Törlés"
+    "delete": "Törlés",
+    "open": "Megnyitás",
+    "cancel": "Mégse",
+    "ok": "Oké"
   },
   "authentication": {
+    "email": "E-mail",
+    "password": "Jelszó",
     "login": "Bejelentkezés",
     "logout": "Kijelentkezés",
-    "logout_confirm": "Biztosan ki akar jelentkezni?"
+    "login_error": "Kérlek, adj meg egy érvényes e-mail címet és jelszót.",
+    "logout_confirm": "Biztosan ki szeretnél jelentkezni?"
   },
   "multimedia": {
-    "delete_confirm": "Biztosan ki akarja törölni ez a multimédiát?"
+    "delete_confirm": "Biztosan törölni szeretnéd ezt a médiaelemet?"
+  },
+  "gallery": {
+    "title": "Galéria",
+    "load_error": "A média betöltése sikertelen. Kérlek, próbáld újra később.",
+    "upload": "Feltöltés",
+    "load_more": "Továbbiak betöltése"
+  },
+  "upload": {
+    "title": "Média feltöltése",
+    "error_title": "Feltöltési hiba",
+    "error_text": "A fájlok feltöltése sikertelen.",
+    "success_title": "Sikeres feltöltés",
+    "success_text": "A fájlok sikeresen feltöltve.",
+    "date_selector": "Válassz dátumot",
+    "number_of_files": "{{ fileCount }} fájl kiválasztva",
+    "file_size": "Méret: {{ fileSize }} MB",
+    "drag_drop_files_top": "Húzd ide a fájlokat",
+    "drag_drop_files_bottom": "vagy kattints a tallózáshoz"
   }
 }
