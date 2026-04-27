@@ -1,3 +1,4 @@
+@let selectedFiles = uploadStore.selectedFiles();
 <h2 mat-dialog-title>{{ 'upload.title' | translate }}</h2>
 <mat-dialog-content class="mat-typography">
   <section class="flex flex-col gap-2">
@@ -22,10 +23,11 @@
       />
     </div>
 
-    @if (selectedFiles().length > 0) {
+    @if (selectedFiles.length > 0) {
+      @let fileSize = uploadStore.fileSize();
       <div class="flex flex-row items-center justify-between">
-        <span>{{ selectedFiles().length }} file(s) are selected</span>
-        <span>Size: {{ fileSize() }} mb</span>
+        <span>{{ selectedFiles.length }} file(s) are selected</span>
+        <span>Size: {{ fileSize }} mb</span>
         <button (click)="onRemoveFile()" class="cursor-pointer">
           <span class="material-icons"> delete </span>
         </button>
@@ -52,7 +54,7 @@
 <mat-dialog-actions align="end">
   <button
     (click)="upload()"
-    [disabled]="selectedFiles().length === 0 || uploadStore.isUploading()"
+    [disabled]="selectedFiles.length === 0 || uploadStore.isUploading()"
     aria-label="Upload button"
     matButton
   >

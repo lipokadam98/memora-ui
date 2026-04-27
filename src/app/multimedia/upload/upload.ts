@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton } from '@angular/material/button';
 import {
@@ -47,11 +47,6 @@ import { NotificationService } from '../../util/notification-service';
 export class Upload {
   datePicker = new FormControl(new Date());
   isDragging = signal(false);
-  selectedFiles = signal<File[]>([]);
-  fileSize = computed(() => {
-    const totalBytes = this.selectedFiles().reduce((acc, file) => acc + file.size, 0);
-    return (totalBytes / 1024 ** 2).toFixed(2);
-  });
 
   protected uploadStore = inject(UploadStore);
   private notificationService = inject(NotificationService);
@@ -75,18 +70,18 @@ export class Upload {
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
-    this.selectedFiles.set(Array.from(input.files));
+    this.uploadStore.setSelectedFiles(Array.from(input.files));
     input.value = '';
   }
 
   upload() {
-    if (this.selectedFiles().length === 0 || !this.datePicker.value) return;
-    console.log('Uploading files:', this.selectedFiles());
-    this.uploadStore.upload(this.selectedFiles(), this.datePicker.value);
+    if (this.uploadStore.selectedFiles().length === 0 || !this.datePicker.value) return;
+    console.log('Uploading files:', this.uploadStore.selectedFiles());
+    this.uploadStore.upload(this.datePicker.value);
   }
 
   protected onRemoveFile() {
-    this.selectedFiles.set([]);
+    this.uploadStore.clearSelectedFiles();
   }
 
   protected onDragLeave(event: DragEvent) {
@@ -104,7 +99,7 @@ export class Upload {
     this.isDragging.set(false);
     const files = event.dataTransfer?.files;
     if (files) {
-      this.selectedFiles.set(Array.from(files));
+      this.uploadStore.setSelectedFiles(Array.from(files));
     }
   }
 }
