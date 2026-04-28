@@ -8,6 +8,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MultimediaThumbnail } from '../multimedia/multimedia-thumbnail/multimedia-thumbnail';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
+import { NotificationService } from '../util/notification-service';
 
 //TODO Add date to and from search to the gallery
 @Component({
@@ -30,6 +31,7 @@ export class Gallery {
   private viewContainerRef = inject(ViewContainerRef);
   private _snackBar = inject(MatSnackBar);
   private translateService = inject(TranslateService);
+  private notificationService = inject(NotificationService);
 
   constructor() {
     effect(() => {
@@ -50,5 +52,20 @@ export class Gallery {
 
   protected toggleEditMode() {
     this.isEditMode.update((v) => !v);
+  }
+
+  protected deleteMultimedia() {
+    const title = this.translateService.instant('common.delete');
+    const text = this.translateService.instant('gallery.delete_batch_confirm');
+    const confirmButtonText = this.translateService.instant('common.yes');
+    const removeFn = () => this.multimediaStore.deleteSelectedItems();
+    this.notificationService.showMessage(
+      title,
+      text,
+      confirmButtonText,
+      'question',
+      true,
+      removeFn,
+    );
   }
 }

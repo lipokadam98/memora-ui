@@ -2,6 +2,11 @@
   <section class="flex flex-row justify-between items-center">
     <h1 class="text-4xl">{{ 'gallery.title' | translate }}</h1>
     <div class="flex flex-row gap-2">
+      @if (multimediaStore.storedSelections().length > 0 && isEditMode()) {
+        <button (click)="deleteMultimedia()" matIconButton>
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
       <button (click)="toggleEditMode()" matIconButton>
         <mat-icon>edit</mat-icon>
       </button>

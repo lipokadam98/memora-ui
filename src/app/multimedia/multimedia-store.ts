@@ -18,6 +18,7 @@ type MultimediaState = {
   searchTerm: string;
   isLoading: boolean;
   selectedMultimedia: MultimediaResponseDto | null;
+  storedSelections: number[];
   hidePreviousButton: boolean;
   hideNextButton: boolean;
   hasNext: boolean;
@@ -31,6 +32,7 @@ const initialState: MultimediaState = {
   searchTerm: '',
   isLoading: false,
   selectedMultimedia: null,
+  storedSelections: [],
   hidePreviousButton: false,
   hideNextButton: false,
   hasNext: false,
@@ -167,7 +169,7 @@ export const MultimediaStore = signalStore(
         });
       }
 
-      async function remove(id: number) {
+      async function deleteById(id: number) {
         patchState(store, { error: null });
         try {
           await firstValueFrom(multimediaControllerService._delete(id));
@@ -186,6 +188,52 @@ export const MultimediaStore = signalStore(
         patchState(store, { error: null, isLoading: false, isNextDataLoading: false });
       }
 
+      function storeSelection(id: number) {
+        const storedSelections = store.storedSelections();
+        if (storedSelections.includes(id)) return;
+        patchState(store, { storedSelections: [...storedSelections, id] });
+      }
+
+      function removeSelection(id: number) {
+        const storedSelections = store.storedSelections();
+        const filteredSelections = storedSelections.filter((m) => m !== id);
+        patchState(store, { storedSelections: filteredSelections });
+      }
+
+      function isSelectionStored(id: number | undefined) {
+        if (!id) return false;
+        return !!store.storedSelections().find((storedSelection) => storedSelection === id);
+      }
+
+      async function deleteSelectedItems() {
+        // 1. Capture the current state for a potential rollback
+        const previousMultimedia = store.multimedia();
+        const selectedIds = store.storedSelections();
+
+        // 2. Perform an OPTIMISTIC update (Immediate UI change)
+        patchState(store, {
+          multimedia: previousMultimedia.filter(
+            (m) => m.id !== undefined && !selectedIds.includes(m.id),
+          ),
+          storedSelections: [], // Clear selections immediately
+          error: null,
+        });
+
+        try {
+          // 3. Perform the network call in the background
+          await firstValueFrom(multimediaControllerService.deleteBatch(selectedIds));
+
+          // If successful, we don't need to do anything else!
+          // The UI is already updated.
+        } catch (error: unknown) {
+          // 4. ROLLBACK: If the server fails, restore the previous state
+          patchState(store, {
+            multimedia: previousMultimedia,
+            error: getErrorMessage(error), // Or use getErrorMessage(error)
+          });
+        }
+      }
+
       return {
         selectNext,
         selectPrevious,
@@ -193,8 +241,12 @@ export const MultimediaStore = signalStore(
         loadStartingData,
         loadNextData,
         addMultimedia,
-        remove,
+        deleteById,
+        storeSelection,
+        removeSelection,
+        isSelectionStored,
         clearError,
+        deleteSelectedItems,
       };
     },
   ),

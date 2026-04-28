@@ -23,14 +23,12 @@
     "login_error": "Kérlek, adj meg egy érvényes e-mail címet és jelszót.",
     "logout_confirm": "Biztosan ki szeretnél jelentkezni?"
   },
-  "multimedia": {
-    "delete_confirm": "Biztosan törölni szeretnéd ezt a médiaelemet?"
-  },
   "gallery": {
     "title": "Galéria",
     "load_error": "A média betöltése sikertelen. Kérlek, próbáld újra később.",
     "upload": "Feltöltés",
-    "load_more": "Továbbiak betöltése"
+    "load_more": "Továbbiak betöltése",
+    "delete_batch_confirm": "Biztosan törölni szeretnéd a kijelölt multimédia elemeket?"
   },
   "upload": {
     "title": "Média feltöltése",

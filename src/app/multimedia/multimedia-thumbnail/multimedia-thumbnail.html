@@ -11,9 +11,13 @@
     <div class="w-full aspect-square bg-gray-300 animate-pulse rounded"></div>
   }
   @if (isEditMode()) {
-    <button (click)="deleteMultimedia()" class="absolute top-0 right-0 cursor-pointer">
-      <span class="material-icons"> delete </span>
-    </button>
+    @let id = multimedia().id;
+    <mat-checkbox
+      (change)="onSelectionChange($event)"
+      [checked]="multimediaStore.isSelectionStored(id)"
+      aria-label="Selection checkbox"
+      class="absolute! bottom-0 right-0 cursor-pointer"
+    ></mat-checkbox>
   }
 
   @if (multimedia().contentType?.includes('video')) {

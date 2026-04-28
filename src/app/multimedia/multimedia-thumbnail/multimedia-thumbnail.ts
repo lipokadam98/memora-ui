@@ -3,20 +3,18 @@ import { MultimediaResponseDto } from '../../api';
 import { MatDialog } from '@angular/material/dialog';
 import { MultimediaContent } from '../multimedia-content/multimedia-content';
 import { MultimediaStore } from '../multimedia-store';
-import { NotificationService } from '../../util/notification-service';
-import { TranslateService } from '@ngx-translate/core';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-multimedia-thumbnail',
   templateUrl: './multimedia-thumbnail.html',
   styleUrl: './multimedia-thumbnail.css',
+  imports: [MatCheckbox],
 })
 export class MultimediaThumbnail {
   isEditMode = input(false);
   multimedia = input.required<MultimediaResponseDto>();
-  private multimediaStore = inject(MultimediaStore);
-  private notificationService = inject(NotificationService);
-  private translateService = inject(TranslateService);
+  protected multimediaStore = inject(MultimediaStore);
   private viewContainerRef = inject(ViewContainerRef);
 
   private dialog = inject(MatDialog);
@@ -29,20 +27,14 @@ export class MultimediaThumbnail {
     });
   }
 
-  protected deleteMultimedia() {
+  protected onSelectionChange($event: MatCheckboxChange) {
     const id = this.multimedia().id;
     if (!id) return;
-    const title = this.translateService.instant('common.delete');
-    const text = this.translateService.instant('multimedia.delete_confirm');
-    const confirmButtonText = this.translateService.instant('common.yes');
-    const removeFn = () => this.multimediaStore.remove(id);
-    this.notificationService.showMessage(
-      title,
-      text,
-      confirmButtonText,
-      'question',
-      true,
-      removeFn,
-    );
+    const isChecked = $event.checked;
+    if (isChecked) {
+      this.multimediaStore.storeSelection(id);
+    } else {
+      this.multimediaStore.removeSelection(id);
+    }
   }
 }
