@@ -7,7 +7,7 @@
   <div class="flex flex-row gap-4">
     @if (isLoggedIn) {
       <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
-      <!--<button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>-->
+      <button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>
     }
   </div>
 
