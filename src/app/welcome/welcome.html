@@ -3,16 +3,21 @@
     <h1 class="text-4xl font-extrabold tracking-tight">Memora</h1>
     <p class="text-lg mt-2">Discover and save your memories.</p>
   </section>
-
-  <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mx-auto max-w-7xl">
-    @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
-      <article
-        class="break-inside-avoid bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-2"
-      >
-        <img [src]="multimedia.thumbnailUrl" alt="Tile" class="w-full rounded-xl mb-3" />
-        <h3 class="font-bold text-white">Quick Note</h3>
-        <p class="text-sm text-gray-300">Short description here.</p>
-      </article>
-    }
-  </div>
+  @if (multimediaStore.isLoading()) {
+    <div class="flex flex-row items-center justify-center">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else {
+    <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mx-auto max-w-7xl">
+      @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
+        <article
+          class="break-inside-avoid bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-2"
+        >
+          <img [src]="multimedia.thumbnailUrl" alt="Tile" class="w-full rounded-xl mb-3" />
+          <h3 class="font-bold text-white">Quick Note</h3>
+          <p class="text-sm text-gray-300">Short description here.</p>
+        </article>
+      }
+    </div>
+  }
 </main>
