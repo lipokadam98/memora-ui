@@ -51,7 +51,7 @@ export const AuthStore = signalStore(
       async function logout() {
         localStorage.removeItem('loginData');
         patchState(store, { loginData: undefined });
-        await router.navigate(['/']);
+        await router.navigate(['/authentication']);
       }
 
       async function register(registerUserDto: RegisterUserDto) {
