@@ -3,7 +3,8 @@
   "navbar": {
     "home": "Kezdőlap",
     "gallery": "Galéria",
-    "notes": "Jegyzetek"
+    "notes": "Jegyzetek",
+    "language": "Nyelv"
   },
   "common": {
     "save": "Mentés",
@@ -20,6 +21,7 @@
     "password": "Jelszó",
     "login": "Bejelentkezés",
     "logout": "Kijelentkezés",
+    "settings": "Beállítások",
     "login_error": "Kérlek, adj meg egy érvényes e-mail címet és jelszót.",
     "logout_confirm": "Biztosan ki szeretnél jelentkezni?"
   },

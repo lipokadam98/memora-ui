@@ -13,25 +13,43 @@
 
   <section class="flex flex-row items-center">
     @if (isLoggedIn) {
-      <button (click)="logout()" matIconButton>
-        <mat-icon>logout</mat-icon>
+      <button
+        [matMenuTriggerFor]="profileMenu"
+        aria-label="Button for the language selection"
+        matIconButton
+      >
+        <mat-icon>account_box</mat-icon>
       </button>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>{{ 'authentication.settings' | translate }}</span>
+        </button>
+        <button [matMenuTriggerFor]="languageMenu" mat-menu-item>
+          <span>{{ 'navbar.language' | translate }}</span>
+          <mat-icon>language</mat-icon>
+        </button>
+        <button (click)="logout()" mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>{{ 'authentication.logout' | translate }}</span>
+        </button>
+      </mat-menu>
+      <mat-menu #languageMenu="matMenu">
+        <button (click)="translateHelperService.changeLanguage('en')" mat-menu-item>
+          <mat-icon>flag</mat-icon>
+          <span>English</span>
+        </button>
+        <button (click)="translateHelperService.changeLanguage('hu')" mat-menu-item>
+          <mat-icon>flag</mat-icon>
+          <span>Magyar</span>
+        </button>
+      </mat-menu>
     } @else {
       <button [routerLink]="['/authentication']" matIconButton>
         <mat-icon>login</mat-icon>
       </button>
     }
-    <button [matMenuTriggerFor]="menu" aria-label="Button for the language selection" matIconButton>
-      <mat-icon>language</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button (click)="translateHelperService.changeLanguage('en')" mat-menu-item>
-        <span>English</span>
-      </button>
-      <button (click)="translateHelperService.changeLanguage('hu')" mat-menu-item>
-        <span>Magyar</span>
-      </button>
-    </mat-menu>
+
     @let isDarkMode = themeService.darkMode();
     <button (click)="toggleDarkMode()" matIconButton>
       <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>

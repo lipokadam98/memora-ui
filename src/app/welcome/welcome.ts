@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MultimediaStore } from '../multimedia/multimedia-store';
 
 @Component({
   selector: 'app-welcome',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './welcome.html',
   styleUrl: './welcome.css',
 })
-export class Welcome {}
+export class Welcome {
+  protected multimediaStore = inject(MultimediaStore);
+}

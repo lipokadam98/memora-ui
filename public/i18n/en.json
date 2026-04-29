@@ -3,7 +3,8 @@
   "navbar": {
     "home": "Home",
     "gallery": "Gallery",
-    "notes": "Notes"
+    "notes": "Notes",
+    "language": "Language"
   },
   "common": {
     "save": "Save",
@@ -20,6 +21,7 @@
     "password": "Password",
     "login": "Login",
     "logout": "Logout",
+    "settings": "Settings",
     "login_error": "Please enter a valid email and password.",
     "logout_confirm": "Are you sure you want to log out?"
   },
