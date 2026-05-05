@@ -6,6 +6,10 @@
     "notes": "Jegyzetek",
     "language": "Nyelv"
   },
+  "welcome": {
+    "title": "Üdvözlünk a Memorában",
+    "subtitle": "Fedezd fel és mentsd el az emlékeidet."
+  },
   "common": {
     "save": "Mentés",
     "upload": "Feltöltés",

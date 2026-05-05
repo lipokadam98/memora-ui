@@ -6,6 +6,10 @@
     "notes": "Notes",
     "language": "Language"
   },
+  "welcome": {
+    "title": "Welcome to Memora",
+    "subtitle": "Discover and save your memories."
+  },
   "common": {
     "save": "Save",
     "upload": "Upload",

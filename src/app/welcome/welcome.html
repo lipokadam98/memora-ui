@@ -1,7 +1,7 @@
 <main class="min-h-screen px-4 py-12 transition-colors duration-300">
   <section class="text-center mb-12">
-    <h1 class="text-4xl font-extrabold tracking-tight">Memora</h1>
-    <p class="text-lg mt-2">Discover and save your memories.</p>
+    <h1 class="text-4xl font-extrabold tracking-tight">{{ 'welcome.title' | translate }}</h1>
+    <p class="text-lg mt-2">{{ 'welcome.subtitle' | translate }}</p>
   </section>
   @if (multimediaStore.isLoading()) {
     <div class="flex flex-row items-center justify-center">
