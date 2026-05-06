@@ -8,6 +8,8 @@ import { AuthStore } from '../authentication/auth-store';
 import { NotificationService } from '../util/notification-service';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { TranslateHelperService } from '../util/translate-helper-service';
+import { MatDialog } from '@angular/material/dialog';
+import { Settings } from '../settings/settings';
 
 @Component({
   selector: 'app-navbar',
@@ -30,9 +32,14 @@ export class Navbar {
   protected translateHelperService = inject(TranslateHelperService);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
+  private matDialog = inject(MatDialog);
 
   protected toggleDarkMode() {
     this.themeService.toggle();
+  }
+
+  protected openSettings() {
+    this.matDialog.open(Settings);
   }
 
   protected logout() {
