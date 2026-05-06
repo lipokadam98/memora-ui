@@ -42,7 +42,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint delete /multimedia/{id}
+     * @endpoint delete /api/multimedia/{id}
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -80,7 +80,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
             {
@@ -96,7 +96,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint post /multimedia
+     * @endpoint post /api/multimedia
      * @param multimediaRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -144,7 +144,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia`;
+        let localVarPath = `/api/multimedia`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<MultimediaResponseDto>>('post', `${basePath}${localVarPath}`,
             {
@@ -161,7 +161,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint post /multimedia/create-thumbnails
+     * @endpoint post /api/multimedia/create-thumbnails
      * @param thumbnailCreationRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -209,7 +209,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia/create-thumbnails`;
+        let localVarPath = `/api/multimedia/create-thumbnails`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<MultimediaResponseDto>>('post', `${basePath}${localVarPath}`,
             {
@@ -226,7 +226,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint delete /multimedia/batch
+     * @endpoint delete /api/multimedia/batch
      * @param requestBody 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -273,7 +273,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia/batch`;
+        let localVarPath = `/api/multimedia/batch`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
             {
@@ -290,7 +290,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint get /multimedia
+     * @endpoint get /api/multimedia
      * @param userId 
      * @param cursor 
      * @param limit 
@@ -360,7 +360,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia`;
+        let localVarPath = `/api/multimedia`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<CursorPageMultimediaResponseDto>('get', `${basePath}${localVarPath}`,
             {
@@ -377,7 +377,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint get /multimedia/{id}
+     * @endpoint get /api/multimedia/{id}
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -416,7 +416,7 @@ export class MultimediaControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<MultimediaResponseDto>('get', `${basePath}${localVarPath}`,
             {
@@ -432,7 +432,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint get /multimedia/{id}/content
+     * @endpoint get /api/multimedia/{id}/content
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -460,7 +460,7 @@ export class MultimediaControllerService extends BaseService {
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
-        let localVarPath = `/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/content`;
+        let localVarPath = `/api/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/content`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request('get', `${basePath}${localVarPath}`,
             {
@@ -476,7 +476,7 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
-     * @endpoint get /multimedia/{id}/thumbnail
+     * @endpoint get /api/multimedia/{id}/thumbnail
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -504,7 +504,7 @@ export class MultimediaControllerService extends BaseService {
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
-        let localVarPath = `/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/thumbnail`;
+        let localVarPath = `/api/multimedia/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/thumbnail`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request('get', `${basePath}${localVarPath}`,
             {

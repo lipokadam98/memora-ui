@@ -17,6 +17,7 @@ export class TranslateHelperService {
   );
 
   changeLanguage(lang: 'en' | 'hu') {
+    localStorage.setItem('language', lang);
     this.translateService.use(lang);
   }
 }
