@@ -47,5 +47,8 @@
     "file_size": "Size: {{ fileSize }} mb",
     "drag_drop_files_top": "Drag & drop files here",
     "drag_drop_files_bottom": "or click to browse"
+  },
+  "settings": {
+    "title": "Settings"
   }
 }

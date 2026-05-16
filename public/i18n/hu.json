@@ -47,5 +47,8 @@
     "file_size": "Méret: {{ fileSize }} MB",
     "drag_drop_files_top": "Húzd ide a fájlokat",
     "drag_drop_files_bottom": "vagy kattints a tallózáshoz"
+  },
+  "settings": {
+    "title": "Beállítások"
   }
 }
