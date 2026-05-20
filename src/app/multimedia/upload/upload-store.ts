@@ -55,7 +55,7 @@ export const UploadStore = signalStore(
           }));
 
           const uploadedMultimedia = await firstValueFrom(
-            multimediaControllerService.create(requestDtoList),
+            multimediaControllerService.create1(requestDtoList),
           );
           console.log('Uploaded multimedia: ', uploadedMultimedia);
 

@@ -5,6 +5,7 @@ api.module.ts
 api/api.ts
 api/authenticationController.service.ts
 api/multimediaController.service.ts
+api/notesController.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -14,8 +15,10 @@ model/grantedAuthority.ts
 model/loginResponse.ts
 model/loginUserDto.ts
 model/models.ts
+model/multimedia.ts
 model/multimediaRequestDto.ts
 model/multimediaResponseDto.ts
+model/notes.ts
 model/registerUserDto.ts
 model/thumbnailCreationRequestDto.ts
 model/user.ts

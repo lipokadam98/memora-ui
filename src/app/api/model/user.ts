@@ -7,7 +7,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Multimedia } from './multimedia';
 import { GrantedAuthority } from './grantedAuthority';
+import { Notes } from './notes';
 
 
 export interface User { 
@@ -19,6 +21,8 @@ export interface User {
     enabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
+    multimediaList?: Array<Multimedia>;
+    notesList?: Array<Notes>;
     username?: string;
     authorities?: Array<GrantedAuthority>;
     accountNonLocked?: boolean;

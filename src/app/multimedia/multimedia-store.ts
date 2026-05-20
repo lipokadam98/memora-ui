@@ -122,7 +122,7 @@ export const MultimediaStore = signalStore(
             return;
           }
           const { items, nextCursor, hasNext } = await firstValueFrom(
-            multimediaControllerService.getAll(user.id),
+            multimediaControllerService.getAll1(user.id),
           );
           patchState(store, {
             multimedia: items,
@@ -147,7 +147,7 @@ export const MultimediaStore = signalStore(
           const cursor = store.nextCursor();
           if (hasNext && cursor) {
             const { items, nextCursor, hasNext } = await firstValueFrom(
-              multimediaControllerService.getAll(user.id, cursor),
+              multimediaControllerService.getAll1(user.id, cursor),
             );
             if (items)
               patchState(store, {
@@ -172,7 +172,7 @@ export const MultimediaStore = signalStore(
       async function deleteById(id: number) {
         patchState(store, { error: null });
         try {
-          await firstValueFrom(multimediaControllerService._delete(id));
+          await firstValueFrom(multimediaControllerService.delete1(id));
           const filteredMultimedia = store
             .multimedia()
             .filter((multimedia) => multimedia.id !== id);
