@@ -25,9 +25,9 @@ export interface User {
     notesList?: Array<Notes>;
     username?: string;
     authorities?: Array<GrantedAuthority>;
-    accountNonLocked?: boolean;
-    credentialsNonExpired?: boolean;
     accountNonExpired?: boolean;
+    credentialsNonExpired?: boolean;
+    accountNonLocked?: boolean;
 }
 export namespace User {
     export const RoleEnum = {

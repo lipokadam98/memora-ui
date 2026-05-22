@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { NotesStore } from './notes-store';
 
 @Component({
   selector: 'app-notes',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './notes.html',
   styleUrl: './notes.css',
 })
-export class Notes {}
+export class Notes {
+  protected notesStore = inject(NotesStore);
+}
