@@ -7,7 +7,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Notes } from './notes';
+import { User } from './user';
+import { Note } from './note';
 
 
 export interface Multimedia { 
@@ -21,7 +22,7 @@ export interface Multimedia {
     createdAt?: string;
     updatedAt?: string;
     uploadDate?: string;
-    user?: any | null;
-    notes?: Notes;
+    user?: User;
+    note?: Note;
 }
 

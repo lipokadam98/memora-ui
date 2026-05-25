@@ -9,25 +9,25 @@
  */
 import { Multimedia } from './multimedia';
 import { GrantedAuthority } from './grantedAuthority';
-import { Notes } from './notes';
+import { Note } from './note';
 
 
 export interface User { 
     id?: number;
-    email?: string;
-    fullName?: string;
+    email: string;
+    fullName: string;
     password?: string;
     role?: User.RoleEnum;
     enabled?: boolean;
     createdAt?: string;
     updatedAt?: string;
     multimediaList?: Array<Multimedia>;
-    notesList?: Array<Notes>;
+    noteList?: Array<Note>;
     username?: string;
     authorities?: Array<GrantedAuthority>;
     accountNonExpired?: boolean;
-    credentialsNonExpired?: boolean;
     accountNonLocked?: boolean;
+    credentialsNonExpired?: boolean;
 }
 export namespace User {
     export const RoleEnum = {

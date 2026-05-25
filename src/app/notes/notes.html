@@ -1,4 +1,14 @@
 <main class="flex flex-col gap-4 justify-center items-center">
   <h1>Notes</h1>
-  {{ notesStore.notes() }}
+  @if (notesStore.notes().length > 0) {
+    @for (note of notesStore.notes(); track note.id) {
+      <ul>
+        <li>{{ note.title }}</li>
+        <li>{{ note.content }}</li>
+      </ul>
+    }
+  } @else {
+    <p>No notes found.</p>
+  }
+  <button (click)="onAddNote()" mat-raised-button>Add Note</button>
 </main>
