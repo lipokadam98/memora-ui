@@ -10,5 +10,13 @@
   } @else {
     <p>No notes found.</p>
   }
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput placeholder="Title" type="text" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Content</mat-label>
+    <textarea matInput placeholder="Content" type="text"> </textarea>
+  </mat-form-field>
   <button (click)="onAddNote()" mat-raised-button>Add Note</button>
 </main>
