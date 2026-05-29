@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { NotesStore } from './notes-store';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -12,6 +12,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './notes.css',
 })
 export class Notes {
+  protected noteForm = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    content: new FormControl('', [Validators.required]),
+  });
   protected notesStore = inject(NotesStore);
 
   ngOnInit() {
@@ -19,6 +23,10 @@ export class Notes {
   }
 
   protected onAddNote() {
-    this.notesStore.create('New note', 'Test content');
+    const { title, content } = this.noteForm.value;
+    if (!title || !content) {
+      return;
+    }
+    this.notesStore.create(title, content);
   }
 }

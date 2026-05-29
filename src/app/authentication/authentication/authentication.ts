@@ -22,7 +22,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   styleUrl: './authentication.css',
 })
 export class Authentication {
-  authenticationForm = new FormGroup({
+  protected authenticationForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
@@ -44,8 +44,7 @@ export class Authentication {
   }
 
   onLogin() {
-    const email = this.authenticationForm.get('email')?.value;
-    const password = this.authenticationForm.get('password')?.value;
+    const { email, password } = this.authenticationForm.value;
     if (!email || !password) {
       return;
     }

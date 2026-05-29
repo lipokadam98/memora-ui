@@ -10,13 +10,21 @@
   } @else {
     <p>No notes found.</p>
   }
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <input autofocus matInput placeholder="Title" type="text" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Content</mat-label>
-    <textarea matInput placeholder="Content" type="text"> </textarea>
-  </mat-form-field>
-  <button (click)="onAddNote()" mat-raised-button>{{ 'notes.add_note' | translate }}</button>
+  <form [formGroup]="noteForm" class="flex flex-col gap-4 justify-center items-center">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input autofocus formControlName="title" matInput placeholder="Title" type="text" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Content</mat-label>
+      <textarea formControlName="content" matInput placeholder="Content" type="text"> </textarea>
+    </mat-form-field>
+    <button
+      (click)="onAddNote()"
+      [disabled]="noteForm.invalid || notesStore.isLoading()"
+      mat-raised-button
+    >
+      {{ 'notes.add_note' | translate }}
+    </button>
+  </form>
 </main>
