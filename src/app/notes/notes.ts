@@ -3,10 +3,11 @@ import { NotesStore } from './notes-store';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notes',
-  imports: [MatButton, MatInput, MatFormField, MatLabel, ReactiveFormsModule],
+  imports: [MatButton, MatInput, MatFormField, MatLabel, ReactiveFormsModule, TranslatePipe],
   templateUrl: './notes.html',
   styleUrl: './notes.css',
 })

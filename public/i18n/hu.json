@@ -50,5 +50,9 @@
   },
   "settings": {
     "title": "Beállítások"
+  },
+  "notes": {
+    "title": "Jegyzetek",
+    "add_note": "Jegyzet hozzáadása"
   }
 }

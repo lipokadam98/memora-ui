@@ -50,5 +50,9 @@
   },
   "settings": {
     "title": "Settings"
+  },
+  "notes": {
+    "title": "Notes",
+    "add_note": "Add Note"
   }
 }

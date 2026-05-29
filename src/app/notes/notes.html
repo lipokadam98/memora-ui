@@ -1,5 +1,5 @@
 <main class="flex flex-col gap-4 justify-center items-center">
-  <h1>Notes</h1>
+  <h1 class="text-3xl">{{ 'notes.title' | translate }}</h1>
   @if (notesStore.notes().length > 0) {
     @for (note of notesStore.notes(); track note.id) {
       <ul>
@@ -12,11 +12,11 @@
   }
   <mat-form-field>
     <mat-label>Title</mat-label>
-    <input matInput placeholder="Title" type="text" />
+    <input autofocus matInput placeholder="Title" type="text" />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Content</mat-label>
     <textarea matInput placeholder="Content" type="text"> </textarea>
   </mat-form-field>
-  <button (click)="onAddNote()" mat-raised-button>Add Note</button>
+  <button (click)="onAddNote()" mat-raised-button>{{ 'notes.add_note' | translate }}</button>
 </main>
