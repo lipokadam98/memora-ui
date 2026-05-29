@@ -1,30 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth-service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 describe('AuthService', () => {
   let service: AuthService;
 
-  const activatedRouteMock = {
-    params: of({}),
-    queryParams: of({}),
-    snapshot: {
-      paramMap: {},
-      queryParamMap: {},
-    },
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        Router,
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
+      imports: [RouterModule.forRoot([])],
     });
     service = TestBed.inject(AuthService);
   });

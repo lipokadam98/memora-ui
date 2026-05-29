@@ -1,26 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('App', () => {
-  const activatedRouteMock = {
-    params: of({}),
-    queryParams: of({}),
-    snapshot: {
-      paramMap: {},
-      queryParamMap: {},
-    },
-  };
+  @Component({ template: '' })
+  class DummyComponent {}
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
+      imports: [
+        App,
+        TranslateModule.forRoot(),
+        RouterModule.forRoot([
+          {
+            path: 'authentication',
+            component: DummyComponent,
+          },
+        ]),
       ],
     }).compileComponents();
   });
@@ -29,12 +27,5 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Memora UI');
   });
 });

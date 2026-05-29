@@ -1,30 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Navbar } from './navbar';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { Component } from '@angular/core';
 
 describe('Navbar', () => {
   let component: Navbar;
   let fixture: ComponentFixture<Navbar>;
 
-  const activatedRouteMock = {
-    params: of({}),
-    queryParams: of({}),
-    snapshot: {
-      paramMap: {},
-      queryParamMap: {},
-    },
-  };
+  @Component({ template: '' })
+  class DummyComponent {}
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar],
-      providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
+      imports: [
+        Navbar,
+        TranslateModule.forRoot(),
+        RouterModule.forRoot([{ path: 'authentication', component: DummyComponent }]),
       ],
     }).compileComponents();
 
