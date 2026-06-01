@@ -64,14 +64,28 @@ More important note:
 
 https://cloud.google.com/storage/docs/configuring-cors
 
+```json
 [
-{
-"origin": ["Your website URL"],
-"method": ["GET", "PUT", "OPTIONS", "HEAD"],
-"responseHeader": ["Content-Type", "Origin", "Accept", "Authorization"],
-"maxAgeSeconds": 3600
-}
+  {
+    "origin": [
+      "Your website URL"
+    ],
+    "method": [
+      "GET",
+      "PUT",
+      "OPTIONS",
+      "HEAD"
+    ],
+    "responseHeader": [
+      "Content-Type",
+      "Origin",
+      "Accept",
+      "Authorization"
+    ],
+    "maxAgeSeconds": 3600
+  }
 ]
+```
 
 ### And run this command:
 
