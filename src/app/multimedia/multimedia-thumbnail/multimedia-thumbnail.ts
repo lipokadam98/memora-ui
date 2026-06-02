@@ -22,7 +22,6 @@ export class MultimediaThumbnail {
   protected openMultimedia() {
     this.multimediaStore.select(this.multimedia());
     this.dialog.open(MultimediaContent, {
-      disableClose: true,
       viewContainerRef: this.viewContainerRef,
     });
   }

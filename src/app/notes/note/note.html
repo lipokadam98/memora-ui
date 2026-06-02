@@ -1,0 +1,20 @@
+<div
+  class="flex flex-col justify-between rounded-xl border-2 border-slate-900 p-5 shadow-lg transition-all hover:border-pink-900/50 hover:shadow-pink-950/10"
+>
+  <div class="flex flex-col gap-3">
+    <h3 [title]="note().title" class="text-xl font-bold tracking-tight line-clamp-3 break-all">
+      {{ note().title }}
+    </h3>
+    <span
+      class="inline-flex self-start items-center rounded-md px-2 py-0.5 text-xs font-medium text-blue-400 border border-blue-900/50"
+    >
+      Note
+    </span>
+    <p class="text-base text-slate-400 line-clamp-5 wrap-break-word whitespace-pre-line">
+      {{ note().content }}
+    </p>
+  </div>
+  <div class="mt-6 pt-3 border-t border-slate-900 flex justify-end text-xs text-slate-500">
+    <span>ID: {{ note().id }}</span>
+  </div>
+</div>

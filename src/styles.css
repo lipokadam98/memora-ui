@@ -1,33 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
 
+/* 1. Define theme variables for both Light and Dark modes */
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
+  color-scheme: light; /* Tells the browser to use native light inputs */
 }
 
 .dark-theme {
   --bg-color: #121212;
   --text-color: #e0e0e0;
+  color-scheme: dark; /* CRITICAL: Tells the browser to switch native inputs/carets to dark mode */
 }
 
-body, nav {
+/* 2. Apply typography and colors globally, explicitly targeting inputs */
+body, nav, input, textarea, select {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: 'Roboto', serif;
 }
 
-.button {
-  background-color: var(--text-color);
-  color: var(--bg-color);
-  @apply p-1 rounded-lg cursor-pointer;
-}
+/* 3. Angular Material Specific Fix */
+/* Material inputs use their own internal typography styling. This forces them to respect your theme colors. */
+.mat-mdc-form-field {
+  --mdc-filled-text-field-input-text-color: var(--text-color);
+  --mdc-outlined-text-field-input-text-color: var(--text-color);
 
-.button:hover {
-  @apply bg-gray-400;
-}
-
-.button:disabled {
-  @apply bg-gray-500 opacity-50 cursor-not-allowed;
+  /* Optional: Adjusts placeholder color so it doesn't stay pitch black in dark mode */
+  --mdc-filled-text-field-placeholder-text-color: rgba(var(--text-color), 0.6);
+  --mdc-outlined-text-field-placeholder-text-color: rgba(var(--text-color), 0.6);
 }

@@ -53,6 +53,9 @@
   },
   "notes": {
     "title": "Jegyzetek",
-    "add_note": "Jegyzet hozzáadása"
+    "add_note": "Jegyzet hozzáadása",
+    "create": "Új jegyzet létrehozása",
+    "input_title": "Cím",
+    "input_content": "Tartalom"
   }
 }

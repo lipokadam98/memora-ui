@@ -4,10 +4,21 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Note } from './note/note';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-notes',
-  imports: [MatButton, MatInput, MatFormField, MatLabel, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    MatButton,
+    MatInput,
+    MatFormField,
+    MatLabel,
+    ReactiveFormsModule,
+    TranslatePipe,
+    Note,
+    MatIcon,
+  ],
   templateUrl: './notes.html',
   styleUrl: './notes.css',
 })

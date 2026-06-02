@@ -53,6 +53,9 @@
   },
   "notes": {
     "title": "Notes",
-    "add_note": "Add Note"
+    "add_note": "Add Note",
+    "create": "Create New Note",
+    "input_title": "Title",
+    "input_content": "Content"
   }
 }

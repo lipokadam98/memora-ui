@@ -57,7 +57,6 @@ export const MultimediaStore = signalStore(
 
         const date = new Date(item.uploadDate);
 
-        // Now uses the dynamic language signal
         const key = date.toLocaleString(lang, {
           year: 'numeric',
           month: 'long',

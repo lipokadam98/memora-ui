@@ -1,30 +1,52 @@
-<main class="flex flex-col gap-4 justify-center items-center">
-  <h1 class="text-3xl">{{ 'notes.title' | translate }}</h1>
-  @if (notesStore.notes().length > 0) {
-    @for (note of notesStore.notes(); track note.id) {
-      <ul>
-        <li>{{ note.title }}</li>
-        <li>{{ note.content }}</li>
-      </ul>
-    }
-  } @else {
-    <p>No notes found.</p>
-  }
-  <form [formGroup]="noteForm" class="flex flex-col gap-4 justify-center items-center">
-    <mat-form-field>
-      <mat-label>Title</mat-label>
-      <input autofocus formControlName="title" matInput placeholder="Title" type="text" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Content</mat-label>
-      <textarea formControlName="content" matInput placeholder="Content" type="text"> </textarea>
-    </mat-form-field>
-    <button
-      (click)="onAddNote()"
-      [disabled]="noteForm.invalid || notesStore.isLoading()"
-      mat-raised-button
+<main class="min-h-screen p-6 md:p-8">
+  <header class="mb-8 border-b pb-4">
+    <h1 class="text-4xl font-bold">{{ 'notes.title' | translate }}</h1>
+  </header>
+
+  <div class="flex flex-col lg:flex-row gap-8 items-start">
+    <aside
+      class="w-full lg:w-80 p-6 rounded-xl shadow-sm border-2 border-slate-900 lg:sticky lg:top-6"
     >
-      {{ 'notes.add_note' | translate }}
-    </button>
-  </form>
+      <h2 class="text-lg font-semibold mb-4">{{ 'notes.create' | translate }}</h2>
+      <form [formGroup]="noteForm" class="flex flex-col gap-4">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'notes.input_title' | translate }}</mat-label>
+          <textarea formControlName="title" matInput maxlength="150" rows="4"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'notes.input_content' | translate }}</mat-label>
+          <textarea formControlName="content" matInput maxlength="10000" rows="4"></textarea>
+        </mat-form-field>
+
+        <button
+          (click)="onAddNote()"
+          [disabled]="noteForm.invalid || notesStore.isLoading()"
+          class="w-full"
+          color="primary"
+          mat-flat-button
+        >
+          {{ 'notes.add_note' | translate }}
+        </button>
+      </form>
+    </aside>
+
+    <section class="flex-1 w-full">
+      @if (notesStore.notes().length > 0) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+          @for (note of notesStore.notes(); track note.id) {
+            <app-note [note]="note" />
+          }
+        </div>
+      } @else {
+        <div
+          class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed"
+        >
+          <mat-icon class="scale-125 mb-2">note_alt</mat-icon>
+          <p class="text-lg font-medium">No notes found.</p>
+          <p class="text-sm">Use the form to create your first note!</p>
+        </div>
+      }
+    </section>
+  </div>
 </main>
