@@ -37,7 +37,7 @@ describe('Notes', () => {
 
   it('should render the notes title with the correct translation key', () => {
     fixture.detectChanges();
-    const titleElement = fixture.nativeElement.querySelector('h1.text-3xl');
+    const titleElement = fixture.nativeElement.querySelector('h1.text-4xl');
     expect(titleElement).toBeTruthy();
     expect(titleElement.textContent).toContain('notes.title');
   });

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Note } from './note';
+import { NoteResponseDto } from '../../api';
 
 describe('Note', () => {
   let component: Note;
@@ -12,6 +13,8 @@ describe('Note', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(Note);
+    component = fixture.componentInstance;
+    fixture.componentRef.setInput('note', {} as NoteResponseDto);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
