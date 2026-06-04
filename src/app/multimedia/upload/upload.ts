@@ -99,8 +99,16 @@ export class Upload {
     event.preventDefault();
     this.isDragging.set(false);
     const files = event.dataTransfer?.files;
+
     if (files) {
-      this.uploadStore.setSelectedFiles(Array.from(files));
+      const fileArray = Array.from(files);
+      const isImageOrVideo = fileArray.every(
+        (file) => file.type.startsWith('image/') || file.type.startsWith('video/'),
+      );
+      if (!isImageOrVideo) {
+        return;
+      }
+      this.uploadStore.setSelectedFiles(fileArray);
     }
   }
 }

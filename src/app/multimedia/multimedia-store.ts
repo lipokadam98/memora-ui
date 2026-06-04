@@ -205,30 +205,23 @@ export const MultimediaStore = signalStore(
       }
 
       async function deleteSelectedItems() {
-        // 1. Capture the current state for a potential rollback
         const previousMultimedia = store.multimedia();
         const selectedIds = store.storedSelections();
 
-        // 2. Perform an OPTIMISTIC update (Immediate UI change)
         patchState(store, {
           multimedia: previousMultimedia.filter(
             (m) => m.id !== undefined && !selectedIds.includes(m.id),
           ),
-          storedSelections: [], // Clear selections immediately
+          storedSelections: [],
           error: null,
         });
 
         try {
-          // 3. Perform the network call in the background
           await firstValueFrom(multimediaControllerService.deleteBatch(selectedIds));
-
-          // If successful, we don't need to do anything else!
-          // The UI is already updated.
         } catch (error: unknown) {
-          // 4. ROLLBACK: If the server fails, restore the previous state
           patchState(store, {
             multimedia: previousMultimedia,
-            error: getErrorMessage(error), // Or use getErrorMessage(error)
+            error: getErrorMessage(error),
           });
         }
       }
