@@ -6,6 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TranslatePipe } from '@ngx-translate/core';
 import { Note } from './note/note';
 import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-notes',
@@ -18,6 +19,7 @@ import { MatIcon } from '@angular/material/icon';
     TranslatePipe,
     Note,
     MatIcon,
+    MatProgressSpinner,
   ],
   templateUrl: './notes.html',
   styleUrl: './notes.css',

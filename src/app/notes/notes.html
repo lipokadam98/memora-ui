@@ -30,20 +30,26 @@
     </aside>
 
     <section class="flex-1 w-full">
-      @if (notesStore.notes().length > 0) {
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          @for (note of notesStore.notes(); track note.id) {
-            <app-note [note]="note" />
-          }
+      @if (notesStore.isLoading()) {
+        <div class="flex flex-row items-center justify-center">
+          <mat-spinner></mat-spinner>
         </div>
       } @else {
-        <div
-          class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed"
-        >
-          <mat-icon class="scale-125 mb-2">note_alt</mat-icon>
-          <p class="text-lg font-medium">No notes found.</p>
-          <p class="text-sm">Use the form to create your first note!</p>
-        </div>
+        @if (notesStore.notes().length > 0) {
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            @for (note of notesStore.notes(); track note.id) {
+              <app-note [note]="note" />
+            }
+          </div>
+        } @else {
+          <div
+            class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed"
+          >
+            <mat-icon class="scale-125 mb-2">note_alt</mat-icon>
+            <p class="text-lg font-medium">No notes found.</p>
+            <p class="text-sm">Use the form to create your first note!</p>
+          </div>
+        }
       }
     </section>
   </div>
