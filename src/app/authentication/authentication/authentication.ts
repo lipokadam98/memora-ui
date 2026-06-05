@@ -23,7 +23,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 })
 export class Authentication {
   protected authenticationForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(254)]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   protected authStore = inject(AuthStore);

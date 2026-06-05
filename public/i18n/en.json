@@ -27,7 +27,11 @@
     "logout": "Logout",
     "settings": "Settings",
     "login_error": "Please enter a valid email and password.",
-    "logout_confirm": "Are you sure you want to log out?"
+    "logout_confirm": "Are you sure you want to log out?",
+    "email_required": "Email is required.",
+    "email_invalid": "Please enter a valid email address.",
+    "password_required": "Password is required.",
+    "password_invalid": "Password must be at least 6 characters long."
   },
   "gallery": {
     "title": "Gallery",

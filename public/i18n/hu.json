@@ -27,7 +27,11 @@
     "logout": "Kijelentkezés",
     "settings": "Beállítások",
     "login_error": "Kérlek, adj meg egy érvényes e-mail címet és jelszót.",
-    "logout_confirm": "Biztosan ki szeretnél jelentkezni?"
+    "logout_confirm": "Biztosan ki szeretnél jelentkezni?",
+    "email_required": "E-mail megadása kötelező",
+    "email_invalid": "Kérlek adj meg egy érvényes e-mail címet",
+    "password_required": "Jelszó megadása kötelező",
+    "password_invalid": "Jelszó minimális hossza 6 karakter"
   },
   "gallery": {
     "title": "Galéria",

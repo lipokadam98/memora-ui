@@ -26,8 +26,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 })
 export class Notes {
   protected noteForm = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    content: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required, Validators.maxLength(150)]),
+    content: new FormControl('', [Validators.required, Validators.maxLength(10000)]),
   });
   protected notesStore = inject(NotesStore);
 

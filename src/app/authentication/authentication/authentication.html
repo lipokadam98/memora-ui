@@ -1,34 +1,74 @@
-<main class="flex flex-row items-center justify-center">
-  <form [formGroup]="authenticationForm" class="flex flex-col gap-2 items-center w-fit">
-    <h1 class="text-2xl">{{ 'authentication.login' | translate }}</h1>
-    <mat-form-field>
-      <mat-label>{{ 'authentication.email' | translate }}</mat-label>
-      <input
-        autofocus
-        formControlName="email"
-        matInput
-        placeholder="example@example.com"
-        type="email"
-      />
-    </mat-form-field>
+<main class="flex flex-row items-center justify-center min-h-screen">
+  <form
+    (ngSubmit)="onLogin()"
+    [formGroup]="authenticationForm"
+    class="flex flex-col gap-4 items-center w-64 border-2 p-4 rounded-lg shadow-lg"
+  >
+    <h1 class="text-2xl font-semibold mb-2">{{ 'authentication.login' | translate }}</h1>
 
-    <mat-form-field>
-      <mat-label>{{ 'authentication.password' | translate }}</mat-label>
-      <input autocomplete formControlName="password" matInput type="password" />
-    </mat-form-field>
+    <div class="w-full flex flex-col">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>{{ 'authentication.email' | translate }}</mat-label>
+        <input
+          autofocus
+          formControlName="email"
+          matInput
+          maxlength="254"
+          placeholder="example@example.com"
+          type="email"
+        />
+      </mat-form-field>
+      @if (authenticationForm.get('email')?.touched && authenticationForm.get('email')?.invalid) {
+        <span class="text-xs text-red-400 mt-1 pl-1">
+          @if (authenticationForm.get('email')?.hasError('required')) {
+            {{ 'authentication.email_required' | translate }}
+          }
+          @if (authenticationForm.get('email')?.hasError('email')) {
+            {{ 'authentication.email_invalid' | translate }}
+          }
+        </span>
+      }
+    </div>
+
+    <div class="w-full flex flex-col">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>{{ 'authentication.password' | translate }}</mat-label>
+        <input
+          autocomplete="current-password"
+          formControlName="password"
+          matInput
+          minlength="6"
+          type="password"
+        />
+      </mat-form-field>
+
+      @if (
+        authenticationForm.get('password')?.touched && authenticationForm.get('password')?.invalid
+      ) {
+        <div class="text-xs text-red-400 flex flex-col gap-1 mt-1 pl-1 max-w-full">
+          <span>
+            @if (authenticationForm.get('password')?.hasError('required')) {
+              {{ 'authentication.password_required' | translate }}
+            }
+            @if (authenticationForm.get('password')?.hasError('minlength')) {
+              {{ 'authentication.password_invalid' | translate }}
+            }
+          </span>
+        </div>
+      }
+    </div>
 
     @if (authStore.isLoading()) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar class="w-full my-2" mode="indeterminate"></mat-progress-bar>
     }
 
-    <div class="flex flex-row gap-2">
-      <button
-        (click)="onLogin()"
-        [disabled]="authenticationForm.invalid || authStore.isLoading()"
-        matButton="elevated"
-      >
-        {{ 'authentication.login' | translate }}
-      </button>
-    </div>
+    <button
+      [disabled]="authenticationForm.invalid || authStore.isLoading()"
+      class="w-full mt-2"
+      mat-raised-button
+      type="submit"
+    >
+      {{ 'authentication.login' | translate }}
+    </button>
   </form>
 </main>
