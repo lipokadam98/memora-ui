@@ -14,7 +14,8 @@
       {{ note().content }}
     </p>
   </div>
-  <div class="mt-6 pt-3 border-t border-slate-900 flex justify-end text-xs text-slate-500">
+  <div class="mt-6 pt-3 border-t border-slate-900 flex justify-between text-xs text-slate-500">
     <span>ID: {{ note().id }}</span>
+    <span>{{ note().createdAt | date }}</span>
   </div>
 </div>

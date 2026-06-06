@@ -50,7 +50,8 @@
     "number_of_files": "{{ fileCount }} fájl kiválasztva",
     "file_size": "Méret: {{ fileSize }} MB",
     "drag_drop_files_top": "Húzd ide a fájlokat",
-    "drag_drop_files_bottom": "vagy kattints a tallózáshoz"
+    "drag_drop_files_bottom": "vagy kattints a tallózáshoz",
+    "upload_date_required_error": "Feltöltési idő megadása kötelező."
   },
   "settings": {
     "title": "Beállítások"
@@ -60,6 +61,10 @@
     "add_note": "Jegyzet hozzáadása",
     "create": "Új jegyzet létrehozása",
     "input_title": "Cím",
-    "input_content": "Tartalom"
+    "input_content": "Tartalom",
+    "title_required_error": "Cím megadása kötelező.",
+    "title_max_length_error": "Cím maximális hossza 150 karakter.",
+    "content_required_error": "Tartalom megadása kötelező.",
+    "content_max_length_error": "Tartalom maximális hossza 10000 karakter."
   }
 }

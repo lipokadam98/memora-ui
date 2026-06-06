@@ -50,7 +50,8 @@
     "number_of_files": "{{ fileCount }} file(s) are selected",
     "file_size": "Size: {{ fileSize }} mb",
     "drag_drop_files_top": "Drag & drop files here",
-    "drag_drop_files_bottom": "or click to browse"
+    "drag_drop_files_bottom": "or click to browse",
+    "upload_date_required_error": "Upload date is required."
   },
   "settings": {
     "title": "Settings"
@@ -60,6 +61,10 @@
     "add_note": "Add Note",
     "create": "Create New Note",
     "input_title": "Title",
-    "input_content": "Content"
+    "input_content": "Content",
+    "title_required_error": "Title is required.",
+    "title_max_length_error": "Title must be less than 150 characters.",
+    "content_required_error": "Content is required.",
+    "content_max_length_error": "Content must be less than 10000 characters."
   }
 }
