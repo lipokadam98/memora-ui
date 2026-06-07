@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Note } from './note/note';
+import { NoteCard } from './note-card/note-card';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -17,7 +17,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatLabel,
     ReactiveFormsModule,
     TranslatePipe,
-    Note,
+    NoteCard,
     MatIcon,
     MatProgressSpinner,
   ],

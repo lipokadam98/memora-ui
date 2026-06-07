@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Note } from './note';
+import { NoteCard } from './note-card';
 import { NoteResponseDto } from '../../api';
 
-describe('Note', () => {
-  let component: Note;
-  let fixture: ComponentFixture<Note>;
+describe('NoteCard', () => {
+  let component: NoteCard;
+  let fixture: ComponentFixture<NoteCard>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Note],
+      imports: [NoteCard],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Note);
+    fixture = TestBed.createComponent(NoteCard);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('note', {} as NoteResponseDto);
     component = fixture.componentInstance;
