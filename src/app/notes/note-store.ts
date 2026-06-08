@@ -5,27 +5,27 @@ import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
 import { AuthStore } from '../authentication/auth-store';
 
-type NotesState = {
+type NoteState = {
   notes: NoteResponseDto[];
   isLoading: boolean;
   error: string | null;
   success: boolean;
 };
 
-const initialState: NotesState = {
+const initialState: NoteState = {
   notes: [],
   isLoading: false,
   error: null,
   success: false,
 };
 
-export const NotesStore = signalStore(
+export const NoteStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
   withMethods(
     (
       store,
-      notesControllerService = inject(NoteControllerService),
+      noteControllerService = inject(NoteControllerService),
       authStore = inject(AuthStore),
     ) => {
       async function loadAll() {
@@ -36,7 +36,7 @@ export const NotesStore = signalStore(
           if (!user?.id) {
             return;
           }
-          const notes = await firstValueFrom(notesControllerService.getAll(user.id));
+          const notes = await firstValueFrom(noteControllerService.getAll(user.id));
           console.log(notes);
           patchState(store, { notes });
         } catch (error: unknown) {
@@ -59,7 +59,7 @@ export const NotesStore = signalStore(
             content,
             user: user,
           };
-          const createdNote = await firstValueFrom(notesControllerService.create(note));
+          const createdNote = await firstValueFrom(noteControllerService.create(note));
           patchState(store, { notes: [...store.notes(), createdNote] });
         } catch (error: unknown) {
           patchState(store, { error: getErrorMessage(error) });
@@ -68,9 +68,21 @@ export const NotesStore = signalStore(
         }
       }
 
+      async function deleteById(id: number) {
+        patchState(store, { error: null });
+        try {
+          await firstValueFrom(noteControllerService._delete(id));
+          const notes = store.notes().filter((note) => note.id !== id);
+          patchState(store, { notes });
+        } catch (error: unknown) {
+          patchState(store, { error: getErrorMessage(error) });
+        }
+      }
+
       return {
         loadAll,
         create,
+        deleteById,
       };
     },
   ),

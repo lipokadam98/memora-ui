@@ -15,6 +15,8 @@ export class NoteCard {
   private dialog = inject(MatDialog);
 
   protected openNote() {
-    this.dialog.open(NoteContent);
+    this.dialog.open(NoteContent, {
+      data: this.note(),
+    });
   }
 }

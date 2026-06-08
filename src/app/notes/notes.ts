@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NotesStore } from './notes-store';
+import { NoteStore } from './note-store';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ export class Notes {
     title: new FormControl('', [Validators.required, Validators.maxLength(150)]),
     content: new FormControl('', [Validators.required, Validators.maxLength(10000)]),
   });
-  protected notesStore = inject(NotesStore);
+  protected notesStore = inject(NoteStore);
 
   ngOnInit() {
     this.notesStore.loadAll();
