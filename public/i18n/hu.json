@@ -65,6 +65,7 @@
     "title_required_error": "Cím megadása kötelező.",
     "title_max_length_error": "Cím maximális hossza 150 karakter.",
     "content_required_error": "Tartalom megadása kötelező.",
-    "content_max_length_error": "Tartalom maximális hossza 10000 karakter."
+    "content_max_length_error": "Tartalom maximális hossza 10000 karakter.",
+    "search": "Jegyzetek keresése"
   }
 }

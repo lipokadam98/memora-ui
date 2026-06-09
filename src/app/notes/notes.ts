@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NoteStore } from './note-store';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -20,6 +20,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     NoteCard,
     MatIcon,
     MatProgressSpinner,
+    MatIconButton,
   ],
   templateUrl: './notes.html',
   styleUrl: './notes.css',

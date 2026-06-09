@@ -1,6 +1,9 @@
 <main class="min-h-screen p-6 md:p-8">
-  <header class="mb-8 border-b pb-4">
+  <header class="mb-8 border-b pb-4 flex flex-row justify-between items-center">
     <h1 class="text-4xl font-bold">{{ 'notes.title' | translate }}</h1>
+    <button matIconButton>
+      <mat-icon>edit</mat-icon>
+    </button>
   </header>
 
   <div class="flex flex-col lg:flex-row gap-8 items-start">
