@@ -1,4 +1,5 @@
 <main class="flex flex-col gap-4 p-6 md:p-8">
+  @let hasGalleryItems = multimediaStore.groupedByMonth().length > 0;
   <section class="flex flex-row justify-between items-center border-b pb-4">
     <h1 class="text-4xl font-bold">{{ 'gallery.title' | translate }}</h1>
     <div class="flex flex-row gap-2">
@@ -7,9 +8,11 @@
           <mat-icon>delete</mat-icon>
         </button>
       }
-      <button (click)="toggleEditMode()" matIconButton>
-        <mat-icon>edit</mat-icon>
-      </button>
+      @if (hasGalleryItems) {
+        <button (click)="toggleEditMode()" matIconButton>
+          <mat-icon>edit</mat-icon>
+        </button>
+      }
       <button (click)="openUploadDialog()" aria-label="Upload button" matButton="filled">
         {{ 'gallery.upload' | translate }}
       </button>
@@ -20,13 +23,23 @@
       <mat-spinner></mat-spinner>
     </div>
   } @else {
-    @for (group of multimediaStore.groupedByMonth(); track group.key) {
-      <h3 class="text-2xl">{{ group.key }}</h3>
-      <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
-        @for (multimedia of group.items; track multimedia.id) {
-          <app-multimedia-thumbnail [isEditMode]="isEditMode()" [multimedia]="multimedia" />
-        }
-      </section>
+    @if (hasGalleryItems) {
+      @for (group of multimediaStore.groupedByMonth(); track group.key) {
+        <h3 class="text-2xl">{{ group.key }}</h3>
+        <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
+          @for (multimedia of group.items; track multimedia.id) {
+            <app-multimedia-thumbnail [isEditMode]="isEditMode()" [multimedia]="multimedia" />
+          }
+        </section>
+      }
+    } @else {
+      <div
+        class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed h-[calc(100vh-11rem)]"
+      >
+        <mat-icon class="scale-125 mb-2">image</mat-icon>
+        <p class="text-lg font-medium">No multimedia item found in the gallery.</p>
+        <p class="text-sm">Use the the upload button to create one!</p>
+      </div>
     }
   }
   @if (multimediaStore.isNextDataLoading()) {
@@ -34,7 +47,7 @@
       <mat-spinner></mat-spinner>
     </div>
   } @else {
-    @if (multimediaStore.hasNext()) {
+    @if (multimediaStore.hasNext() && hasGalleryItems) {
       <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">
         {{ 'gallery.load_more' | translate }}
       </button>

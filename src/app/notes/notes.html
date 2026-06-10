@@ -1,12 +1,15 @@
 <main class="min-h-screen p-6 md:p-8">
+  @let hasNotes = notesStore.notes().length > 0;
   <header class="mb-8 border-b flex-col items-center">
     <h1 class="text-4xl font-bold mb-4">{{ 'notes.title' | translate }}</h1>
-    <div class="flex flex-1 flex-row items-center justify-between gap-4">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>{{ 'notes.search_placeholder' | translate }}</mat-label>
-        <input matInput type="type" />
-      </mat-form-field>
-    </div>
+    @if (hasNotes) {
+      <div class="flex flex-1 flex-row items-center justify-between gap-4">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>{{ 'notes.search_placeholder' | translate }}</mat-label>
+          <input matInput type="type" />
+        </mat-form-field>
+      </div>
+    }
   </header>
 
   <div class="flex flex-col lg:flex-row gap-8 items-start">
@@ -69,7 +72,7 @@
           <mat-spinner></mat-spinner>
         </div>
       } @else {
-        @if (notesStore.notes().length > 0) {
+        @if (hasNotes) {
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
             @for (note of notesStore.notes(); track note.id) {
               <app-note-card [note]="note" />
@@ -77,11 +80,11 @@
           </div>
         } @else {
           <div
-            class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed"
+            class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed h-[calc(100vh-16rem)]"
           >
             <mat-icon class="scale-125 mb-2">note_alt</mat-icon>
-            <p class="text-lg font-medium">No notes found.</p>
-            <p class="text-sm">Use the form to create your first note!</p>
+            <p class="text-lg font-medium">{{ 'notes.no_notes_found' | translate }}</p>
+            <p class="text-sm">{{ 'notes.no_notes_found_text' | translate }}</p>
           </div>
         }
       }

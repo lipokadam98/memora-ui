@@ -38,7 +38,9 @@
     "load_error": "A média betöltése sikertelen. Kérlek, próbáld újra később.",
     "upload": "Feltöltés",
     "load_more": "Továbbiak betöltése",
-    "delete_batch_confirm": "Biztosan törölni szeretnéd a kijelölt multimédia elemeket?"
+    "delete_batch_confirm": "Biztosan törölni szeretnéd a kijelölt multimédia elemeket?",
+    "no_multimedia_found": "Nem találhatók médiafájlok a galériában.",
+    "no_multimedia_found_text": "Töltsd fel az elsőt a feltöltés gomb segítségével!"
   },
   "upload": {
     "title": "Média feltöltése",
@@ -66,6 +68,8 @@
     "title_max_length_error": "Cím maximális hossza 150 karakter.",
     "content_required_error": "Tartalom megadása kötelező.",
     "content_max_length_error": "Tartalom maximális hossza 10000 karakter.",
-    "search_placeholder": "Jegyzetek keresése"
+    "search_placeholder": "Jegyzetek keresése",
+    "no_notes_found": "Nem találhatók jegyzetek.",
+    "no_notes_found_text": "Hozd létre az első jegyzeted a fenti űrlap segítségével!"
   }
 }

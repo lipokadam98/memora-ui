@@ -29,7 +29,7 @@ import { Settings } from '../settings/settings';
 export class Navbar {
   protected authStore = inject(AuthStore);
   protected themeService = inject(ThemeService);
-  protected translateHelperService = inject(TranslateHelperService);
+  private translateHelperService = inject(TranslateHelperService);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
   private matDialog = inject(MatDialog);
@@ -49,5 +49,9 @@ export class Navbar {
     this.notificationService.showMessage(title, text, confirmButtonText, 'question', true, () =>
       this.authStore.logout(),
     );
+  }
+
+  protected changeLanguage(lang: 'en' | 'hu') {
+    this.translateHelperService.changeLanguage(lang);
   }
 }
