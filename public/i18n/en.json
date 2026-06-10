@@ -66,6 +66,6 @@
     "title_max_length_error": "Title must be less than 150 characters.",
     "content_required_error": "Content is required.",
     "content_max_length_error": "Content must be less than 10000 characters.",
-    "search": "Search notes"
+    "search_placeholder": "Search notes"
   }
 }

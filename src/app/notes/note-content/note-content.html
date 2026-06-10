@@ -1,6 +1,6 @@
-<div class="flex flex-col justify-between p-5">
-  <div class="flex flex-col gap-3">
-    <h3 [title]="note.title" class="text-xl font-bold tracking-tight break-all">
+<main class="flex flex-col justify-between p-5 border-2">
+  <section class="flex flex-col gap-3">
+    <h3 [title]="note.title" class="text-xl font-bold tracking-tight line-clamp-3 break-all">
       {{ note.title }}
     </h3>
     <span
@@ -13,7 +13,7 @@
     >
       {{ note.content }}
     </p>
-  </div>
+  </section>
   <div
     class="mt-6 pt-3 border-t border-slate-900 flex justify-between items-center text-xs text-slate-500"
   >
@@ -22,4 +22,4 @@
     </button>
     <span>{{ note.createdAt | date }}</span>
   </div>
-</div>
+</main>
