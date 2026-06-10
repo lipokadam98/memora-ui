@@ -10,6 +10,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { TranslateHelperService } from '../util/translate-helper-service';
 import { MatDialog } from '@angular/material/dialog';
 import { Settings } from '../settings/settings';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -22,6 +23,7 @@ import { Settings } from '../settings/settings';
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
+    NgClass,
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',

@@ -1,15 +1,16 @@
+@let isLoggedIn = !!authStore.loginData();
 <nav
-  class="flex flex-row gap-4 justify-between items-center h-12 p-2 sticky top-0 w-full border-b-2 z-10"
+  [ngClass]="isLoggedIn ? 'justify-between' : 'justify-end'"
+  class="flex flex-row gap-4 items-center h-12 p-2 sticky top-0 w-full border-b-2 z-10"
 >
-  @let isLoggedIn = !!authStore.loginData();
-  <button [routerLink]="['/']" matButton>{{ 'app_name' | translate }}</button>
+  @if (isLoggedIn) {
+    <button [routerLink]="['/']" matButton>{{ 'app_name' | translate }}</button>
 
-  <div class="flex flex-row gap-4">
-    @if (isLoggedIn) {
+    <div class="flex flex-row gap-4">
       <button [routerLink]="['/gallery']" matButton>{{ 'navbar.gallery' | translate }}</button>
       <button [routerLink]="['/notes']" matButton>{{ 'navbar.notes' | translate }}</button>
-    }
-  </div>
+    </div>
+  }
 
   <section class="flex flex-row items-center">
     @if (isLoggedIn) {
@@ -44,10 +45,6 @@
           <span>Magyar</span>
         </button>
       </mat-menu>
-    } @else {
-      <button [routerLink]="['/authentication']" matIconButton>
-        <mat-icon>login</mat-icon>
-      </button>
     }
 
     @let isDarkMode = themeService.darkMode();

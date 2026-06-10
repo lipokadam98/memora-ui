@@ -1,4 +1,5 @@
-<main class="flex flex-row items-center justify-center mt-4">
+<main class="flex flex-col items-center justify-center mt-4 gap-8">
+  <h1 class="text-4xl font-extrabold tracking-tight">{{ 'app_name' | translate }}</h1>
   <form
     (ngSubmit)="onLogin()"
     [formGroup]="authenticationForm"
