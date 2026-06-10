@@ -8,7 +8,15 @@
   },
   "welcome": {
     "title": "Welcome to Memora",
-    "subtitle": "Discover and save your memories."
+    "subtitle": "Discover and save your memories.",
+    "empty": {
+      "title": "A Beautifully Untouched Canvas",
+      "subtitle": "Your digital memory palace is currently an open-concept masterpiece. No files, no digital paper trails, just pure, unadulterated potential.",
+      "actions": {
+        "gallery": "Go to Gallery",
+        "notes": "Go to Notes"
+      }
+    }
   },
   "common": {
     "save": "Save",

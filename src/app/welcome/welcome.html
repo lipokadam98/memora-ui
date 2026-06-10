@@ -1,23 +1,52 @@
-<main class="min-h-screen px-4 py-12 transition-colors duration-300">
-  <section class="text-center mb-12">
-    <h1 class="text-4xl font-extrabold tracking-tight">{{ 'welcome.title' | translate }}</h1>
-    <p class="text-lg mt-2">{{ 'welcome.subtitle' | translate }}</p>
-  </section>
+@let hasWelcomeItems = multimediaStore.multimedia().length > 0;
+<main class="px-4 py-12 transition-colors duration-300">
+  @if (hasWelcomeItems) {
+    <section class="text-center mb-12">
+      <h1 class="text-4xl font-extrabold tracking-tight">{{ 'welcome.title' | translate }}</h1>
+      <p class="text-lg mt-2">{{ 'welcome.subtitle' | translate }}</p>
+    </section>
+  }
+
   @if (multimediaStore.isLoading()) {
     <div class="flex flex-row items-center justify-center">
       <mat-spinner></mat-spinner>
     </div>
   } @else {
-    <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mx-auto max-w-7xl">
-      @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
-        <article
-          class="break-inside-avoid rounded-xl border-2 p-2 shadow-lg transition-all cursor-pointer hover:border-pink-900/50 hover:shadow-pink-950/10"
-        >
-          <img [src]="multimedia.thumbnailUrl" alt="Tile" class="w-full rounded-xl mb-3" />
-          <h3 class="font-bold">Quick Note</h3>
-          <p class="text-sm">Short description here.</p>
-        </article>
-      }
-    </div>
+    @if (hasWelcomeItems) {
+      <div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mx-auto max-w-7xl">
+        @for (multimedia of multimediaStore.multimedia(); track multimedia.id) {
+          <article
+            class="break-inside-avoid rounded-xl border-2 p-2 shadow-lg transition-all cursor-pointer hover:border-pink-900/50 hover:shadow-pink-950/10"
+          >
+            <img [src]="multimedia.thumbnailUrl" alt="Tile" class="w-full rounded-xl mb-3" />
+            <h3 class="font-bold">Quick Note</h3>
+            <p class="text-sm">Short description here.</p>
+          </article>
+        }
+      </div>
+    } @else {
+      <div
+        class="flex flex-col items-center justify-center text-center max-w-xl mx-auto mt-20 px-4 gap-4"
+      >
+        <mat-icon class="scale-200">cloud_off</mat-icon>
+
+        <h2 class="text-2xl font-bold tracking-tight">
+          {{ 'welcome.empty.title' | translate }}
+        </h2>
+
+        <p class="text-base font-normal leading-relaxed max-w-md">
+          {{ 'welcome.empty.subtitle' | translate }}
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <button mat-stroked-button routerLink="/gallery">
+            {{ 'welcome.empty.actions.gallery' | translate }}
+          </button>
+          <button mat-stroked-button routerLink="/notes">
+            {{ 'welcome.empty.actions.notes' | translate }}
+          </button>
+        </div>
+      </div>
+    }
   }
 </main>
