@@ -29,7 +29,7 @@ export class Gallery {
   protected multimediaStore = inject(MultimediaStore);
   private dialog = inject(MatDialog);
   private viewContainerRef = inject(ViewContainerRef);
-  private _snackBar = inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
   private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
 
@@ -37,7 +37,7 @@ export class Gallery {
     effect(() => {
       if (this.multimediaStore.error()) {
         const message = this.translateService.instant('gallery.load_error');
-        this._snackBar.open(message, 'OK', { duration: 5000 });
+        this.snackBar.open(message, 'OK', { duration: 5000 });
         this.multimediaStore.clearError();
       }
     });

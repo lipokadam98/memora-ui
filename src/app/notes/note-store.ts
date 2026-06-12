@@ -79,10 +79,15 @@ export const NoteStore = signalStore(
         }
       }
 
+      function clearError() {
+        patchState(store, { error: null });
+      }
+
       return {
         loadAll,
         create,
         deleteById,
+        clearError,
       };
     },
   ),

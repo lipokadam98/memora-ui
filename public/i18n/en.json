@@ -78,6 +78,7 @@
     "content_max_length_error": "Content must be less than 10000 characters.",
     "search_placeholder": "Search notes",
     "no_notes_found": "No notes found.",
-    "no_notes_found_text": "Use the form to create your first note!"
+    "no_notes_found_text": "Use the form to create your first note!",
+    "load_error": "Failed to load notes. Please try again later."
   }
 }

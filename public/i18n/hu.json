@@ -78,6 +78,7 @@
     "content_max_length_error": "Tartalom maximális hossza 10000 karakter.",
     "search_placeholder": "Jegyzetek keresése",
     "no_notes_found": "Nem találhatók jegyzetek.",
-    "no_notes_found_text": "Hozd létre az első jegyzeted a fenti űrlap segítségével!"
+    "no_notes_found_text": "Hozd létre az első jegyzeted a fenti űrlap segítségével!",
+    "load_error": "Hiba a jegyzetek betöltése közben. Kérlek, próbáld újra később."
   }
 }
