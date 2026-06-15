@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ThemeService } from '../util/theme-service';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { AuthStore } from '../authentication/auth-store';
@@ -32,7 +32,6 @@ export class Navbar {
   protected authStore = inject(AuthStore);
   protected themeService = inject(ThemeService);
   private translateHelperService = inject(TranslateHelperService);
-  private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
   private matDialog = inject(MatDialog);
 
@@ -45,11 +44,13 @@ export class Navbar {
   }
 
   protected logout() {
-    const title = this.translateService.instant('authentication.logout');
-    const text = this.translateService.instant('authentication.logout_confirm');
-    const confirmButtonText = this.translateService.instant('common.yes');
-    this.notificationService.showMessage(title, text, confirmButtonText, 'question', true, () =>
-      this.authStore.logout(),
+    this.notificationService.showMessage(
+      'authentication.logout',
+      'authentication.logout_confirm',
+      'common.yes',
+      'question',
+      true,
+      () => this.authStore.logout(),
     );
   }
 

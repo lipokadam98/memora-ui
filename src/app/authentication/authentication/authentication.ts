@@ -1,5 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
@@ -27,17 +27,18 @@ export class Authentication {
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   protected authStore = inject(AuthStore);
-  private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
 
   constructor() {
     effect(() => {
       if (this.authStore.error()) {
-        const title = this.translateService.instant('authentication.login');
-        const text = this.translateService.instant('authentication.login_error');
-        const confirmButtonText = this.translateService.instant('common.ok');
-        this.notificationService.showMessage(title, text, confirmButtonText, 'error', false, () =>
-          this.authStore.clearError(),
+        this.notificationService.showMessage(
+          'authentication.login',
+          'authentication.login_error',
+          'common.ok',
+          'error',
+          false,
+          () => this.authStore.clearError(),
         );
       }
     });

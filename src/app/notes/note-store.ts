@@ -9,14 +9,14 @@ type NoteState = {
   notes: NoteResponseDto[];
   isLoading: boolean;
   error: string | null;
-  success: boolean;
+  errorType: 'load' | 'delete' | 'create' | null;
 };
 
 const initialState: NoteState = {
   notes: [],
   isLoading: false,
   error: null,
-  success: false,
+  errorType: null,
 };
 
 export const NoteStore = signalStore(
@@ -29,7 +29,7 @@ export const NoteStore = signalStore(
       authStore = inject(AuthStore),
     ) => {
       async function loadAll() {
-        patchState(store, { isLoading: true, error: null });
+        patchState(store, { isLoading: true, error: null, errorType: null });
         console.log('Loading notes...');
         try {
           const user = authStore.loginData()?.user;
@@ -40,14 +40,14 @@ export const NoteStore = signalStore(
           console.log(notes);
           patchState(store, { notes });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
       }
 
       async function create(title: string, content: string) {
-        patchState(store, { isLoading: true, error: null });
+        patchState(store, { isLoading: true, error: null, errorType: null });
 
         try {
           const user = authStore.loginData()?.user;
@@ -62,25 +62,25 @@ export const NoteStore = signalStore(
           const createdNote = await firstValueFrom(noteControllerService.create(note));
           patchState(store, { notes: [...store.notes(), createdNote] });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'create' });
         } finally {
           patchState(store, { isLoading: false });
         }
       }
 
       async function deleteById(id: number) {
-        patchState(store, { error: null });
+        patchState(store, { error: null, errorType: null });
         try {
           await firstValueFrom(noteControllerService._delete(id));
           const notes = store.notes().filter((note) => note.id !== id);
           patchState(store, { notes });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'delete' });
         }
       }
 
       function clearError() {
-        patchState(store, { error: null });
+        patchState(store, { error: null, errorType: null, isLoading: false });
       }
 
       return {

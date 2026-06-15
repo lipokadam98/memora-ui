@@ -16,7 +16,7 @@ import {
 } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UploadStore } from './upload-store';
 import { NotificationService } from '../../util/notification-service';
@@ -52,18 +52,20 @@ export class Upload {
   protected uploadStore = inject(UploadStore);
   private notificationService = inject(NotificationService);
   private matDialogRef = inject(MatDialogRef);
-  private translateService = inject(TranslateService);
 
   constructor() {
     effect(() => {
       const hasError = !this.uploadStore.success() && !!this.uploadStore.error();
       if (hasError || this.uploadStore.success()) {
         const prefix = hasError ? 'error' : 'success';
-        const title = this.translateService.instant(`upload.${prefix}_title`);
-        const text = this.translateService.instant(`upload.${prefix}_text`);
-        const confirmButtonText = this.translateService.instant('common.ok');
         this.matDialogRef.close();
-        this.notificationService.showMessage(title, text, confirmButtonText, prefix, false);
+        this.notificationService.showMessage(
+          `upload.${prefix}_title`,
+          `upload.${prefix}_text`,
+          'common.ok',
+          prefix,
+          false,
+        );
       }
     });
   }

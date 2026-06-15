@@ -1,12 +1,11 @@
 import { Component, effect, inject, signal, ViewContainerRef } from '@angular/core';
 import { MultimediaStore } from '../multimedia/multimedia-store';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Upload } from '../multimedia/upload/upload';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MultimediaThumbnail } from '../multimedia/multimedia-thumbnail/multimedia-thumbnail';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
 import { NotificationService } from '../util/notification-service';
 
@@ -29,15 +28,13 @@ export class Gallery {
   protected multimediaStore = inject(MultimediaStore);
   private dialog = inject(MatDialog);
   private viewContainerRef = inject(ViewContainerRef);
-  private snackBar = inject(MatSnackBar);
-  private translateService = inject(TranslateService);
   private notificationService = inject(NotificationService);
 
   constructor() {
     effect(() => {
-      if (this.multimediaStore.error()) {
-        const message = this.translateService.instant('gallery.load_error');
-        this.snackBar.open(message, 'OK', { duration: 5000 });
+      if (this.multimediaStore.error() && this.multimediaStore.errorType()) {
+        const errorType = this.multimediaStore.errorType();
+        this.notificationService.showSnackBar(`gallery.error.${errorType}`);
         this.multimediaStore.clearError();
       }
     });
@@ -55,14 +52,11 @@ export class Gallery {
   }
 
   protected deleteMultimedia() {
-    const title = this.translateService.instant('common.delete');
-    const text = this.translateService.instant('gallery.delete_batch_confirm');
-    const confirmButtonText = this.translateService.instant('common.yes');
     const removeFn = () => this.multimediaStore.deleteSelectedItems();
     this.notificationService.showMessage(
-      title,
-      text,
-      confirmButtonText,
+      'common.delete',
+      'gallery.delete_batch_confirm',
+      'common.yes',
       'question',
       true,
       removeFn,

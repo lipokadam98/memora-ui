@@ -15,7 +15,6 @@ import { TranslateHelperService } from '../util/translate-helper-service';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
-  searchTerm: string;
   isLoading: boolean;
   selectedMultimedia: MultimediaResponseDto | null;
   storedSelections: number[];
@@ -25,11 +24,11 @@ type MultimediaState = {
   isNextDataLoading: boolean;
   nextCursor: string | null;
   error: string | null;
+  errorType: 'load' | 'delete' | 'create' | null;
 };
 
 const initialState: MultimediaState = {
   multimedia: [],
-  searchTerm: '',
   isLoading: false,
   selectedMultimedia: null,
   storedSelections: [],
@@ -39,6 +38,7 @@ const initialState: MultimediaState = {
   isNextDataLoading: false,
   nextCursor: null,
   error: null,
+  errorType: null,
 };
 
 export const MultimediaStore = signalStore(
@@ -114,7 +114,7 @@ export const MultimediaStore = signalStore(
       }
 
       async function loadStartingData() {
-        patchState(store, { isLoading: true, error: null });
+        patchState(store, { isLoading: true, error: null, errorType: null });
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
@@ -129,14 +129,14 @@ export const MultimediaStore = signalStore(
             hasNext,
           });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
       }
 
       async function loadNextData() {
-        patchState(store, { isNextDataLoading: true, error: null });
+        patchState(store, { isNextDataLoading: true, error: null, errorType: null });
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
@@ -156,7 +156,7 @@ export const MultimediaStore = signalStore(
               });
           }
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
         } finally {
           patchState(store, { isNextDataLoading: false });
         }
@@ -169,7 +169,7 @@ export const MultimediaStore = signalStore(
       }
 
       async function deleteById(id: number) {
-        patchState(store, { error: null });
+        patchState(store, { error: null, errorType: null });
         try {
           await firstValueFrom(multimediaControllerService.delete1(id));
           const filteredMultimedia = store
@@ -179,12 +179,17 @@ export const MultimediaStore = signalStore(
             multimedia: filteredMultimedia,
           });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          patchState(store, { error: getErrorMessage(error), errorType: 'delete' });
         }
       }
 
       function clearError() {
-        patchState(store, { error: null, isLoading: false, isNextDataLoading: false });
+        patchState(store, {
+          error: null,
+          errorType: null,
+          isLoading: false,
+          isNextDataLoading: false,
+        });
       }
 
       function storeSelection(id: number) {
@@ -214,6 +219,7 @@ export const MultimediaStore = signalStore(
           ),
           storedSelections: [],
           error: null,
+          errorType: null,
         });
 
         try {
@@ -222,6 +228,7 @@ export const MultimediaStore = signalStore(
           patchState(store, {
             multimedia: previousMultimedia,
             error: getErrorMessage(error),
+            errorType: 'delete',
           });
         }
       }
