@@ -32,7 +32,7 @@ export const NoteStore = signalStore(
     ) => {
       async function loadAll() {
         patchState(store, { isLoading: true, error: null, errorType: null });
-        logger.info('Loading notes...');
+        logger.info('Loading notes');
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {

@@ -117,6 +117,7 @@ export const MultimediaStore = signalStore(
 
       async function loadStartingData() {
         patchState(store, { isLoading: true, error: null, errorType: null });
+        logger.info('Loading starting multimedia');
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
@@ -141,6 +142,7 @@ export const MultimediaStore = signalStore(
 
       async function loadNextData() {
         patchState(store, { isNextDataLoading: true, error: null, errorType: null });
+        logger.info('Loading next multimedia data');
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
