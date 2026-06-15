@@ -12,6 +12,7 @@ import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
 import { AuthStore } from '../authentication/auth-store';
 import { TranslateHelperService } from '../util/translate-helper-service';
+import { Logger } from '../util/logger';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -24,7 +25,7 @@ type MultimediaState = {
   isNextDataLoading: boolean;
   nextCursor: string | null;
   error: string | null;
-  errorType: 'load' | 'delete' | 'create' | null;
+  errorType: 'load' | 'delete' | null;
 };
 
 const initialState: MultimediaState = {
@@ -80,6 +81,7 @@ export const MultimediaStore = signalStore(
       store,
       multimediaControllerService = inject(MultimediaControllerService),
       authStore = inject(AuthStore),
+      logger = inject(Logger),
     ) => {
       function selectNext() {
         const selectedMultimedia = store.selectedMultimedia();
@@ -129,7 +131,9 @@ export const MultimediaStore = signalStore(
             hasNext,
           });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during multimedia load: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -156,7 +160,9 @@ export const MultimediaStore = signalStore(
               });
           }
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during multimedia load: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'load' });
         } finally {
           patchState(store, { isNextDataLoading: false });
         }
@@ -179,7 +185,9 @@ export const MultimediaStore = signalStore(
             multimedia: filteredMultimedia,
           });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'delete' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during multimedia delete: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'delete' });
         }
       }
 
@@ -225,9 +233,11 @@ export const MultimediaStore = signalStore(
         try {
           await firstValueFrom(multimediaControllerService.deleteBatch(selectedIds));
         } catch (error: unknown) {
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during multimedia batch delete: ${errorMessage}`);
           patchState(store, {
             multimedia: previousMultimedia,
-            error: getErrorMessage(error),
+            error: errorMessage,
             errorType: 'delete',
           });
         }

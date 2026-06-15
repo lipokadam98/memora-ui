@@ -4,6 +4,7 @@ import { inject } from '@angular/core';
 import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
 import { AuthStore } from '../authentication/auth-store';
+import { Logger } from '../util/logger';
 
 type NoteState = {
   notes: NoteResponseDto[];
@@ -27,20 +28,22 @@ export const NoteStore = signalStore(
       store,
       noteControllerService = inject(NoteControllerService),
       authStore = inject(AuthStore),
+      logger = inject(Logger),
     ) => {
       async function loadAll() {
         patchState(store, { isLoading: true, error: null, errorType: null });
-        console.log('Loading notes...');
+        logger.info('Loading notes...');
         try {
           const user = authStore.loginData()?.user;
           if (!user?.id) {
             return;
           }
           const notes = await firstValueFrom(noteControllerService.getAll(user.id));
-          console.log(notes);
           patchState(store, { notes });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'load' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during loading the notes: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -62,7 +65,9 @@ export const NoteStore = signalStore(
           const createdNote = await firstValueFrom(noteControllerService.create(note));
           patchState(store, { notes: [...store.notes(), createdNote] });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'create' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during saving the note: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'create' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -75,7 +80,9 @@ export const NoteStore = signalStore(
           const notes = store.notes().filter((note) => note.id !== id);
           patchState(store, { notes });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), errorType: 'delete' });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during deleting the note: ${errorMessage}`);
+          patchState(store, { error: errorMessage, errorType: 'delete' });
         }
       }
 

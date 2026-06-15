@@ -79,7 +79,6 @@ export class Upload {
 
   upload() {
     if (this.uploadStore.selectedFiles().length === 0 || !this.datePicker.value) return;
-    console.log('Uploading files:', this.uploadStore.selectedFiles());
     this.uploadStore.upload(this.datePicker.value);
   }
 

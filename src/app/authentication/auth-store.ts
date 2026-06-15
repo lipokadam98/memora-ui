@@ -5,6 +5,7 @@ import { inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { getErrorMessage } from '../util/util';
+import { Logger } from '../util/logger';
 
 type AuthState = {
   loginData: LoginResponse | undefined;
@@ -27,6 +28,7 @@ export const AuthStore = signalStore(
       authService = inject(AuthService),
       activatedRoute = inject(ActivatedRoute),
       router = inject(Router),
+      logger = inject(Logger),
     ) => {
       async function login(loginUserDto: LoginUserDto) {
         patchState(store, { isLoading: true, error: null });
@@ -42,7 +44,9 @@ export const AuthStore = signalStore(
             await router.navigate(['/']);
           }
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during login: ${errorMessage}`);
+          patchState(store, { error: errorMessage });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -60,7 +64,9 @@ export const AuthStore = signalStore(
           //TODO implement registration
           const user = await authService.register(registerUserDto);
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error) });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during registration: ${errorMessage}`);
+          patchState(store, { error: errorMessage });
         } finally {
           patchState(store, { isLoading: false });
         }

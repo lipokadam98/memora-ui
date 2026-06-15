@@ -10,6 +10,7 @@ import { getErrorMessage } from '../../util/util';
 import { MultimediaStore } from '../multimedia-store';
 import { AuthStore } from '../../authentication/auth-store';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Logger } from '../../util/logger';
 
 type UploadState = {
   selectedFiles: File[];
@@ -40,6 +41,7 @@ export const UploadStore = signalStore(
       multimediaStore = inject(MultimediaStore),
       authStore = inject(AuthStore),
       http = inject(HttpClient),
+      logger = inject(Logger),
     ) => {
       async function upload(date: Date) {
         const user = authStore.loginData()?.user;
@@ -57,11 +59,12 @@ export const UploadStore = signalStore(
           const uploadedMultimedia = await firstValueFrom(
             multimediaControllerService.create1(requestDtoList),
           );
-          console.log('Uploaded multimedia: ', uploadedMultimedia);
+
+          logger.info(`Uploaded multimedia: ${uploadedMultimedia}`);
 
           const uploadResults = await callStorageUploadForMultimediaItems(uploadedMultimedia);
 
-          console.log('Upload results: ', uploadResults);
+          logger.info(`Upload results: ${uploadResults}`);
 
           const thumbnailCreationArray: ThumbnailCreationRequestDto[] = uploadResults.map(
             (res) => ({
@@ -74,11 +77,13 @@ export const UploadStore = signalStore(
             multimediaControllerService.createThumbnails(thumbnailCreationArray),
           );
 
-          console.log('Thumbnail creation result:', thumbnailCreation);
+          logger.info(`Thumbnail creation result: ${thumbnailCreation}`);
           multimediaStore.addMultimedia(thumbnailCreation);
           patchState(store, { success: true });
         } catch (error: unknown) {
-          patchState(store, { error: getErrorMessage(error), success: false });
+          const errorMessage = getErrorMessage(error);
+          logger.error(`Error during upload: ${errorMessage}`);
+          patchState(store, { error: errorMessage, success: false });
         } finally {
           patchState(store, { isUploading: false });
         }
