@@ -69,7 +69,12 @@
     "drag_drop_files_bottom": "or click to browse",
     "upload_date_required_error": "Upload date is required.",
     "uploading_status": "Uploading files...",
-    "processing_thumbnails": "Processing thumbnails..."
+    "processing_thumbnails": "Processing thumbnails...",
+    "errors": {
+      "max_count_exceeded": "You can only upload a maximum of {{maxCount}} files at once.",
+      "file_too_large": "One or more files exceed the maximum allowed size of {{maxSize}} MB.",
+      "batch_too_large": "The total size of selected files exceeds the maximum limit of {{maxBatch}} MB."
+    }
   },
   "settings": {
     "title": "Settings"

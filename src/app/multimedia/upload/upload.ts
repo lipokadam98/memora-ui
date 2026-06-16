@@ -8,7 +8,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import {
   MatDatepicker,
   MatDatepickerInput,
@@ -40,6 +40,7 @@ import { NotificationService } from '../../util/notification-service';
     TranslatePipe,
     ReactiveFormsModule,
     MatIconButton,
+    MatError,
   ],
   providers: [provideNativeDateAdapter(), UploadStore],
   templateUrl: './upload.html',
@@ -55,15 +56,13 @@ export class Upload {
 
   constructor() {
     effect(() => {
-      const hasError = !this.uploadStore.success() && !!this.uploadStore.error();
-      if (hasError || this.uploadStore.success()) {
-        const prefix = hasError ? 'error' : 'success';
+      if (this.uploadStore.success()) {
         this.matDialogRef.close();
         this.notificationService.showMessage(
-          `upload.${prefix}_title`,
-          `upload.${prefix}_text`,
+          `upload.success_title`,
+          `upload.success_text`,
           'common.ok',
-          prefix,
+          'success',
           false,
         );
       }

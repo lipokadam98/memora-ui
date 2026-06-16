@@ -176,29 +176,6 @@ export const MultimediaStore = signalStore(
         }
       }
 
-      function addMultimedia(multimedia: MultimediaResponseDto[]) {
-        patchState(store, {
-          multimedia: [...store.multimedia(), ...multimedia],
-        });
-      }
-
-      async function deleteById(id: number) {
-        patchState(store, { error: null, errorType: null });
-        try {
-          await firstValueFrom(multimediaControllerService.delete1(id));
-          const filteredMultimedia = store
-            .multimedia()
-            .filter((multimedia) => multimedia.id !== id);
-          patchState(store, {
-            multimedia: filteredMultimedia,
-          });
-        } catch (err: unknown) {
-          const error = getErrorMessage(err);
-          logger.error(`Error during multimedia delete: ${error}`);
-          patchState(store, { error: error, errorType: 'delete' });
-        }
-      }
-
       function clearError() {
         patchState(store, {
           error: null,
@@ -257,8 +234,6 @@ export const MultimediaStore = signalStore(
         select,
         loadStartingData,
         loadNextData,
-        addMultimedia,
-        deleteById,
         storeSelection,
         removeSelection,
         isSelectionStored,

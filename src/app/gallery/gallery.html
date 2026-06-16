@@ -1,6 +1,6 @@
 <main class="flex flex-col gap-4 p-6 md:p-8">
   @let hasGalleryItems = multimediaStore.groupedByMonth().length > 0;
-  <section class="flex flex-row justify-between items-center border-b pb-4">
+  <header class="flex flex-row justify-between items-center border-b pb-4">
     <h1 class="text-4xl font-bold">{{ 'gallery.title' | translate }}</h1>
     <div class="flex flex-row gap-2">
       @if (multimediaStore.storedSelections().length > 0 && isEditMode()) {
@@ -17,7 +17,7 @@
         {{ 'gallery.upload' | translate }}
       </button>
     </div>
-  </section>
+  </header>
   @if (multimediaStore.isLoading()) {
     <div class="flex flex-row items-center justify-center">
       <mat-spinner></mat-spinner>
@@ -32,7 +32,7 @@
           }
         </section>
       }
-    } @else {
+    } @else if (!multimediaStore.hasNext()) {
       <div
         class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed h-[calc(100vh-11rem)]"
       >

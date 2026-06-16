@@ -69,7 +69,12 @@
     "drag_drop_files_bottom": "vagy kattints a tallózáshoz",
     "upload_date_required_error": "Feltöltési idő megadása kötelező.",
     "uploading_status": "Fájlok feltöltése...",
-    "processing_thumbnails": "Előnézeti képek generálása..."
+    "processing_thumbnails": "Előnézeti képek generálása...",
+    "errors": {
+      "max_count_exceeded": "Legfeljebb {{maxCount}} fájl tölthető fel egyszerre.",
+      "file_too_large": "Egy vagy több fájl mérete meghaladja a megengedett {{maxSize}} MB-os korlátot.",
+      "batch_too_large": "A kijelölt fájlok össztömege meghaladja a megengedett {{maxBatch}} MB-os korlátot."
+    }
   },
   "settings": {
     "title": "Beállítások"

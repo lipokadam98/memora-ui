@@ -143,7 +143,43 @@ export const UploadStore = signalStore(
         }
       }
 
+      const MAX_FILE_COUNT = 25;
+      const MAX_SINGLE_FILE_SIZE_MB = 200;
+      const MAX_BATCH_SIZE_MB = 1000;
+
       function setSelectedFiles(files: File[]) {
+        clearSelectedFiles();
+        if (files.length > MAX_FILE_COUNT) {
+          patchState(store, {
+            error: 'upload.errors.max_count_exceeded',
+            success: false,
+          });
+          return;
+        }
+
+        let totalBytes = 0;
+        for (const file of files) {
+          const fileSizeMB = file.size / (1024 * 1024);
+
+          if (fileSizeMB > MAX_SINGLE_FILE_SIZE_MB) {
+            patchState(store, {
+              error: 'upload.errors.file_too_large',
+              success: false,
+            });
+            return;
+          }
+          totalBytes += file.size;
+        }
+
+        const totalBatchSizeMB = totalBytes / (1024 * 1024);
+        if (totalBatchSizeMB > MAX_BATCH_SIZE_MB) {
+          patchState(store, {
+            error: 'upload.errors.batch_too_large',
+            success: false,
+          });
+          return;
+        }
+
         patchState(store, {
           selectedFiles: files,
           uploadedCount: 0,
