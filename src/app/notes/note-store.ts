@@ -40,10 +40,10 @@ export const NoteStore = signalStore(
           }
           const notes = await firstValueFrom(noteControllerService.getAll(user.id));
           patchState(store, { notes });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during loading the notes: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'load' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during loading the notes: ${error}`);
+          patchState(store, { error, errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -64,10 +64,10 @@ export const NoteStore = signalStore(
           };
           const createdNote = await firstValueFrom(noteControllerService.create(note));
           patchState(store, { notes: [...store.notes(), createdNote] });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during saving the note: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'create' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during saving the note: ${error}`);
+          patchState(store, { error, errorType: 'create' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -79,10 +79,10 @@ export const NoteStore = signalStore(
           await firstValueFrom(noteControllerService._delete(id));
           const notes = store.notes().filter((note) => note.id !== id);
           patchState(store, { notes });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during deleting the note: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'delete' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during deleting the note: ${error}`);
+          patchState(store, { error, errorType: 'delete' });
         }
       }
 

@@ -4,7 +4,8 @@
     "home": "Kezdőlap",
     "gallery": "Galéria",
     "notes": "Jegyzetek",
-    "language": "Nyelv"
+    "language": "Nyelv",
+    "remaining_session_time": "Hátralévő munkamenet-idő"
   },
   "welcome": {
     "title": "Üdvözlünk a Memorában",

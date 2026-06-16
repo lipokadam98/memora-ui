@@ -131,10 +131,10 @@ export const MultimediaStore = signalStore(
             nextCursor,
             hasNext,
           });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during multimedia load: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'load' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during multimedia load: ${error}`);
+          patchState(store, { error, errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -161,10 +161,10 @@ export const MultimediaStore = signalStore(
                 hasNext,
               });
           }
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during multimedia load: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'load' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during multimedia load: ${error}`);
+          patchState(store, { error, errorType: 'load' });
         } finally {
           patchState(store, { isNextDataLoading: false });
         }
@@ -186,10 +186,10 @@ export const MultimediaStore = signalStore(
           patchState(store, {
             multimedia: filteredMultimedia,
           });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during multimedia delete: ${errorMessage}`);
-          patchState(store, { error: errorMessage, errorType: 'delete' });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during multimedia delete: ${error}`);
+          patchState(store, { error: error, errorType: 'delete' });
         }
       }
 
@@ -234,12 +234,12 @@ export const MultimediaStore = signalStore(
 
         try {
           await firstValueFrom(multimediaControllerService.deleteBatch(selectedIds));
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during multimedia batch delete: ${errorMessage}`);
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during multimedia batch delete: ${error}`);
           patchState(store, {
             multimedia: previousMultimedia,
-            error: errorMessage,
+            error,
             errorType: 'delete',
           });
         }

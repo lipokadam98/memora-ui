@@ -10,7 +10,8 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { TranslateHelperService } from '../util/translate-helper-service';
 import { MatDialog } from '@angular/material/dialog';
 import { Settings } from '../settings/settings';
-import { NgClass } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +25,8 @@ import { NgClass } from '@angular/common';
     MatMenuItem,
     MatMenuTrigger,
     NgClass,
+    MatTooltip,
+    DecimalPipe,
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -31,6 +34,7 @@ import { NgClass } from '@angular/common';
 export class Navbar {
   protected authStore = inject(AuthStore);
   protected themeService = inject(ThemeService);
+  protected readonly Math = Math;
   private translateHelperService = inject(TranslateHelperService);
   private notificationService = inject(NotificationService);
   private matDialog = inject(MatDialog);

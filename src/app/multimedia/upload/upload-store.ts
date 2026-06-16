@@ -80,10 +80,10 @@ export const UploadStore = signalStore(
           logger.info(`Thumbnail creation result: ${thumbnailCreation}`);
           multimediaStore.addMultimedia(thumbnailCreation);
           patchState(store, { success: true });
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during upload: ${errorMessage}`);
-          patchState(store, { error: errorMessage, success: false });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during upload: ${error}`);
+          patchState(store, { error, success: false });
         } finally {
           patchState(store, { isUploading: false });
         }

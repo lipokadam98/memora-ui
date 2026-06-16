@@ -11,13 +11,17 @@ type AuthState = {
   loginData: LoginResponse | undefined;
   error: string | null;
   isLoading: boolean;
+  countdown: number | null;
 };
 
 const initialState: AuthState = {
   loginData: undefined,
   error: null,
   isLoading: false,
+  countdown: null,
 };
+
+let timerIntervalId: any = null;
 
 export const AuthStore = signalStore(
   { providedIn: 'root' },
@@ -30,12 +34,47 @@ export const AuthStore = signalStore(
       router = inject(Router),
       logger = inject(Logger),
     ) => {
+      function stopTimer() {
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+        patchState(store, { countdown: null });
+      }
+
+      function startTimer(expiresAtString: string) {
+        stopTimer();
+
+        const expiresAt = new Date(expiresAtString).getTime();
+
+        const updateCountdown = async () => {
+          const now = Date.now();
+          const timeLeft = Math.max(0, Math.floor((expiresAt - now) / 1000));
+
+          patchState(store, { countdown: timeLeft });
+
+          //TODO Add refreshToken functionality
+          if (timeLeft <= 0) {
+            stopTimer();
+            await logout();
+          }
+        };
+
+        updateCountdown();
+        timerIntervalId = setInterval(updateCountdown, 1000);
+      }
+
       async function login(loginUserDto: LoginUserDto) {
         patchState(store, { isLoading: true, error: null });
         try {
           const loginResponse = await authService.login(loginUserDto);
           patchState(store, { loginData: loginResponse });
           localStorage.setItem('loginData', JSON.stringify(loginResponse));
+
+          if (loginResponse.expiresAt) {
+            startTimer(loginResponse.expiresAt);
+          }
+
           const paramMap = await firstValueFrom(activatedRoute.queryParamMap);
           const returnUrl = paramMap.get('returnUrl');
           if (returnUrl) {
@@ -43,16 +82,17 @@ export const AuthStore = signalStore(
           } else {
             await router.navigate(['/']);
           }
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during login: ${errorMessage}`);
-          patchState(store, { error: errorMessage });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during login: ${error}`);
+          patchState(store, { error });
         } finally {
           patchState(store, { isLoading: false });
         }
       }
 
       async function logout() {
+        stopTimer();
         localStorage.removeItem('loginData');
         patchState(store, { loginData: undefined });
         await router.navigate(['/authentication']);
@@ -63,10 +103,10 @@ export const AuthStore = signalStore(
         try {
           //TODO implement registration
           const user = await authService.register(registerUserDto);
-        } catch (error: unknown) {
-          const errorMessage = getErrorMessage(error);
-          logger.error(`Error during registration: ${errorMessage}`);
-          patchState(store, { error: errorMessage });
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during registration: ${error}`);
+          patchState(store, { error });
         } finally {
           patchState(store, { isLoading: false });
         }
@@ -81,6 +121,7 @@ export const AuthStore = signalStore(
             const now = new Date();
             if (expirationDate > now) {
               patchState(store, { loginData: parsedData });
+              startTimer(parsedData.expiresAt);
               return;
             }
           }
@@ -92,12 +133,15 @@ export const AuthStore = signalStore(
         patchState(store, { error: null });
       }
 
-      return { login, logout, register, checkLocalStorage, clearError };
+      return { login, logout, register, checkLocalStorage, clearError, stopTimer };
     },
   ),
   withHooks((store) => ({
     onInit() {
       store.checkLocalStorage();
+    },
+    onDestroy() {
+      store.stopTimer();
     },
   })),
 );
