@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, HostListener, inject, signal } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import {
@@ -70,6 +70,14 @@ export class Upload {
     });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: BeforeUnloadEvent): string | void {
+    if (this.uploadStore.isUploading()) {
+      $event.preventDefault();
+      return '';
+    }
+  }
+
   onFileSelected(event: any) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
@@ -82,7 +90,7 @@ export class Upload {
     this.uploadStore.upload(this.datePicker.value);
   }
 
-  protected onRemoveFile() {
+  protected onRemoveFiles() {
     this.uploadStore.clearSelectedFiles();
   }
 

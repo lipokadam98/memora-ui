@@ -116,7 +116,13 @@ export const MultimediaStore = signalStore(
       }
 
       async function loadStartingData() {
-        patchState(store, { isLoading: true, error: null, errorType: null });
+        patchState(store, {
+          isLoading: true,
+          error: null,
+          errorType: null,
+          nextCursor: null,
+          hasNext: false,
+        });
         logger.info('Loading starting multimedia');
         try {
           const user = authStore.loginData()?.user;

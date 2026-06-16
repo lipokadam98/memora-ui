@@ -15,6 +15,8 @@ import { Logger } from '../../util/logger';
 type UploadState = {
   selectedFiles: File[];
   isUploading: boolean;
+  uploadStage: 'IDLE' | 'STORING' | 'THUMBNAILS';
+  uploadedCount: number;
   error: string | null;
   success: boolean;
 };
@@ -22,17 +24,21 @@ type UploadState = {
 const initialState: UploadState = {
   selectedFiles: [],
   isUploading: false,
+  uploadStage: 'IDLE',
+  uploadedCount: 0,
   error: null,
   success: false,
 };
 
 export const UploadStore = signalStore(
   withState(initialState),
-  withComputed(({ selectedFiles }) => ({
+  withComputed(({ selectedFiles, uploadedCount }) => ({
     fileSize: computed(() => {
       const totalBytes = selectedFiles().reduce((acc, file) => acc + file.size, 0);
       return (totalBytes / 1024 ** 2).toFixed(2);
     }),
+    totalFilesCount: computed(() => selectedFiles().length),
+    uploadProgressText: computed(() => `${uploadedCount()} / ${selectedFiles().length}`),
   })),
   withMethods(
     (
@@ -45,7 +51,14 @@ export const UploadStore = signalStore(
     ) => {
       async function upload(date: Date) {
         const user = authStore.loginData()?.user;
-        patchState(store, { isUploading: true, error: null, success: false });
+
+        patchState(store, {
+          isUploading: true,
+          uploadStage: 'STORING',
+          error: null,
+          success: false,
+          uploadedCount: 0,
+        });
 
         try {
           const requestDtoList = store.selectedFiles().map((file) => ({
@@ -60,45 +73,56 @@ export const UploadStore = signalStore(
             multimediaControllerService.create1(requestDtoList),
           );
 
-          logger.info(`Uploaded multimedia: ${uploadedMultimedia}`);
+          logger.info(`Uploaded multimedia metadata created: ${uploadedMultimedia.length} items`);
 
           const uploadResults = await callStorageUploadForMultimediaItems(uploadedMultimedia);
 
-          logger.info(`Upload results: ${uploadResults}`);
+          patchState(store, { uploadStage: 'THUMBNAILS' });
 
-          const thumbnailCreationArray: ThumbnailCreationRequestDto[] = uploadResults.map(
-            (res) => ({
-              id: res.id,
+          const thumbnailCreationArray: ThumbnailCreationRequestDto[] = uploadResults
+            .filter((res) => res.id !== undefined)
+            .map((res) => ({
+              id: res.id!,
               status: res.status,
-            }),
-          );
+            }));
 
-          const thumbnailCreation = await firstValueFrom(
+          await firstValueFrom(
             multimediaControllerService.createThumbnails(thumbnailCreationArray),
           );
 
-          logger.info(`Thumbnail creation result: ${thumbnailCreation}`);
-          multimediaStore.addMultimedia(thumbnailCreation);
+          logger.info(`Thumbnail creation result complete.`);
+          await multimediaStore.loadStartingData();
           patchState(store, { success: true });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
-          logger.error(`Error during upload: ${error}`);
+          logger.error(`Error during upload sequence: ${error}`);
           patchState(store, { error, success: false });
         } finally {
-          patchState(store, { isUploading: false });
+          patchState(store, { isUploading: false, uploadStage: 'IDLE' });
         }
       }
 
       async function callStorageUploadForMultimediaItems(
         uploadedMultimedia: MultimediaResponseDto[],
       ) {
-        return await Promise.all(
-          store.selectedFiles().map(async (file) => {
-            const metadata = uploadedMultimedia.find((d) => d.originalFileName === file.name);
+        let localCompletedCounter = 0;
 
-            const status = metadata?.signedUrl
-              ? await uploadToStorage(file, metadata.signedUrl)
-              : 'FAILED';
+        return await Promise.all(
+          store.selectedFiles().map(async (file, index) => {
+            const metadata = uploadedMultimedia[index];
+
+            let status: 'DONE' | 'FAILED' = 'FAILED';
+
+            if (metadata?.signedUrl) {
+              status = await uploadToStorage(file, metadata.signedUrl);
+
+              if (status === 'DONE') {
+                localCompletedCounter++;
+                patchState(store, { uploadedCount: localCompletedCounter });
+              }
+            } else {
+              logger.warn(`Missing signed URL for file at index: ${index}`);
+            }
 
             return { id: metadata?.id, status };
           }),
@@ -112,19 +136,31 @@ export const UploadStore = signalStore(
           const response = await firstValueFrom(
             http.put(signedUrl, file, { headers, observe: 'response' }),
           );
-
           return response.status >= 200 && response.status < 300 ? 'DONE' : 'FAILED';
-        } catch {
+        } catch (err) {
+          logger.error(`Storage provider HTTP failure for file ${file.name}`);
           return 'FAILED';
         }
       }
 
       function setSelectedFiles(files: File[]) {
-        patchState(store, { selectedFiles: files });
+        patchState(store, {
+          selectedFiles: files,
+          uploadedCount: 0,
+          uploadStage: 'IDLE',
+          success: false,
+          error: null,
+        });
       }
 
       function clearSelectedFiles() {
-        patchState(store, { selectedFiles: [] });
+        patchState(store, {
+          selectedFiles: [],
+          uploadedCount: 0,
+          uploadStage: 'IDLE',
+          success: false,
+          error: null,
+        });
       }
 
       return { upload, setSelectedFiles, clearSelectedFiles };

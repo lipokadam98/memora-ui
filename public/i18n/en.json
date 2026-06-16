@@ -27,6 +27,7 @@
     "delete": "Delete",
     "open": "Open",
     "cancel": "Cancel",
+    "close": "Close",
     "ok": "Ok"
   },
   "authentication": {
@@ -66,7 +67,9 @@
     "file_size": "Size: {{ fileSize }} mb",
     "drag_drop_files_top": "Drag & drop files here",
     "drag_drop_files_bottom": "or click to browse",
-    "upload_date_required_error": "Upload date is required."
+    "upload_date_required_error": "Upload date is required.",
+    "uploading_status": "Uploading files...",
+    "processing_thumbnails": "Processing thumbnails..."
   },
   "settings": {
     "title": "Settings"

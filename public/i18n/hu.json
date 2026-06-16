@@ -27,6 +27,7 @@
     "delete": "Törlés",
     "open": "Megnyitás",
     "cancel": "Mégse",
+    "close": "Bezárás",
     "ok": "Oké"
   },
   "authentication": {
@@ -66,7 +67,9 @@
     "file_size": "Méret: {{ fileSize }} MB",
     "drag_drop_files_top": "Húzd ide a fájlokat",
     "drag_drop_files_bottom": "vagy kattints a tallózáshoz",
-    "upload_date_required_error": "Feltöltési idő megadása kötelező."
+    "upload_date_required_error": "Feltöltési idő megadása kötelező.",
+    "uploading_status": "Fájlok feltöltése...",
+    "processing_thumbnails": "Előnézeti képek generálása..."
   },
   "settings": {
     "title": "Beállítások"
