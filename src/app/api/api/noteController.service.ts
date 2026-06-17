@@ -38,8 +38,10 @@ export class NoteControllerService extends BaseService {
     }
 
     /**
+     * Delete a note by ID
+     * Permanently deletes a note record from the system.
      * @endpoint delete /api/notes/{id}
-     * @param id 
+     * @param id Unique ID of the note to be deleted
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
@@ -92,6 +94,8 @@ export class NoteControllerService extends BaseService {
     }
 
     /**
+     * Create a new note
+     * Creates a new note record based on the provided request payload.
      * @endpoint post /api/notes
      * @param noteRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -157,8 +161,10 @@ export class NoteControllerService extends BaseService {
     }
 
     /**
+     * Get all notes for a user
+     * Fetches a list of all notes associated with the provided user ID.
      * @endpoint get /api/notes
-     * @param userId 
+     * @param userId ID of the user whose notes are being fetched
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
@@ -224,8 +230,10 @@ export class NoteControllerService extends BaseService {
     }
 
     /**
+     * Get a note by ID
+     * Retrieves a single note\&#39;s details using its unique identifier.
      * @endpoint get /api/notes/{id}
-     * @param id 
+     * @param id Unique ID of the note
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options

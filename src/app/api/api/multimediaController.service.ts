@@ -42,6 +42,8 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Batch record metadata
+     * Saves a list of multimedia information mappings to the relational database.
      * @endpoint post /api/multimedia
      * @param multimediaRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -107,6 +109,8 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Batch generate thumbnails
+     * Processes an incoming pipeline batch to generate visual thumbnails asynchronously or synchronously for valid target files.
      * @endpoint post /api/multimedia/create-thumbnails
      * @param thumbnailCreationRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -172,8 +176,10 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Delete an asset by ID
+     * Removes the tracking record from DB alongside destroying its associated object binaries inside active cloud storage buckets.
      * @endpoint delete /api/multimedia/{id}
-     * @param id 
+     * @param id Asset ID target
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
@@ -226,6 +232,8 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Batch delete assets
+     * Executes multi-record destruction sequences across both database states and object storage services.
      * @endpoint delete /api/multimedia/batch
      * @param requestBody 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -290,10 +298,12 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Get all multimedia files paginated
+     * Fetches a page of user multimedia metadata records using an ascending chronological cursor-based pagination strategy.
      * @endpoint get /api/multimedia
-     * @param userId 
-     * @param cursor 
-     * @param limit 
+     * @param userId ID of the user to filter files for
+     * @param cursor Base64 encoded cursor opaque string tracking page boundaries
+     * @param limit Maximum size of records to yield per page invocation
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
@@ -377,8 +387,10 @@ export class MultimediaControllerService extends BaseService {
     }
 
     /**
+     * Get a multimedia file by ID
+     * Retrieves metadata information for a single file record.
      * @endpoint get /api/multimedia/{id}
-     * @param id 
+     * @param id Primary key ID of the record
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options

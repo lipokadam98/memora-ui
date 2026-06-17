@@ -42,6 +42,8 @@ export class AuthenticationControllerService extends BaseService {
     }
 
     /**
+     * Authenticate user credentials
+     * Validates identity claims against secure credential states to yield state-independent authorization Bearer JWT tokens.
      * @endpoint post /api/auth/login
      * @param loginUserDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -107,6 +109,8 @@ export class AuthenticationControllerService extends BaseService {
     }
 
     /**
+     * Register a new user identity
+     * Accepts user signup registration criteria and establishes a persistent account entity profile.
      * @endpoint post /api/auth/signup
      * @param registerUserDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

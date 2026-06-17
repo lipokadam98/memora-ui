@@ -23,8 +23,8 @@ export interface User {
     updatedAt?: string;
     multimediaList?: Array<Multimedia>;
     noteList?: Array<Note>;
-    username?: string;
-    authorities?: Array<GrantedAuthority>;
+    username: string;
+    authorities: Array<GrantedAuthority>;
     accountNonExpired?: boolean;
     accountNonLocked?: boolean;
     credentialsNonExpired?: boolean;
