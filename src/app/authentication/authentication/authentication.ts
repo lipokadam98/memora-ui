@@ -32,6 +32,7 @@ export class Authentication {
   constructor() {
     effect(() => {
       if (this.authStore.error()) {
+        this.authenticationForm.reset();
         this.notificationService.showMessage(
           'authentication.login',
           'authentication.login_error',

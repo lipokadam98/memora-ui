@@ -54,7 +54,9 @@
       "delete": "Failed to delete multimedia items. Please try again later.",
       "create": "Failed to create multimedia items. Please try again later.",
       "load": "Failed to load multimedia items. Please try again later."
-    }
+    },
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "upload": {
     "title": "Upload Multimedia",

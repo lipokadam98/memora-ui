@@ -54,7 +54,9 @@
       "delete": "Multimédia törlése sikertelen. Kérlek, próbáld újra később.",
       "create": "Multimédia létrehozása sikertelen. Kérlek, próbáld újra később.",
       "load": "A média betöltése sikertelen. Kérlek, próbáld újra később."
-    }
+    },
+    "edit": "Szerkesztés",
+    "delete": "Törlés"
   },
   "upload": {
     "title": "Média feltöltése",

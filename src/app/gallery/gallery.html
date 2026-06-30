@@ -1,22 +1,10 @@
-<main class="flex flex-col gap-4 p-6 md:p-8">
+<main class="flex flex-col gap-4 p-6 md:p-8 relative">
   @let hasGalleryItems = multimediaStore.groupedByMonth().length > 0;
   <header class="flex flex-row justify-between items-center border-b pb-4">
     <h1 class="text-4xl font-bold">{{ 'gallery.title' | translate }}</h1>
-    <div class="flex flex-row gap-2">
-      @if (multimediaStore.storedSelections().length > 0 && isEditMode()) {
-        <button (click)="deleteMultimedia()" matIconButton>
-          <mat-icon>delete</mat-icon>
-        </button>
-      }
-      @if (hasGalleryItems) {
-        <button (click)="toggleEditMode()" matIconButton>
-          <mat-icon>edit</mat-icon>
-        </button>
-      }
-      <button (click)="openUploadDialog()" aria-label="Upload button" matButton="filled">
-        {{ 'gallery.upload' | translate }}
-      </button>
-    </div>
+    <button #topButton [matMenuTriggerFor]="galleryMenu" matFab>
+      <mat-icon>menu</mat-icon>
+    </button>
   </header>
   @if (multimediaStore.isLoading()) {
     <div class="flex flex-row items-center justify-center">
@@ -37,8 +25,8 @@
         class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed h-[calc(100vh-11rem)]"
       >
         <mat-icon class="scale-125 mb-2">image</mat-icon>
-        <p class="text-lg font-medium">No multimedia item found in the gallery.</p>
-        <p class="text-sm">Use the the upload button to create one!</p>
+        <p class="text-lg font-medium">{{ 'no_multimedia_found' | translate }}</p>
+        <p class="text-sm">{{ 'no_multimedia_found_text' | translate }}</p>
       </div>
     }
   }
@@ -48,9 +36,36 @@
     </div>
   } @else {
     @if (multimediaStore.hasNext()) {
-      <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matButton="filled">
-        {{ 'gallery.load_more' | translate }}
-      </button>
+      <div class="flex flex-row items-center justify-center">
+        <button (click)="multimediaStore.loadNextData()" aria-label="Load button" matIconButton>
+          <mat-icon>arrow_downward</mat-icon>
+        </button>
+      </div>
     }
   }
+
+  @if (!isTopButtonVisible()) {
+    <button [matMenuTriggerFor]="galleryMenu" class="fixed! bottom-4 right-4" matFab>
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+
+  <mat-menu #galleryMenu="matMenu">
+    <button (click)="openUploadDialog()" mat-menu-item>
+      <mat-icon>upload</mat-icon>
+      <span> {{ 'gallery.upload' | translate }}</span>
+    </button>
+    @if (hasGalleryItems) {
+      <button (click)="toggleEditMode()" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>{{ 'gallery.edit' | translate }}</span>
+      </button>
+    }
+    @if (multimediaStore.storedSelections().length > 0 && isEditMode()) {
+      <button (click)="deleteMultimedia()" mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>{{ 'gallery.delete' | translate }}</span>
+      </button>
+    }
+  </mat-menu>
 </main>
