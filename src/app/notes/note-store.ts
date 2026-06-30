@@ -60,7 +60,7 @@ export const NoteStore = signalStore(
           const note: NoteRequestDto = {
             title,
             content,
-            user: user,
+            userId: user.id,
           };
           const createdNote = await firstValueFrom(noteControllerService.create(note));
           patchState(store, { notes: [...store.notes(), createdNote] });

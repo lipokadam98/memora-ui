@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserDto } from './userDto';
 
 
 export interface NoteRequestDto { 
     title?: string;
     content?: string;
-    user?: UserDto;
+    userId?: number;
 }
 

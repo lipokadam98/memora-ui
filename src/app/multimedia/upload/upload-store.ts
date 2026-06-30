@@ -2,6 +2,7 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { computed, inject } from '@angular/core';
 import {
   MultimediaControllerService,
+  MultimediaRequestDto,
   MultimediaResponseDto,
   ThumbnailCreationRequestDto,
 } from '../../api';
@@ -61,13 +62,16 @@ export const UploadStore = signalStore(
         });
 
         try {
-          const requestDtoList = store.selectedFiles().map((file) => ({
-            user,
-            uploadDate: date.toISOString(),
-            size: file.size,
-            contentType: file.type,
-            originalFileName: file.name,
-          }));
+          const requestDtoList = store.selectedFiles().map(
+            (file) =>
+              ({
+                userId: user?.id,
+                uploadDate: date.toISOString(),
+                size: file.size,
+                contentType: file.type,
+                originalFileName: file.name,
+              }) as MultimediaRequestDto,
+          );
 
           const uploadedMultimedia = await firstValueFrom(
             multimediaControllerService.create1(requestDtoList),

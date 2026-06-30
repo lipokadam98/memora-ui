@@ -11,7 +11,6 @@
 
 export interface RegisterUserDto { 
     email?: string;
-    username?: string;
     fullName?: string;
     password?: string;
 }

@@ -7,11 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserDto } from './userDto';
 
 
 export interface MultimediaRequestDto { 
-    user?: UserDto;
+    userId?: number;
     uploadDate?: string;
     size?: number;
     contentType?: string;
