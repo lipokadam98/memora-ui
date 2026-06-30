@@ -1,2 +1,6 @@
-<app-navbar />
-<router-outlet />
+<mat-sidenav-container class="h-screen w-screen">
+  <mat-sidenav-content class="relative">
+    <app-navbar class="block sticky top-0 z-50" />
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
