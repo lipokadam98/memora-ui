@@ -1,9 +1,10 @@
 @let hasWelcomeItems = multimediaStore.multimedia().length > 0;
 <main class="px-4 py-12 transition-colors duration-300">
   @if (hasWelcomeItems) {
-    <section class="text-center mb-12">
+    <section class="text-center mb-12 flex flex-col gap-2">
       <h1 class="text-4xl font-extrabold tracking-tight">{{ 'welcome.title' | translate }}</h1>
-      <p class="text-lg mt-2">{{ 'welcome.subtitle' | translate }}</p>
+      <p class="text-3xl font-extrabold">{{ authStore.loginData()?.user?.fullName }}</p>
+      <p class="text-lg">{{ 'welcome.subtitle' | translate }}</p>
     </section>
   }
 

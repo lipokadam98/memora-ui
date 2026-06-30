@@ -5,6 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
+import { AuthStore } from '../authentication/auth-store';
 
 @Component({
   selector: 'app-welcome',
@@ -13,5 +14,6 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './welcome.css',
 })
 export class Welcome {
+  protected authStore = inject(AuthStore);
   protected multimediaStore = inject(MultimediaStore);
 }
