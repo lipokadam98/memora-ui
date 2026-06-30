@@ -197,9 +197,8 @@ export const MultimediaStore = signalStore(
         patchState(store, { storedSelections: filteredSelections });
       }
 
-      function isSelectionStored(id: number | undefined) {
-        if (!id) return false;
-        return !!store.storedSelections().find((storedSelection) => storedSelection === id);
+      function clearSelections() {
+        patchState(store, { storedSelections: [] });
       }
 
       async function deleteSelectedItems() {
@@ -236,7 +235,7 @@ export const MultimediaStore = signalStore(
         loadNextData,
         storeSelection,
         removeSelection,
-        isSelectionStored,
+        clearSelections,
         clearError,
         deleteSelectedItems,
       };

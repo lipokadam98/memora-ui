@@ -53,6 +53,11 @@ export class Gallery implements OnDestroy {
         this.multimediaStore.clearError();
       }
     });
+    effect(() => {
+      if (!this.isEditMode()) {
+        this.multimediaStore.clearSelections();
+      }
+    });
   }
 
   @ViewChild('topButton', { read: ElementRef }) set topButtonRef(element: ElementRef | undefined) {
