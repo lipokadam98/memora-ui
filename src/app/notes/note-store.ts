@@ -39,7 +39,7 @@ export const NoteStore = signalStore(
             return;
           }
           const notes = await firstValueFrom(noteControllerService.getAll(user.id));
-          patchState(store, { notes });
+          patchState(store, { notes: notes.items });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during loading the notes: ${error}`);

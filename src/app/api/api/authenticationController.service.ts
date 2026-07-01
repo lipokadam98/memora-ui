@@ -23,7 +23,7 @@ import { LoginUserDto } from '../model/loginUserDto';
 // @ts-ignore
 import { RegisterUserDto } from '../model/registerUserDto';
 // @ts-ignore
-import { User } from '../model/user';
+import { UserDto } from '../model/userDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -117,9 +117,9 @@ export class AuthenticationControllerService extends BaseService {
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public register(registerUserDto: RegisterUserDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<User>;
-    public register(registerUserDto: RegisterUserDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<User>>;
-    public register(registerUserDto: RegisterUserDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<User>>;
+    public register(registerUserDto: RegisterUserDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<UserDto>;
+    public register(registerUserDto: RegisterUserDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<UserDto>>;
+    public register(registerUserDto: RegisterUserDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<UserDto>>;
     public register(registerUserDto: RegisterUserDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (registerUserDto === null || registerUserDto === undefined) {
             throw new Error('Required parameter registerUserDto was null or undefined when calling register.');
@@ -161,7 +161,7 @@ export class AuthenticationControllerService extends BaseService {
 
         let localVarPath = `/api/auth/signup`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<User>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<UserDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: registerUserDto,

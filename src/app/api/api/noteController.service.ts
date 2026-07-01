@@ -17,6 +17,8 @@ import { Observable }                                        from 'rxjs';
 import { OpenApiHttpParams, QueryParamStyle } from '../query.params';
 
 // @ts-ignore
+import { CursorPageNoteResponseDto } from '../model/cursorPageNoteResponseDto';
+// @ts-ignore
 import { NoteRequestDto } from '../model/noteRequestDto';
 // @ts-ignore
 import { NoteResponseDto } from '../model/noteResponseDto';
@@ -161,18 +163,20 @@ export class NoteControllerService extends BaseService {
     }
 
     /**
-     * Get all notes for a user
-     * Fetches a list of all notes associated with the provided user ID.
+     * Get all notes paginated
+     * Fetches a page of user note records using an ascending chronological cursor-based pagination strategy.
      * @endpoint get /api/notes
-     * @param userId ID of the user whose notes are being fetched
+     * @param userId ID of the user to filter notes for
+     * @param cursor Base64 encoded cursor opaque string tracking page boundaries
+     * @param limit Maximum size of records to yield per page invocation
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @param options additional options
      */
-    public getAll(userId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<NoteResponseDto>>;
-    public getAll(userId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<NoteResponseDto>>>;
-    public getAll(userId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<NoteResponseDto>>>;
-    public getAll(userId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAll(userId: number, cursor?: string, limit?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<CursorPageNoteResponseDto>;
+    public getAll(userId: number, cursor?: string, limit?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CursorPageNoteResponseDto>>;
+    public getAll(userId: number, cursor?: string, limit?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CursorPageNoteResponseDto>>;
+    public getAll(userId: number, cursor?: string, limit?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (userId === null || userId === undefined) {
             throw new Error('Required parameter userId was null or undefined when calling getAll.');
         }
@@ -183,6 +187,24 @@ export class NoteControllerService extends BaseService {
             localVarQueryParameters,
             'userId',
             <any>userId,
+            QueryParamStyle.Form,
+            true,
+        );
+
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'cursor',
+            <any>cursor,
+            QueryParamStyle.Form,
+            true,
+        );
+
+
+        localVarQueryParameters = this.addToHttpParams(
+            localVarQueryParameters,
+            'limit',
+            <any>limit,
             QueryParamStyle.Form,
             true,
         );
@@ -215,7 +237,7 @@ export class NoteControllerService extends BaseService {
 
         let localVarPath = `/api/notes`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<NoteResponseDto>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CursorPageNoteResponseDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters.toHttpParams(),
