@@ -50,7 +50,7 @@
     "delete_batch_confirm": "Are you sure you want to delete the selected multimedia items?",
     "no_multimedia_found": "No multimedia items found in the gallery.",
     "no_multimedia_found_text": "Use the upload button to add your first one!",
-    "error:": {
+    "error": {
       "delete": "Failed to delete multimedia items. Please try again later.",
       "create": "Failed to create multimedia items. Please try again later.",
       "load": "Failed to load multimedia items. Please try again later."
@@ -94,7 +94,7 @@
     "search_placeholder": "Search notes",
     "no_notes_found": "No notes found.",
     "no_notes_found_text": "Use the form to create your first note!",
-    "error:": {
+    "error": {
       "delete": "Failed to delete note. Please try again later.",
       "create": "Failed to create note. Please try again later.",
       "load": "Failed to load notes. Please try again later."

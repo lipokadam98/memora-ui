@@ -50,7 +50,7 @@
     "delete_batch_confirm": "Biztosan törölni szeretnéd a kijelölt multimédia elemeket?",
     "no_multimedia_found": "Nem találhatók médiafájlok a galériában.",
     "no_multimedia_found_text": "Töltsd fel az elsőt a feltöltés gomb segítségével!",
-    "error:": {
+    "error": {
       "delete": "Multimédia törlése sikertelen. Kérlek, próbáld újra később.",
       "create": "Multimédia létrehozása sikertelen. Kérlek, próbáld újra később.",
       "load": "A média betöltése sikertelen. Kérlek, próbáld újra később."
@@ -94,7 +94,7 @@
     "search_placeholder": "Jegyzetek keresése",
     "no_notes_found": "Nem találhatók jegyzetek.",
     "no_notes_found_text": "Hozd létre az első jegyzeted a fenti űrlap segítségével!",
-    "error:": {
+    "error": {
       "delete": "Jegyzet törlése sikertelen. Kérlek, próbáld újra később.",
       "create": "Jegyzet létrehozása sikertelen. Kérlek, próbáld újra később.",
       "load": "Hiba a jegyzetek betöltése közben. Kérlek, próbáld újra később."

@@ -78,6 +78,20 @@
               <app-note-card [note]="note" />
             }
           </div>
+
+          @if (notesStore.isNextDataLoading()) {
+            <div class="flex flex-row items-center justify-center">
+              <mat-spinner></mat-spinner>
+            </div>
+          } @else {
+            @if (notesStore.hasNext()) {
+              <div class="flex flex-row items-center justify-center">
+                <button (click)="notesStore.loadNextData()" aria-label="Load button" matIconButton>
+                  <mat-icon>arrow_downward</mat-icon>
+                </button>
+              </div>
+            }
+          }
         } @else {
           <div
             class="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed lg:h-[calc(100vh-16rem)]"

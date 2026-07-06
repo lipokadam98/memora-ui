@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -42,10 +43,11 @@ export class NotificationService {
 
   /**
    * Shows a snackbar message with translation support.
-   * @param message - The message to display.
+   * @param messageKey - The message to display.
    * @param duration - The duration of the snackbar in milliseconds. Defaults to 5000.
    */
-  public showSnackBar(message: string, duration: number = 5000) {
-    this.matSnackBar.open(this.translateService.instant(message), 'OK', { duration });
+  public async showSnackBar(messageKey: string, duration: number = 5000) {
+    const translatedMessage = await firstValueFrom(this.translateService.get(messageKey));
+    this.matSnackBar.open(translatedMessage, 'OK', { duration });
   }
 }

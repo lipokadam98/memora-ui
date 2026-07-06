@@ -9,6 +9,9 @@ import { Logger } from '../util/logger';
 type NoteState = {
   notes: NoteResponseDto[];
   isLoading: boolean;
+  hasNext: boolean;
+  nextCursor: string | null;
+  isNextDataLoading: boolean;
   error: string | null;
   errorType: 'load' | 'delete' | 'create' | null;
 };
@@ -16,6 +19,9 @@ type NoteState = {
 const initialState: NoteState = {
   notes: [],
   isLoading: false,
+  hasNext: false,
+  isNextDataLoading: false,
+  nextCursor: null,
   error: null,
   errorType: null,
 };
@@ -30,7 +36,7 @@ export const NoteStore = signalStore(
       authStore = inject(AuthStore),
       logger = inject(Logger),
     ) => {
-      async function loadAll() {
+      async function loadStartingData() {
         patchState(store, { isLoading: true, error: null, errorType: null });
         logger.info('Loading notes');
         try {
@@ -38,14 +44,46 @@ export const NoteStore = signalStore(
           if (!user?.id) {
             return;
           }
-          const notes = await firstValueFrom(noteControllerService.getAll(user.id));
-          patchState(store, { notes: notes.items });
+          const { items, nextCursor, hasNext } = await firstValueFrom(
+            noteControllerService.getAll(user.id),
+          );
+          patchState(store, { notes: items, nextCursor, hasNext });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during loading the notes: ${error}`);
           patchState(store, { error, errorType: 'load' });
         } finally {
           patchState(store, { isLoading: false });
+        }
+      }
+
+      async function loadNextData() {
+        patchState(store, { isNextDataLoading: true, error: null, errorType: null });
+        logger.info('Loading next notes data');
+        try {
+          const user = authStore.loginData()?.user;
+          if (!user?.id) {
+            return;
+          }
+          const hasNext = store.hasNext();
+          const cursor = store.nextCursor();
+          if (hasNext && cursor) {
+            const { items, nextCursor, hasNext } = await firstValueFrom(
+              noteControllerService.getAll(user.id, cursor),
+            );
+            if (items)
+              patchState(store, {
+                notes: [...store.notes(), ...items],
+                nextCursor,
+                hasNext,
+              });
+          }
+        } catch (err: unknown) {
+          const error = getErrorMessage(err);
+          logger.error(`Error during notes load: ${error}`);
+          patchState(store, { error, errorType: 'load' });
+        } finally {
+          patchState(store, { isNextDataLoading: false });
         }
       }
 
@@ -91,7 +129,8 @@ export const NoteStore = signalStore(
       }
 
       return {
-        loadAll,
+        loadStartingData,
+        loadNextData,
         create,
         deleteById,
         clearError,
@@ -100,7 +139,7 @@ export const NoteStore = signalStore(
   ),
   withHooks((store) => ({
     onInit() {
-      store.loadAll();
+      store.loadStartingData();
     },
   })),
 );
