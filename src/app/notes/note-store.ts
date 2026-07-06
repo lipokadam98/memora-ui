@@ -88,7 +88,7 @@ export const NoteStore = signalStore(
       }
 
       async function create(title: string, content: string) {
-        patchState(store, { isLoading: true, error: null, errorType: null });
+        patchState(store, { error: null, errorType: null });
 
         try {
           const user = authStore.loginData()?.user;
@@ -106,8 +106,6 @@ export const NoteStore = signalStore(
           const error = getErrorMessage(err);
           logger.error(`Error during saving the note: ${error}`);
           patchState(store, { error, errorType: 'create' });
-        } finally {
-          patchState(store, { isLoading: false });
         }
       }
 
