@@ -9,8 +9,32 @@ describe('Gallery', () => {
   let component: Gallery;
   let fixture: ComponentFixture<Gallery>;
 
+  class IntersectionObserver {
+    root = null;
+    rootMargin = '';
+    thresholds = [];
+
+    disconnect() {
+      return null;
+    }
+
+    observe() {
+      return null;
+    }
+
+    takeRecords() {
+      return [];
+    }
+
+    unobserve() {
+      return null;
+    }
+  }
+
   @Component({ template: '' })
   class DummyComponent {}
+
+  window.IntersectionObserver = IntersectionObserver;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
