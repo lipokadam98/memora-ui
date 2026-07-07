@@ -204,17 +204,21 @@ export const MultimediaStore = signalStore(
       async function deleteSelectedItems() {
         const previousMultimedia = store.multimedia();
         const selectedIds = store.storedSelections();
+        const filteredMultimedia = previousMultimedia.filter(
+          (m) => m.id !== undefined && !selectedIds.includes(m.id),
+        );
 
         patchState(store, {
-          multimedia: previousMultimedia.filter(
-            (m) => m.id !== undefined && !selectedIds.includes(m.id),
-          ),
+          multimedia: filteredMultimedia,
           storedSelections: [],
           error: null,
           errorType: null,
         });
 
         try {
+          if (filteredMultimedia.length === 0 && store.hasNext()) {
+            await loadNextData();
+          }
           await firstValueFrom(multimediaControllerService.deleteBatch(selectedIds));
         } catch (err: unknown) {
           const error = getErrorMessage(err);
