@@ -1,10 +1,10 @@
-import { NoteControllerService, NoteRequestDto, NoteResponseDto } from '../api';
+import { effect, inject, untracked } from '@angular/core';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
-import { inject } from '@angular/core';
-import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
+import { NoteControllerService, NoteRequestDto, NoteResponseDto } from '../api';
 import { AuthStore } from '../authentication/auth-store';
 import { Logger } from '../util/logger';
+import { getErrorMessage } from '../util/util';
 
 type NoteState = {
   notes: NoteResponseDto[];
@@ -36,18 +36,27 @@ export const NoteStore = signalStore(
       authStore = inject(AuthStore),
       logger = inject(Logger),
     ) => {
+      function reset() {
+        logger.info('Resetting NoteStore to initial state');
+        patchState(store, initialState);
+      }
+
       async function loadStartingData() {
+        const user = authStore.loginData()?.user;
+        if (!user?.id) return;
+
         patchState(store, { isLoading: true, error: null, errorType: null });
         logger.info('Loading notes');
+
         try {
-          const user = authStore.loginData()?.user;
-          if (!user?.id) {
-            return;
-          }
           const { items, nextCursor, hasNext } = await firstValueFrom(
             noteControllerService.getAll(user.id),
           );
-          patchState(store, { notes: items, nextCursor, hasNext });
+          patchState(store, {
+            notes: items ?? [],
+            nextCursor,
+            hasNext,
+          });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during loading the notes: ${error}`);
@@ -58,26 +67,27 @@ export const NoteStore = signalStore(
       }
 
       async function loadNextData() {
+        const user = authStore.loginData()?.user;
+        if (!user?.id) return;
+
+        const hasNext = store.hasNext();
+        const cursor = store.nextCursor();
+        if (!hasNext || !cursor) return;
+
         patchState(store, { isNextDataLoading: true, error: null, errorType: null });
         logger.info('Loading next notes data');
+
         try {
-          const user = authStore.loginData()?.user;
-          if (!user?.id) {
-            return;
-          }
-          const hasNext = store.hasNext();
-          const cursor = store.nextCursor();
-          if (hasNext && cursor) {
-            const { items, nextCursor, hasNext } = await firstValueFrom(
-              noteControllerService.getAll(user.id, cursor),
-            );
-            if (items)
-              patchState(store, {
-                notes: [...store.notes(), ...items],
-                nextCursor,
-                hasNext,
-              });
-          }
+          const {
+            items,
+            nextCursor,
+            hasNext: newHasNext,
+          } = await firstValueFrom(noteControllerService.getAll(user.id, cursor));
+          patchState(store, {
+            notes: [...store.notes(), ...(items ?? [])],
+            nextCursor,
+            hasNext: newHasNext,
+          });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during notes load: ${error}`);
@@ -88,13 +98,12 @@ export const NoteStore = signalStore(
       }
 
       async function create(title: string, content: string) {
+        const user = authStore.loginData()?.user;
+        if (!user?.id) return;
+
         patchState(store, { error: null, errorType: null });
 
         try {
-          const user = authStore.loginData()?.user;
-          if (!user) {
-            return;
-          }
           const note: NoteRequestDto = {
             title,
             content,
@@ -127,6 +136,7 @@ export const NoteStore = signalStore(
       }
 
       return {
+        reset,
         loadStartingData,
         loadNextData,
         create,
@@ -135,9 +145,19 @@ export const NoteStore = signalStore(
       };
     },
   ),
-  withHooks((store) => ({
+  withHooks((store, authStore = inject(AuthStore)) => ({
     onInit() {
-      store.loadStartingData();
+      effect(() => {
+        const userId = authStore.loginData()?.user?.id;
+
+        untracked(() => {
+          if (userId) {
+            store.loadStartingData();
+          } else {
+            store.reset();
+          }
+        });
+      });
     },
   })),
 );

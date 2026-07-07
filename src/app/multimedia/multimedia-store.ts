@@ -1,4 +1,4 @@
-import { MultimediaControllerService, MultimediaResponseDto } from '../api';
+import { computed, inject, effect, untracked } from '@angular/core';
 import {
   patchState,
   signalStore,
@@ -7,12 +7,12 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { computed, inject } from '@angular/core';
-import { getErrorMessage } from '../util/util';
 import { firstValueFrom } from 'rxjs';
+import { MultimediaControllerService, MultimediaResponseDto } from '../api';
 import { AuthStore } from '../authentication/auth-store';
-import { TranslateHelperService } from '../util/translate-helper-service';
 import { Logger } from '../util/logger';
+import { TranslateHelperService } from '../util/translate-helper-service';
+import { getErrorMessage } from '../util/util';
 
 type MultimediaState = {
   multimedia: MultimediaResponseDto[];
@@ -57,7 +57,6 @@ export const MultimediaStore = signalStore(
         }
 
         const date = new Date(item.uploadDate);
-
         const key = date.toLocaleString(lang, {
           year: 'numeric',
           month: 'long',
@@ -83,6 +82,11 @@ export const MultimediaStore = signalStore(
       authStore = inject(AuthStore),
       logger = inject(Logger),
     ) => {
+      function reset() {
+        logger.info('Resetting MultimediaStore to initial state');
+        patchState(store, initialState);
+      }
+
       function selectNext() {
         const selectedMultimedia = store.selectedMultimedia();
         if (selectedMultimedia) {
@@ -116,6 +120,9 @@ export const MultimediaStore = signalStore(
       }
 
       async function loadStartingData() {
+        const user = authStore.loginData()?.user;
+        if (!user?.id) return;
+
         patchState(store, {
           isLoading: true,
           error: null,
@@ -123,17 +130,14 @@ export const MultimediaStore = signalStore(
           nextCursor: null,
           hasNext: false,
         });
+
         logger.info('Loading starting multimedia');
         try {
-          const user = authStore.loginData()?.user;
-          if (!user?.id) {
-            return;
-          }
           const { items, nextCursor, hasNext } = await firstValueFrom(
             multimediaControllerService.getAll1(user.id),
           );
           patchState(store, {
-            multimedia: items,
+            multimedia: items ?? [],
             nextCursor,
             hasNext,
           });
@@ -147,26 +151,27 @@ export const MultimediaStore = signalStore(
       }
 
       async function loadNextData() {
+        const user = authStore.loginData()?.user;
+        if (!user?.id) return;
+
+        const hasNext = store.hasNext();
+        const cursor = store.nextCursor();
+        if (!hasNext || !cursor) return;
+
         patchState(store, { isNextDataLoading: true, error: null, errorType: null });
         logger.info('Loading next multimedia data');
+
         try {
-          const user = authStore.loginData()?.user;
-          if (!user?.id) {
-            return;
-          }
-          const hasNext = store.hasNext();
-          const cursor = store.nextCursor();
-          if (hasNext && cursor) {
-            const { items, nextCursor, hasNext } = await firstValueFrom(
-              multimediaControllerService.getAll1(user.id, cursor),
-            );
-            if (items)
-              patchState(store, {
-                multimedia: [...store.multimedia(), ...items],
-                nextCursor,
-                hasNext,
-              });
-          }
+          const {
+            items,
+            nextCursor,
+            hasNext: newHasNext,
+          } = await firstValueFrom(multimediaControllerService.getAll1(user.id, cursor));
+          patchState(store, {
+            multimedia: [...store.multimedia(), ...(items ?? [])],
+            nextCursor,
+            hasNext: newHasNext,
+          });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during multimedia load: ${error}`);
@@ -232,6 +237,7 @@ export const MultimediaStore = signalStore(
       }
 
       return {
+        reset,
         selectNext,
         selectPrevious,
         select,
@@ -245,9 +251,19 @@ export const MultimediaStore = signalStore(
       };
     },
   ),
-  withHooks((store) => ({
+  withHooks((store, authStore = inject(AuthStore)) => ({
     onInit() {
-      store.loadStartingData();
+      effect(() => {
+        const userId = authStore.loginData()?.user?.id;
+
+        untracked(() => {
+          if (userId) {
+            store.loadStartingData();
+          } else {
+            store.reset();
+          }
+        });
+      });
     },
   })),
 );
