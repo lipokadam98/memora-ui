@@ -110,7 +110,7 @@ export const NoteStore = signalStore(
             userId: user.id,
           };
           const createdNote = await firstValueFrom(noteControllerService.create(note));
-          patchState(store, { notes: [...store.notes(), createdNote] });
+          patchState(store, { notes: [createdNote, ...store.notes()] });
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during saving the note: ${error}`);
