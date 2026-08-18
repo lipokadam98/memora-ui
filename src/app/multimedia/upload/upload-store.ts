@@ -155,6 +155,7 @@ export const UploadStore = signalStore(
         clearSelectedFiles();
         if (files.length > MAX_FILE_COUNT) {
           patchState(store, {
+            selectedFiles: files.slice(0, MAX_FILE_COUNT),
             error: 'upload.errors.max_count_exceeded',
             success: false,
           });
