@@ -1,11 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class TranslateHelperService {
   private translateService = inject(TranslateService);
 

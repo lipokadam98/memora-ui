@@ -1,5 +1,5 @@
 import { environment } from '../../environments/environment';
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
 export enum LogLevel {
   DEBUG = 0,
@@ -8,7 +8,7 @@ export enum LogLevel {
   ERROR = 3,
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class Logger {
   private readonly isEnabled = signal(environment.enableLogging).asReadonly();
   private readonly logLevel = signal(environment.logLevel).asReadonly();

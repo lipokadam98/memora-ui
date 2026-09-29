@@ -1,10 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AuthenticationControllerService, LoginUserDto, RegisterUserDto } from '../api';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AuthService {
   private authenticationControllerService = inject(AuthenticationControllerService);
 

@@ -15,22 +15,19 @@
   <div class="flex flex-col lg:flex-row gap-8 items-start">
     <aside class="w-full lg:w-80 p-6 rounded-xl shadow-sm border-2 lg:sticky lg:top-6">
       <h2 class="text-lg font-semibold mb-4">{{ 'notes.create' | translate }}</h2>
-      <form [formGroup]="noteForm" class="flex flex-col gap-4">
+      <form #noteFormRef [formRoot]="noteForm" class="flex flex-col gap-4">
         <div class="flex flex-col">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>{{ 'notes.input_title' | translate }}</mat-label>
-            <textarea formControlName="title" matInput maxlength="150" rows="4"></textarea>
+            <textarea [formField]="noteForm.title" matInput rows="4"></textarea>
           </mat-form-field>
-          @if (noteForm.get('title')?.touched && noteForm.get('title')?.invalid) {
+          @if (noteForm.title().touched() && noteForm.title().invalid()) {
             <div class="text-xs text-red-400 flex flex-col gap-1 pl-1 max-w-full">
-              <span>
-                @if (noteForm.get('title')?.hasError('required')) {
-                  {{ 'notes.title_required_error' | translate }}
+              <ul>
+                @for (error of noteForm.title().errors(); track error) {
+                  <li>{{ error.message | translate }}</li>
                 }
-                @if (noteForm.get('title')?.hasError('maxLength')) {
-                  {{ 'notes.title_max_length_error' | translate }}
-                }
-              </span>
+              </ul>
             </div>
           }
         </div>
@@ -38,25 +35,22 @@
         <div class="flex flex-col">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>{{ 'notes.input_content' | translate }}</mat-label>
-            <textarea formControlName="content" matInput maxlength="10000" rows="4"></textarea>
+            <textarea [formField]="noteForm.content" matInput rows="4"></textarea>
           </mat-form-field>
-          @if (noteForm.get('content')?.touched && noteForm.get('content')?.invalid) {
+          @if (noteForm.content().touched() && noteForm.content().invalid()) {
             <div class="text-xs text-red-400 flex flex-col gap-1 pl-1 max-w-full">
-              <span>
-                @if (noteForm.get('content')?.hasError('required')) {
-                  {{ 'notes.content_required_error' | translate }}
+              <ul>
+                @for (error of noteForm.content().errors(); track error) {
+                  <li>{{ error.message | translate }}</li>
                 }
-                @if (noteForm.get('content')?.hasError('maxLength')) {
-                  {{ 'notes.content_max_length_error' | translate }}
-                }
-              </span>
+              </ul>
             </div>
           }
         </div>
 
         <button
-          (click)="onAddNote()"
-          [disabled]="noteForm.invalid || notesStore.isLoading()"
+          (click)="noteFormRef.submit()"
+          [disabled]="noteForm().invalid() || notesStore.isLoading()"
           class="w-full"
           color="primary"
           mat-flat-button

@@ -1,12 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class NotificationService {
   private readonly matSnackBar = inject(MatSnackBar);
   private readonly translateService = inject(TranslateService);
