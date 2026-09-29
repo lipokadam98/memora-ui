@@ -1,6 +1,10 @@
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
-import { LoginResponse, LoginUserDto, RegisterUserDto } from '../api';
-import { AuthService } from './auth-service';
+import {
+  AuthenticationControllerService,
+  LoginResponse,
+  LoginUserDto,
+  RegisterUserDto,
+} from '../api';
 import { inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -29,7 +33,7 @@ export const AuthStore = signalStore(
   withMethods(
     (
       store,
-      authService = inject(AuthService),
+      authService = inject(AuthenticationControllerService),
       activatedRoute = inject(ActivatedRoute),
       router = inject(Router),
       logger = inject(Logger),
@@ -67,7 +71,7 @@ export const AuthStore = signalStore(
       async function login(loginUserDto: LoginUserDto) {
         patchState(store, { isLoading: true, error: null });
         try {
-          const loginResponse = await authService.login(loginUserDto);
+          const loginResponse = await firstValueFrom(authService.authenticate(loginUserDto));
           patchState(store, { loginData: loginResponse });
           localStorage.setItem('loginData', JSON.stringify(loginResponse));
 
@@ -102,7 +106,7 @@ export const AuthStore = signalStore(
         patchState(store, { isLoading: true, error: null });
         try {
           //TODO implement registration
-          const user = await authService.register(registerUserDto);
+          const user = await firstValueFrom(authService.register(registerUserDto));
         } catch (err: unknown) {
           const error = getErrorMessage(err);
           logger.error(`Error during registration: ${error}`);

@@ -18,9 +18,7 @@
         class="cursor-pointer font-medium"
         matTooltip="{{ 'navbar.remaining_session_time' | translate }}"
       >
-        @if (authStore.countdown(); as seconds) {
-          {{ Math.floor(seconds / 60) | number: '2.0-0' }}:{{ seconds % 60 | number: '2.0-0' }}
-        }
+        {{ authStore.countdown() | formatTime }}
       </span>
       <button
         [matMenuTriggerFor]="profileMenu"
