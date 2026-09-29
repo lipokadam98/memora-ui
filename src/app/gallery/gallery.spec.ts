@@ -13,6 +13,7 @@ describe('Gallery', () => {
     root = null;
     rootMargin = '';
     thresholds = [];
+    scrollMargin = '';
 
     disconnect() {
       return null;
