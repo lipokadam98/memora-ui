@@ -2,7 +2,7 @@
   @let imgSrc = multimedia().thumbnailUrl;
   @if (imgSrc) {
     <img
-      (click)="openMultimedia()"
+      (click)="onThumbnailClicked()"
       [src]="imgSrc"
       alt="Thumbnail image"
       class="w-full aspect-square object-cover rounded cursor-pointer hover:scale-105 transition-transform duration-300"

@@ -2,7 +2,7 @@
   @let hasGalleryItems = multimediaStore.groupedByMonth().length > 0;
   <header class="flex flex-row justify-between items-center border-b pb-4">
     <h1 class="text-4xl font-bold">{{ 'gallery.title' | translate }}</h1>
-    <button #topButton [matMenuTriggerFor]="galleryMenu" matFab>
+    <button [matMenuTriggerFor]="galleryMenu" matFab>
       <mat-icon>menu</mat-icon>
     </button>
   </header>
@@ -16,7 +16,12 @@
         <h3 class="text-2xl">{{ group.key }}</h3>
         <section class="grid lg:grid-cols-8 md:grid-cols-5 grid-cols-3 gap-1">
           @for (multimedia of group.items; track multimedia.id) {
-            <app-multimedia-thumbnail [isEditMode]="isEditMode()" [multimedia]="multimedia" />
+            <app-multimedia-thumbnail
+              (selectionChecked)="onSelectionChecked($event)"
+              (thumbnailClicked)="onThumbnailClicked($event)"
+              [isEditMode]="isEditMode()"
+              [multimedia]="multimedia"
+            />
           }
         </section>
       }

@@ -1,8 +1,5 @@
-import { Component, inject, input, ViewContainerRef } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MultimediaResponseDto } from '../../api';
-import { MatDialog } from '@angular/material/dialog';
-import { MultimediaContent } from '../multimedia-content/multimedia-content';
-import { MultimediaStore } from '../multimedia-store';
 import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
@@ -14,26 +11,17 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 export class MultimediaThumbnail {
   isEditMode = input(false);
   multimedia = input.required<MultimediaResponseDto>();
-  protected multimediaStore = inject(MultimediaStore);
-  private viewContainerRef = inject(ViewContainerRef);
-
-  private dialog = inject(MatDialog);
-
-  protected openMultimedia() {
-    this.multimediaStore.select(this.multimedia());
-    this.dialog.open(MultimediaContent, {
-      viewContainerRef: this.viewContainerRef,
-    });
-  }
+  thumbnailClicked = output<MultimediaResponseDto>();
+  selectionChecked = output<{ isChecked: boolean; id: number }>();
 
   protected onSelectionChange($event: MatCheckboxChange) {
     const id = this.multimedia().id;
     if (!id) return;
     const isChecked = $event.checked;
-    if (isChecked) {
-      this.multimediaStore.storeSelection(id);
-    } else {
-      this.multimediaStore.removeSelection(id);
-    }
+    this.selectionChecked.emit({ isChecked, id: id });
+  }
+
+  protected onThumbnailClicked() {
+    this.thumbnailClicked.emit(this.multimedia());
   }
 }
