@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, ViewContainerRef } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { MultimediaStore } from '../multimedia/multimedia-store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatFabButton, MatIconButton } from '@angular/material/button';
@@ -34,7 +34,6 @@ export class Gallery {
   protected multimediaStore = inject(MultimediaStore);
   protected isEditMode = signal(false);
   private dialog = inject(MatDialog);
-  private viewContainerRef = inject(ViewContainerRef);
   private notificationService = inject(NotificationService);
 
   constructor() {
@@ -55,7 +54,6 @@ export class Gallery {
   protected openUploadDialog() {
     this.dialog.open(Upload, {
       disableClose: true,
-      viewContainerRef: this.viewContainerRef,
     });
   }
 
@@ -77,9 +75,7 @@ export class Gallery {
 
   protected onThumbnailClicked(multimedia: MultimediaResponseDto) {
     this.multimediaStore.select(multimedia);
-    this.dialog.open(MultimediaContent, {
-      viewContainerRef: this.viewContainerRef,
-    });
+    this.dialog.open(MultimediaContent);
   }
 
   protected onSelectionChecked($event: { isChecked: boolean; id: number }) {
