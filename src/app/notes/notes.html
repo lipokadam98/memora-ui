@@ -15,7 +15,7 @@
   <div class="flex flex-col lg:flex-row gap-8 items-start">
     <aside class="w-full lg:w-80 p-6 rounded-xl shadow-sm border-2 lg:sticky lg:top-6">
       <h2 class="text-lg font-semibold mb-4">{{ 'notes.create' | translate }}</h2>
-      <form #noteFormRef [formRoot]="noteForm" class="flex flex-col gap-4">
+      <form [formRoot]="noteForm" class="flex flex-col gap-4">
         <div class="flex flex-col">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>{{ 'notes.input_title' | translate }}</mat-label>
@@ -49,11 +49,11 @@
         </div>
 
         <button
-          (click)="noteFormRef.submit()"
           [disabled]="noteForm().invalid() || notesStore.isLoading()"
           class="w-full"
           color="primary"
           mat-flat-button
+          type="submit"
         >
           {{ 'notes.add_note' | translate }}
         </button>
